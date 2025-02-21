@@ -29,11 +29,16 @@ public class Player : MonoBehaviour
             return;
         }
 
-        if (Input.GetMouseButtonDown(0) || gun.isFullAuto && Input.GetMouseButton(0))
+        Vector3 recoilForce = Vector3.zero;
+        if (Input.GetMouseButtonDown(0))
         {
-            Vector3 recoilForce = gun.Fire(fireDirection);
-            rb.AddForce(recoilForce, ForceMode2D.Impulse);
+            recoilForce = gun.Fire(fireDirection);
         }
+        else if (Input.GetMouseButton(0))
+        {
+            recoilForce = gun.HoldFire(fireDirection);
+        }
+        rb.AddForce(recoilForce, ForceMode2D.Impulse);
 
         if (Input.GetKeyDown(KeyCode.R))
         {
