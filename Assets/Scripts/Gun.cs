@@ -67,7 +67,7 @@ public class Gun : MonoBehaviour
 
     public void Reload()
     {
-        if (bulletNumber >= bulletCapacity)
+        if (bulletNumber >= bulletCapacity || isReloading)
         {
             return;
         }
