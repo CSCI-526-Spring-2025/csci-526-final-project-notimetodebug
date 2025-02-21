@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
-    public float velocity = 20;
+    public float velocity = 10;
 
     private Rigidbody2D rb;
 

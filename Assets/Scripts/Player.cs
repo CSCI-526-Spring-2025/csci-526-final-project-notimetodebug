@@ -24,13 +24,18 @@ public class Player : MonoBehaviour
         gun.SetDirection(fireDirection);
         // Debug.DrawLine(transform.position, transform.position + shootDirection, Color.red);
 
-        if (Input.GetMouseButton(0) && gun is not null)
+        if (gun is null)
+        {
+            return;
+        }
+
+        if (Input.GetMouseButtonDown(0) || gun.isFullAuto && Input.GetMouseButton(0))
         {
             Vector3 recoilForce = gun.Fire(fireDirection);
             rb.AddForce(recoilForce, ForceMode2D.Impulse);
         }
 
-        if (Input.GetKeyDown(KeyCode.R) && gun is not null)
+        if (Input.GetKeyDown(KeyCode.R))
         {
             gun.Reload();
         }

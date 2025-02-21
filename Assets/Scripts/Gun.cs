@@ -11,7 +11,8 @@ public class Gun : MonoBehaviour
     public float fireRate = 15;
     public float reloadingTime = 2;
     public float recoilForce = 1;
-
+    public bool isFullAuto = true;
+    
     private float lastFireTime = 0;
     private float startReloadingTime = 0;
     private bool isReloading = false;
