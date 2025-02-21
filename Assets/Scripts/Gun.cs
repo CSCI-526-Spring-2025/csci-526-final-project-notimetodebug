@@ -62,6 +62,11 @@ public class Gun : MonoBehaviour
     
     public void Reload()
     {
+        if (bulletNumber >= bulletCapacity)
+        {
+            return;
+        }
+        
         isReloading = true;
         startReloadingTime = Time.time;
     }
