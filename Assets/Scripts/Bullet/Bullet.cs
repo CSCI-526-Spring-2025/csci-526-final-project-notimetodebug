@@ -1,25 +1,30 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
-public class Bullet : MonoBehaviour
+public abstract class Bullet : MonoBehaviour
 {
-    public float velocity = 10;
-    
+    public float initialVelocity = 10;
+
     private Rigidbody2D rb;
 
-    private void Update()
+    protected void Start()
+    {
+    }
+
+    protected virtual void Update()
     {
         transform.rotation = Quaternion.FromToRotation(Vector3.right, rb.velocity);
     }
 
-    public void Fire(Vector3 direction)
+    public virtual void Fire(Vector3 direction)
     {
         rb = GetComponent<Rigidbody2D>();
 
-        rb.velocity = direction * velocity;
+        rb.velocity = direction * initialVelocity;
         transform.rotation = Quaternion.FromToRotation(Vector3.right, rb.velocity);
     }
 
-    public void OnCollisionEnter2D(Collision2D other)
+    public virtual void OnCollisionEnter2D(Collision2D other)
     {
         Destroy(gameObject);
     }

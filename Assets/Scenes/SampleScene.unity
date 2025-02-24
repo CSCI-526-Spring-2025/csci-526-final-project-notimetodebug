@@ -1003,7 +1003,7 @@ GameObject:
   - component: {fileID: 1803879205}
   - component: {fileID: 1803879206}
   m_Layer: 0
-  m_Name: Gun
+  m_Name: Rifle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1034,7 +1034,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1803879204}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 84aac507d5354e55819198bdae2fe271, type: 3}
+  m_Script: {fileID: 11500000, guid: 7a40b9f9ce884294981418bc634886fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   bulletPrefab: {fileID: 244202265789094677, guid: 9cb41830f1a22434db3fddd9fbf5d065, type: 3}
@@ -1043,6 +1043,7 @@ MonoBehaviour:
   fireRate: 15
   reloadingTime: 2
   recoilForce: 1
+  isFullAuto: 1
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

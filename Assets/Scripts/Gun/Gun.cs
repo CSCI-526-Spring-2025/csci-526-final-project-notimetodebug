@@ -36,15 +36,15 @@ public abstract class Gun : MonoBehaviour
         }
     }
 
-    public void SetDirection(Vector3 direction)
+    public virtual void SetDirection(Vector3 direction)
     {
         transform.rotation = Quaternion.FromToRotation(Vector3.right, direction);
     }
 
-    public Vector3 Fire(Vector3 direction)
+    public virtual Vector3 Fire(Vector3 direction)
     {
         float currentTime = Time.time;
-        if (isReloading || bulletNumber <= 0 || currentTime - lastFireTime < fireRate)
+        if (isReloading || bulletNumber <= 0 || currentTime - lastFireTime < 1 / fireRate)
         {
             return Vector3.zero;
         }
@@ -57,7 +57,7 @@ public abstract class Gun : MonoBehaviour
         return -recoilForce * direction;
     }
 
-    public Vector3 HoldFire(Vector3 direction)
+    public virtual Vector3 HoldFire(Vector3 direction)
     {
         return isFullAuto ? Fire(direction) : Vector3.zero;
     }
