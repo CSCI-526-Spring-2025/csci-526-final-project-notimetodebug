@@ -1,10 +1,9 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
     public float velocity = 10;
-
+    
     private Rigidbody2D rb;
 
     private void Update()
@@ -15,7 +14,7 @@ public class Bullet : MonoBehaviour
     public void Fire(Vector3 direction)
     {
         rb = GetComponent<Rigidbody2D>();
-        
+
         rb.velocity = direction * velocity;
         transform.rotation = Quaternion.FromToRotation(Vector3.right, rb.velocity);
     }

@@ -2,7 +2,7 @@
 using UnityEngine;
 
 
-public class Gun : MonoBehaviour
+public abstract class Gun : MonoBehaviour
 {
     public GameObject bulletPrefab;
 
@@ -13,13 +13,17 @@ public class Gun : MonoBehaviour
     public float recoilForce = 1;
     public bool isFullAuto = true;
 
-    private float lastFireTime = 0;
-    private float startReloadingTime = 0;
-    private bool isReloading = false;
+    protected float lastFireTime = 0;
+    protected float startReloadingTime = 0;
+    protected bool isReloading = false;
 
     private float bulletGenerateDistance = 1.2f;
 
-    private void Update()
+    protected virtual void Start()
+    {
+    }
+
+    protected virtual void Update()
     {
         if (isReloading)
         {
@@ -40,17 +44,17 @@ public class Gun : MonoBehaviour
     public Vector3 Fire(Vector3 direction)
     {
         float currentTime = Time.time;
-        if (!isReloading && bulletNumber > 0 && currentTime - lastFireTime >= 1 / fireRate)
+        if (isReloading || bulletNumber <= 0 || currentTime - lastFireTime < fireRate)
         {
-            GenerateBullet(direction);
-
-            lastFireTime = currentTime;
-            bulletNumber--;
-
-            return -recoilForce * direction;
+            return Vector3.zero;
         }
 
-        return Vector3.zero;
+        GenerateBullet(direction);
+
+        lastFireTime = currentTime;
+        bulletNumber--;
+
+        return -recoilForce * direction;
     }
 
     public Vector3 HoldFire(Vector3 direction)
@@ -58,7 +62,7 @@ public class Gun : MonoBehaviour
         return isFullAuto ? Fire(direction) : Vector3.zero;
     }
 
-    public void GenerateBullet(Vector3 direction)
+    public virtual void GenerateBullet(Vector3 direction)
     {
         GameObject bullet = Instantiate(bulletPrefab,
             transform.position + bulletGenerateDistance * direction, Quaternion.identity);
