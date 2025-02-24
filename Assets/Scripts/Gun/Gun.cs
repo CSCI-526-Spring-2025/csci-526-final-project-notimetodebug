@@ -57,9 +57,25 @@ public abstract class Gun : MonoBehaviour
         return -recoilForce * direction;
     }
 
+    public virtual Vector3 StartFire(Vector3 direction)
+    {
+        if (!isReloading && bulletNumber <= 0)
+        {
+            Reload();
+            return Vector3.zero;
+        }
+        
+        return Fire(direction);
+    }
+
     public virtual Vector3 HoldFire(Vector3 direction)
     {
         return isFullAuto ? Fire(direction) : Vector3.zero;
+    }
+
+    public virtual Vector3 StopFire(Vector3 direction)
+    {
+        return Vector3.zero;
     }
 
     public virtual void GenerateBullet(Vector3 direction)

@@ -32,12 +32,17 @@ public class Player : MonoBehaviour
         Vector3 recoilForce = Vector3.zero;
         if (Input.GetMouseButtonDown(0))
         {
-            recoilForce = gun.Fire(fireDirection);
+            recoilForce = gun.StartFire(fireDirection);
         }
         else if (Input.GetMouseButton(0))
         {
             recoilForce = gun.HoldFire(fireDirection);
         }
+        else
+        {
+            recoilForce = gun.StopFire(fireDirection);
+        }
+
         rb.AddForce(recoilForce, ForceMode2D.Impulse);
 
         if (Input.GetKeyDown(KeyCode.R))
