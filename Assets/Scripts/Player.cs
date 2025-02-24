@@ -36,7 +36,7 @@ public class Player : MonoBehaviour
         }
         else if (Input.GetMouseButton(0))
         {
-            recoilForce = gun.HoldFire(fireDirection);
+            recoilForce = gun.KeepFire(fireDirection);
         }
         else
         {

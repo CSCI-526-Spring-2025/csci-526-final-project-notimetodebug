@@ -68,7 +68,7 @@ public abstract class Gun : MonoBehaviour
         return Fire(direction);
     }
 
-    public virtual Vector3 HoldFire(Vector3 direction)
+    public virtual Vector3 KeepFire(Vector3 direction)
     {
         return isFullAuto ? Fire(direction) : Vector3.zero;
     }
