@@ -21,13 +21,13 @@ public class Player : MonoBehaviour
         Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         mousePos.z = 0;
         fireDirection = (mousePos - transform.position).normalized;
-        gun.SetDirection(fireDirection);
-        // Debug.DrawLine(transform.position, transform.position + shootDirection, Color.red);
 
         if (gun is null)
         {
             return;
         }
+        
+        gun.SetDirection(fireDirection);
 
         Vector3 recoilForce = Vector3.zero;
         if (Input.GetMouseButtonDown(0))
