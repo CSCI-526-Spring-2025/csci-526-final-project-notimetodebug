@@ -5,9 +5,9 @@ public class Player : Creature
 {
     private Rigidbody2D rb;
 
-    public Vector3 fireDirection;
+    private Vector3 fireDirection;
 
-    public Gun gun;
+    [SerializeField] private Gun gun;
 
     // Start is called before the first frame update
     private void Start()

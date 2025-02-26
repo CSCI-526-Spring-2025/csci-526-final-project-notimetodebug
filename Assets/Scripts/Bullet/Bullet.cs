@@ -3,10 +3,10 @@ using UnityEngine;
 
 public abstract class Bullet : MonoBehaviour
 {
-    public float initialVelocity = 10;
+    [SerializeField] protected float initialVelocity = 10;
 
-    public int damage = 5;
-    public int bounceLeft = 0;
+    [SerializeField] protected int damage = 5;
+    [SerializeField] protected int bounceLeft = 0;
     
     private Rigidbody2D rb;
 

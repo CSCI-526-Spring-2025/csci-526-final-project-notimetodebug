@@ -4,14 +4,14 @@ using UnityEngine;
 
 public abstract class Gun : MonoBehaviour
 {
-    public GameObject bulletPrefab;
+    [SerializeField] protected GameObject bulletPrefab;
 
-    public int bulletCapacity = 30;
-    public int bulletNumber = 30;
-    public float fireRate = 15;
-    public float reloadingTime = 2;
-    public float recoilForce = 1;
-    public bool isFullAuto = true;
+    [SerializeField] protected int bulletCapacity = 30;
+    [SerializeField] protected int bulletNumber = 30;
+    [SerializeField] protected float fireRate = 15;
+    [SerializeField] protected float reloadingTime = 2;
+    [SerializeField] protected float recoilForce = 1;
+    [SerializeField] protected bool isFullAuto = true;
 
     protected float lastFireTime = 0;
     protected float startReloadingTime = 0;
