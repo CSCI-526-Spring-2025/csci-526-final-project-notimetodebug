@@ -3,6 +3,8 @@
 # Check out the Buildalon open source actions at https://github.com/marketplace?query=buildalon
 
 name: Buildalon Unity Build
+permissions:
+  contents: write
 on:
   push:
     branches:
@@ -72,6 +74,12 @@ jobs:
           path: |
             ${{ github.workspace }}/**/*.log
             ${{ env.UNITY_PROJECT_PATH }}/Builds/WebGL/
+      - uses: JamesIves/github-pages-deploy-action@v4
+        name: Deploy to Github Pages
+        with:
+          folder: ${{ env.UNITY_PROJECT_PATH }}/Builds/WebGL/
+          target-folder: ${{ github.ref_name }}
+          
       - name: Clean Artifacts
         if: always()
         shell: pwsh
