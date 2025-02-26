@@ -5,6 +5,9 @@ public abstract class Bullet : MonoBehaviour
 {
     public float initialVelocity = 10;
 
+    public int damage = 5;
+    public int bounceLeft = 0;
+    
     private Rigidbody2D rb;
 
     protected void Start()
@@ -24,7 +27,32 @@ public abstract class Bullet : MonoBehaviour
         transform.rotation = Quaternion.FromToRotation(Vector3.right, rb.velocity);
     }
 
-    public virtual void OnCollisionEnter2D(Collision2D other)
+    public void OnCollisionEnter2D(Collision2D other)
+    {
+        if (other.gameObject.tag == "Player" || other.gameObject.tag == "Enemy")
+        {
+            Creature creature = other.gameObject.GetComponent<Creature>();
+            if (creature is not null)
+            {
+                creature.HP -= damage;
+                OnAbsorbed();
+            }
+        }
+    }
+
+    public virtual void OnBounce()
+    {
+        if (bounceLeft <= 0)
+        {
+            OnAbsorbed();
+        }
+        else
+        {
+            bounceLeft--;
+        }
+    }
+
+    public virtual void OnAbsorbed()
     {
         Destroy(gameObject);
     }
