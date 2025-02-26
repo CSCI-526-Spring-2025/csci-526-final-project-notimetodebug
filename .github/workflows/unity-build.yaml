@@ -19,6 +19,13 @@ jobs:
         uses: actions/checkout@v4
         with:
           lfs: true
+      - name: Setup / update cache
+        uses: actions/cache@v3
+        with:
+          path: Library
+          key: Library-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
+          restore-keys: |
+            Library-
       - name: Unity Build
         uses: game-ci/unity-builder@v4
         env:
@@ -35,5 +42,5 @@ jobs:
       - name: Deploy to Github Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          folder: build
-          folder-target: ${{ github.ref_name }}
+          folder: build/WebGL/WebGL
+          target-folder: ${{ github.ref_name }}
