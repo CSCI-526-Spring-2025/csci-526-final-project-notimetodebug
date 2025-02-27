@@ -72,4 +72,13 @@ public class Player : Creature
             currentGun.Activate();
         }
     }
+
+    public void PickUpGun(Gun gun)
+    {
+        if (guns.Count > 1)
+        {
+            guns.RemoveAt(1);
+        }
+        guns.Add(gun);
+    }
 }
