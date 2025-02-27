@@ -105,4 +105,9 @@ public abstract class Gun : MonoBehaviour
     {
         gameObject.SetActive(false);
     }
+
+    public void Destroy()
+    {
+        Destroy(gameObject);
+    }
 }

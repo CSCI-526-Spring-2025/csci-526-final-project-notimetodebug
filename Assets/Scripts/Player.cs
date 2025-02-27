@@ -77,8 +77,18 @@ public class Player : Creature
     {
         if (guns.Count > 1)
         {
+            guns.ElementAt(1).Destroy();
             guns.RemoveAt(1);
         }
         guns.Add(gun);
+        
+        if (currentGunIndex == guns.Count - 1)
+        {
+            gun.Activate();
+        }
+        else
+        {
+            gun.Deactivate();
+        }
     }
 }
