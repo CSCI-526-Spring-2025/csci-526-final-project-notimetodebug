@@ -95,4 +95,14 @@ public abstract class Gun : MonoBehaviour
         isReloading = true;
         startReloadingTime = Time.time;
     }
+
+    public void Activate()
+    {
+        gameObject.SetActive(true);
+    }
+
+    public void Deactivate()
+    {
+        gameObject.SetActive(false);
+    }
 }
