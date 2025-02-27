@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -13,6 +14,7 @@ public class Player : Creature
 
     [SerializeField] private List<Gun> guns;
 
+
     // Start is called before the first frame update
     private void Start()
     {
@@ -22,11 +24,11 @@ public class Player : Creature
         {
             if (i != currentGunIndex)
             {
-                guns.ElementAt(i).Deactivate();
+                guns.ElementAt(i).OnUnequipped();
             }
             else
             {
-                guns.ElementAt(i).Activate();
+                guns.ElementAt(i).OnEquipped();
             }
         }
     }
@@ -65,11 +67,11 @@ public class Player : Creature
 
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            currentGun.Deactivate();
+            currentGun.OnUnequipped();
             currentGunIndex = (currentGunIndex + 1) % guns.Count;
             currentGun = guns.ElementAt(currentGunIndex);
             currentGun.SetDirection(fireDirection);
-            currentGun.Activate();
+            currentGun.OnEquipped();
         }
     }
 
@@ -81,14 +83,15 @@ public class Player : Creature
             guns.RemoveAt(1);
         }
         guns.Add(gun);
+        gun.OnPickedUp(this);
         
         if (currentGunIndex == guns.Count - 1)
         {
-            gun.Activate();
+            gun.OnEquipped();
         }
         else
         {
-            gun.Deactivate();
+            gun.OnUnequipped();
         }
     }
 }

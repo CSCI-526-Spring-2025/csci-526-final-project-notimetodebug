@@ -96,12 +96,12 @@ public abstract class Gun : MonoBehaviour
         startReloadingTime = Time.time;
     }
 
-    public void Activate()
+    public void OnEquipped()
     {
         gameObject.SetActive(true);
     }
 
-    public void Deactivate()
+    public void OnUnequipped()
     {
         gameObject.SetActive(false);
     }
@@ -109,5 +109,11 @@ public abstract class Gun : MonoBehaviour
     public void Destroy()
     {
         Destroy(gameObject);
+    }
+
+    public void OnPickedUp(Player player)
+    {
+        transform.SetParent(player.transform);
+        transform.localPosition = Vector3.zero;
     }
 }
