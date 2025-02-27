@@ -954,7 +954,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3037680909872467411, guid: 3b2d9c4b92832674197636e50a594a08, type: 3}
       propertyPath: m_Name
-      value: Canon
+      value: Cannon
       objectReference: {fileID: 0}
     - target: {fileID: 7506589807451914705, guid: 3b2d9c4b92832674197636e50a594a08, type: 3}
       propertyPath: m_LocalScale.y
