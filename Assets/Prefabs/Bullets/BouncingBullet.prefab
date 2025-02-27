@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5017577313621385683}
   - component: {fileID: 5686831338404452661}
   - component: {fileID: 2490165864090184955}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: BouncingBullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -138,7 +138,7 @@ Rigidbody2D:
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 0
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: d745f66dd34741240af97655fcdfecde, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
