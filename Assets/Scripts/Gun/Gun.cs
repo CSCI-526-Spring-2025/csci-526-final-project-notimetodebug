@@ -95,4 +95,25 @@ public abstract class Gun : MonoBehaviour
         isReloading = true;
         startReloadingTime = Time.time;
     }
+
+    public void OnEquipped()
+    {
+        gameObject.SetActive(true);
+    }
+
+    public void OnUnequipped()
+    {
+        gameObject.SetActive(false);
+    }
+
+    public void Destroy()
+    {
+        Destroy(gameObject);
+    }
+
+    public void OnPickedUp(Player player)
+    {
+        transform.SetParent(player.transform);
+        transform.localPosition = Vector3.zero;
+    }
 }
