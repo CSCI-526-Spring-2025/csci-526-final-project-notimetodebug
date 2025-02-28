@@ -4,5 +4,5 @@ using UnityEngine;
 
 public class DefaultGun : Gun
 {
-    // No overrides
+    // No override
 }

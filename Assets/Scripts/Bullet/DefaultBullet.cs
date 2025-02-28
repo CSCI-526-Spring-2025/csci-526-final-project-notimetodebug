@@ -2,5 +2,5 @@
 
 public class DefaultBullet : Bullet
 {
-    // No overrides
+    // No override
 }
