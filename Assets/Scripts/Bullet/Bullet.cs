@@ -29,12 +29,40 @@ public abstract class Bullet : MonoBehaviour
 
     public void OnCollisionEnter2D(Collision2D other)
     {
-        if (other.gameObject.tag == "Player" || other.gameObject.tag == "Enemy")
+        if (other.gameObject.TryGetComponent<Creature>(out Creature creature))
         {
-            Creature creature = other.gameObject.GetComponent<Creature>();
-            if (creature is not null)
+            creature.HP -= damage;
+            OnAbsorbed();
+        }
+
+        if (other.gameObject.TryGetComponent<Bullet>(out Bullet bullet))
+        {
+            if (bullet.damage > damage)
             {
-                creature.HP -= damage;
+                bullet.damage -= damage;
+                OnAbsorbed();
+            }
+            else
+            {
+                damage -= bullet.damage;
+                bullet.OnAbsorbed();
+            }
+        }
+
+        if (other.gameObject.TryGetComponent(out Wall wall))
+        {
+            if (wall is Mirror)
+            {
+                OnBounce();
+            }
+
+            if (wall is Spikes)
+            {
+                OnAbsorbed();
+            }
+
+            if (wall is Normal)
+            {
                 OnAbsorbed();
             }
         }

@@ -2,8 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Spikes : MonoBehaviour
+public class Spikes : Wall
 {
+    public int Damage = 40;
+    public int BounceBackVelocity = 10;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -14,7 +17,13 @@ public class Spikes : MonoBehaviour
     {
         if (collision.gameObject.TryGetComponent(out Creature creature))
         {
-            creature.HP -= 40;
+            Vector2 normal = collision.contacts[0].normal;
+
+            Rigidbody2D creatureRb = creature.GetComponent<Rigidbody2D>();
+            creatureRb.velocity += -normal * BounceBackVelocity;
+
+            creature.HP -= Damage;
+
         }
     }
 
