@@ -162,5 +162,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initialVelocity: 10
-  damage: 5
+  <damage>k__BackingField: 15
   bounceLeft: 2

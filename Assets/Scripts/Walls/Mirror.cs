@@ -20,4 +20,9 @@ public class Mirror : Wall
     {
         
     }
+    
+    public override void OnBulletCollision(Bullet bullet)
+    {
+        bullet.OnBounce();
+    }
 }

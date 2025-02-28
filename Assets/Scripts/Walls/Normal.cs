@@ -20,4 +20,9 @@ public class Normal : Wall
     {
         
     }
+    
+    public override void OnBulletCollision(Bullet bullet)
+    {
+        bullet.OnAbsorbed();
+    }
 }

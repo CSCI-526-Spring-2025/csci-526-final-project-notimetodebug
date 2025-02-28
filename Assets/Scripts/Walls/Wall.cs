@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Wall: MonoBehaviour
+public abstract class Wall: MonoBehaviour, IBulletIteractable
 {
-
+    public abstract void OnBulletCollision(Bullet bullet);
 }
