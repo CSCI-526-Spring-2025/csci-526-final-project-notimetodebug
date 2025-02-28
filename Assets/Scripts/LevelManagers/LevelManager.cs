@@ -46,17 +46,31 @@ public class LevelManager : MonoBehaviour
     }
 
     private IEnumerator SetPlayerToLevelStart()
-    {
-        yield return new WaitForEndOfFrame();
+{
+    yield return new WaitForEndOfFrame(); // Ensure the new level has fully loaded
 
-        Transform levelStart = CurrentLevelObj.transform.Find("LevelStart");
-        if (levelStart != null)
-        {
-            PlayerRef.transform.position = levelStart.position;
-        }
-        else
-        {
-            // Debug.LogWarning("LevelStart not found in current level, setting player position to (0,0)");
+    if (CurrentLevelObj == null)
+    {
+        Debug.LogError("CurrentLevelObj is null! The level was not instantiated properly.");
+        yield break;
+    }
+
+    if (PlayerRef == null)
+    {
+        Debug.LogError("Player reference not found!");
+        yield break;
+    }
+
+    // Find LevelStart inside the current level
+    Transform levelStart = CurrentLevelObj.transform.Find("LevelStart");
+
+    if (levelStart != null)
+    {
+        PlayerRef.transform.position = levelStart.position;
+    }
+    else
+    {
+        Debug.LogWarning("LevelStart not found in current level, setting player position to (0,0)");
             PlayerRef.transform.position = Vector2.zero;
         }
     }
