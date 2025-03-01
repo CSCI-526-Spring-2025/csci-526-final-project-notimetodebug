@@ -178,6 +178,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7632166084348932070, guid: 3b2d9c4b92832674197636e50a594a08, type: 3}
+      propertyPath: recoilForce
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7632166084348932070, guid: 3b2d9c4b92832674197636e50a594a08, type: 3}
+      propertyPath: reloadingTime
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -215,7 +223,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 577db97b731a33f4195f5fb04300ceaa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HP: 0
+  HP: 20
+  maxHP: 100
   currentGunIndex: 0
   guns:
   - {fileID: 926577632}
@@ -528,7 +537,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7632166084348932070, guid: 48c130fb8a93d654facb436c20411c9a, type: 3}
       propertyPath: recoilForce
-      value: 5
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7632166084348932070, guid: 48c130fb8a93d654facb436c20411c9a, type: 3}
+      propertyPath: reloadingTime
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

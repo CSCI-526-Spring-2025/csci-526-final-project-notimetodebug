@@ -11,24 +11,21 @@ public class LevelManager : MonoBehaviour
     private GameObject CurrentLevelObj;
     private GameObject PlayerRef;
 
-    void Start()
-    {
+    void Start(){
         PlayerRef = GameObject.FindWithTag("Player");
         LoadLevel();
     }
 
     // Switch to next level when pressing N
     // Debugging tool. Delete/Comment out when done testing.
-    private void Update()
-    {
+    private void Update(){
         if (Input.GetKeyDown(KeyCode.N))
         {
             NextLevel();
         }
     }
 
-    private void LoadLevel()
-    {
+    private void LoadLevel(){
         if (CurrentLevelObj != null)
         {
             Destroy(CurrentLevelObj);
@@ -45,38 +42,35 @@ public class LevelManager : MonoBehaviour
         StartCoroutine(SetPlayerToLevelStart());
     }
 
-    private IEnumerator SetPlayerToLevelStart()
-{
-    yield return new WaitForEndOfFrame(); // Ensure the new level has fully loaded
+    private IEnumerator SetPlayerToLevelStart(){
+        yield return new WaitForEndOfFrame(); 
 
-    if (CurrentLevelObj == null)
-    {
-        Debug.LogError("CurrentLevelObj is null! The level was not instantiated properly.");
-        yield break;
-    }
+        if (CurrentLevelObj == null)
+        {
+            Debug.LogError("CurrentLevelObj is null! The level was not instantiated properly.");
+            yield break;
+        }
 
-    if (PlayerRef == null)
-    {
-        Debug.LogError("Player reference not found!");
-        yield break;
-    }
+        if (PlayerRef == null)
+        {
+            Debug.LogError("Player reference not found!");
+            yield break;
+        }
 
-    // Find LevelStart inside the current level
-    Transform levelStart = CurrentLevelObj.transform.Find("LevelStart");
+        Transform levelStart = CurrentLevelObj.transform.Find("LevelStart");
 
-    if (levelStart != null)
-    {
-        PlayerRef.transform.position = levelStart.position;
-    }
-    else
-    {
-        Debug.LogWarning("LevelStart not found in current level, setting player position to (0,0)");
+        if (levelStart != null)
+        {
+            PlayerRef.transform.position = levelStart.position;
+        }
+        else
+        {
+            Debug.LogWarning("LevelStart not found in current level, setting player position to (0,0)");
             PlayerRef.transform.position = Vector2.zero;
         }
     }
 
-    public void NextLevel()
-    {
+    public void NextLevel(){
         if (CurrentLevel < Levels.Count - 1)
         {
             CurrentLevel++;
@@ -88,8 +82,7 @@ public class LevelManager : MonoBehaviour
         }
     }
 
-    private void EndGame()
-    {
+    private void EndGame(){
         PlayerRef.SetActive(false);
         Instantiate(EndMessage, PlayerRef.transform.position + new Vector3(0, 2, 0), Quaternion.identity);
     }
