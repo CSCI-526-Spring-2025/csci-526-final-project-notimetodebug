@@ -1,0 +1,43 @@
+name: Unity Build and Deploy
+permissions:
+  contents: write
+on:
+  push:
+    branches:
+      - 'main'
+      - 'dev'
+      - 'release/**'
+jobs:
+  buildAndDeploy:
+    name: Build Project and Deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          lfs: true
+      - name: Setup / update cache
+        uses: actions/cache@v3
+        with:
+          path: Library
+          key: Library-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
+          restore-keys: |
+            Library-
+      - name: Unity Build
+        uses: game-ci/unity-builder@v4
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          targetPlatform: WebGL
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: Build
+          path: build
+      - name: Deploy to Github Pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: build/WebGL/WebGL
+          target-folder: ${{ github.ref_name }}
