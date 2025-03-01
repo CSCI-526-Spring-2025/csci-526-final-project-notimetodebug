@@ -64,7 +64,7 @@ public abstract class Gun : MonoBehaviour
             Reload();
             return Vector3.zero;
         }
-        
+
         return Fire(direction);
     }
 
@@ -81,7 +81,7 @@ public abstract class Gun : MonoBehaviour
     public virtual void GenerateBullet(Vector3 direction)
     {
         GameObject bullet = Instantiate(bulletPrefab,
-            transform.position + bulletGenerateDistance * direction, Quaternion.identity);
+            transform.position + bulletGenerateDistance * direction, transform.rotation);
         bullet.GetComponent<Bullet>().Fire(direction);
     }
 
