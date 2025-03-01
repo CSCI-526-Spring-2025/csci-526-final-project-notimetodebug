@@ -14,6 +14,7 @@ public class Player : Creature
 
     [SerializeField] private List<Gun> guns;
 
+    private Transform levelStart;
 
     // Start is called before the first frame update
     private void Start()
@@ -36,6 +37,11 @@ public class Player : Creature
     // Update is called once per frame
     private void Update()
     {
+        if (levelStart == null)
+        {
+            levelStart = GameObject.Find("LevelStart").transform;
+        }
+
         Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         mousePos.z = 0;
         fireDirection = (mousePos - transform.position).normalized;
@@ -73,6 +79,9 @@ public class Player : Creature
             currentGun.SetDirection(fireDirection);
             currentGun.OnEquipped();
         }
+        if (HP <= 0){
+           Respawn();
+        }
     }
 
     public void PickUpGun(Gun gun)
@@ -94,4 +103,10 @@ public class Player : Creature
             gun.OnUnequipped();
         }
     }
+
+    private void Respawn(){
+        transform.position = levelStart.position;
+        HP = maxHP;
+    }
+
 }
