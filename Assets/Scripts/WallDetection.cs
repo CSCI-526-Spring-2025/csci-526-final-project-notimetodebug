@@ -19,10 +19,16 @@ public class WallDetection : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        //if (other.CompareTag("PlayerDetector"))
-        //{
-        //    return;
-        //}
-        enemy.Flip();
+        if (other.CompareTag("Player"))
+        {
+            return;
+        }
+        else {
+            enemy.Flip();
+        }
+        
     }
+
+
+
 }

@@ -8,6 +8,10 @@ public class Enemy : Creature
     private Rigidbody2D rb;
     private bool movingRight = true;
     [SerializeField]  private Gun gun;
+    public int Damage = 40;
+    public int BounceBackVelocity = 10;
+
+
 
     void Start()
     {
@@ -38,20 +42,20 @@ public class Enemy : Creature
         Vector3 recoilForce = Vector3.zero;
         Vector3 fireDirection = (playerTransform.position - transform.position).normalized;
         gun.SetDirection(fireDirection);
-        Debug.Log("Fire Direction: " + fireDirection);
-        Debug.Log("Magnitude of normalized vector: " + fireDirection.magnitude);
         recoilForce = gun.Fire(fireDirection);
     }
 
-    // For testing purposes
-    //void OnDrawGizmos()
-    //{
-    //    // Draw a debug line to visualize ground check
-    //    Gizmos.color = Color.red;
-    //    Gizmos.DrawLine(groundCheck.position, groundCheck.position + Vector3.down * groundCheckDistance);
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.TryGetComponent(out Creature creature))
+        {
+            Vector2 normal = collision.contacts[0].normal;
 
-    //    // Draw a debug line to visualize wall detection
-    //    Gizmos.color = Color.blue;
-    //    Gizmos.DrawLine(transform.position, transform.position + (movingRight ? Vector3.right : Vector3.left) * wallCheckDistance);
-    //}
+            Rigidbody2D creatureRb = creature.GetComponent<Rigidbody2D>();
+            creatureRb.velocity += -normal * BounceBackVelocity;
+
+            creature.HP -= Damage;
+        }
+    }
+
 }
