@@ -353,7 +353,7 @@ Transform:
   m_GameObject: {fileID: 34931294}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -7.5, y: -3.23, z: 0}
+  m_LocalPosition: {x: -22.3, y: -3.6, z: 0}
   m_LocalScale: {x: 1, y: 1.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -469,7 +469,10 @@ MonoBehaviour:
   player: {fileID: 34931299}
   offset: {x: 0, y: 2, z: -10}
   smoothSpeed: 5
-  zoomSize: 8
+  baseZoomSize: 5
+  maxZoomOut: 8
+  minZoomIn: 4
+  heightFactor: 0.5
   zoomSpeed: 2
 --- !u!1001 &526042974
 PrefabInstance:
@@ -578,8 +581,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Levels:
-  - {fileID: 4114279229366912782, guid: 85519a1a64b76ae4b90df30495d81352, type: 3}
-  - {fileID: 4114279229366912782, guid: 95c1ba52b4ef41a41a58401928c365c9, type: 3}
+  - {fileID: 4114279229366912782, guid: 48995ab436b5545c495d11c2b44cbcaa, type: 3}
+  - {fileID: 2135294800258561082, guid: fec208ff76d674254b0efe771ca534c9, type: 3}
   - {fileID: 4114279229366912782, guid: 4f2ab2c2287482b4a9aa0d7e807d457d, type: 3}
   CurrentLevel: 0
   EndMessage: {fileID: 0}
