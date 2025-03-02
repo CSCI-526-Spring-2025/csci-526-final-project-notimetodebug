@@ -20,6 +20,10 @@ public class Enemy : Creature
 
     void Update()
     {
+        if (HP <= 0)
+        {
+            Destroy(gameObject);
+        }
         Move();
     }
 
