@@ -68,7 +68,21 @@ public class LevelManager : MonoBehaviour
             Debug.LogWarning("LevelStart not found in current level, setting player position to (0,0)");
             PlayerRef.transform.position = Vector2.zero;
         }
-    }
+
+        // refresh Player's HP when a new level starts
+        Creature playerCreature = PlayerRef.GetComponent<Creature>();
+        if (playerCreature != null)
+        {
+            playerCreature.HP = playerCreature.maxHP; 
+        }
+
+        // update HP bar
+        UIPlayerHP playerHPUI = FindObjectOfType<UIPlayerHP>();
+        if (playerHPUI != null)
+        {
+            playerHPUI.UpdateHealth(playerCreature.HP);
+        }
+        }
 
     public void NextLevel(){
         if (CurrentLevel < Levels.Count - 1)

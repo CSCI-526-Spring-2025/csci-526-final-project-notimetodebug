@@ -3,6 +3,7 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Serialization;
+using UnityEngine.UI;
 
 public class Player : Creature
 {
@@ -19,7 +20,17 @@ public class Player : Creature
     // Start is called before the first frame update
     private void Start()
     {
+        base.Start();
+
         rb = GetComponent<Rigidbody2D>();
+
+        // Find and link the UI HP bar
+        healthUI = FindObjectOfType<UIPlayerHP>();
+        if (healthUI != null)
+        {
+            healthUI.SetMaxHealth(maxHP);
+            healthUI.UpdateHealth(HP);
+        }
 
         for (int i = 0; i < guns.Count; i++)
         {
@@ -104,9 +115,19 @@ public class Player : Creature
         }
     }
 
+    protected override void Die()
+    {
+        Respawn();
+    }
+
     private void Respawn(){
         transform.position = levelStart.position;
         HP = maxHP;
+
+        if (healthUI != null)
+        {
+            healthUI.UpdateHealth(HP);
+        }
     }
 
 }

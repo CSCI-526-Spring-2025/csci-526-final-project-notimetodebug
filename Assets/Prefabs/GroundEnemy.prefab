@@ -265,6 +265,7 @@ MonoBehaviour:
   gun: {fileID: 248772891457408865}
   Damage: 40
   BounceBackVelocity: 2
+  hpBarPrefab: {fileID: 2109858177550333797, guid: b53af076c5c984953b516bd2c1eda2c5, type: 3}
 --- !u!1 &6358518670653397012
 GameObject:
   m_ObjectHideFlags: 0

@@ -21,7 +21,7 @@ public class Spikes : Wall
             Rigidbody2D creatureRb = creature.GetComponent<Rigidbody2D>();
             creatureRb.velocity += -normal * BounceBackVelocity;
 
-            creature.HP -= Damage;
+             creature.TakeDamage(Damage);
         }
     }
 

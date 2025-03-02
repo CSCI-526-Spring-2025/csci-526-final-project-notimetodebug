@@ -11,18 +11,30 @@ public class Enemy : Creature
     public int Damage = 40;
     public int BounceBackVelocity = 10;
 
-
+    [SerializeField] private GameObject hpBarPrefab; 
+    private UIEnemyHP enemyHPBar; 
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        
+    if (hpBarPrefab != null)
+    {
+        GameObject hpBarObject = Instantiate(hpBarPrefab, transform.position + new Vector3(0, 1, 0), Quaternion.identity);
+        enemyHPBar = hpBarObject.GetComponent<UIEnemyHP>();
+        enemyHPBar.Setup(this);
+    }
+    else
+    {
+        Debug.LogError("HP Bar Prefab not assigned in " + gameObject.name);
+    }
     }
 
     void Update()
     {
         if (HP <= 0)
         {
-            Destroy(gameObject);
+            Die();
         }
         Move();
     }
@@ -58,8 +70,26 @@ public class Enemy : Creature
             Rigidbody2D creatureRb = creature.GetComponent<Rigidbody2D>();
             creatureRb.velocity += -normal * BounceBackVelocity;
 
-            creature.HP -= Damage;
+            creature.TakeDamage(Damage);
         }
+    }
+
+    public override void TakeDamage(int damage)
+    {
+        base.TakeDamage(damage);
+        if (enemyHPBar != null)
+        {
+            enemyHPBar.UpdateHealth(HP);
+        }
+    }
+
+    protected override void Die()
+    {
+        if (enemyHPBar != null)
+        {
+            Destroy(enemyHPBar.gameObject);
+        }
+        Destroy(gameObject);
     }
 
 }
