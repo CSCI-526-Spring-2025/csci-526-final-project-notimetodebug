@@ -8,6 +8,7 @@ using UnityEngine.UI;
 public class Player : Creature
 {
     private Rigidbody2D rb;
+    private CameraController cameraController; 
 
     private Vector3 fireDirection;
 
@@ -24,6 +25,8 @@ public class Player : Creature
     protected override void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        cameraController = FindObjectOfType<CameraController>();
+
         // Find and link the level manager
         levelManager = FindObjectOfType<LevelManager>();
 
@@ -109,7 +112,21 @@ public class Player : Creature
         if (HP <= 0){
             Respawn();
         }
+
+        if (cameraController != null)
+        {
+            cameraController.SetAirborne(rb.velocity.y != 0);
+        }
     }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (cameraController != null)
+        {
+            cameraController.SetAirborne(false);
+        }
+    }
+
 
     public void PickUpGun(Gun gun)
     {
