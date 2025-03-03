@@ -229,6 +229,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7632166084348932070, guid: 48c130fb8a93d654facb436c20411c9a, type: 3}
+      propertyPath: recoilForce
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7632166084348932070, guid: 48c130fb8a93d654facb436c20411c9a, type: 3}
+      propertyPath: reloadingTime
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

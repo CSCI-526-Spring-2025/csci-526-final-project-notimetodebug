@@ -49,8 +49,8 @@ MonoBehaviour:
   bulletCapacity: 20
   bulletNumber: 16
   fireRate: 8
-  reloadingTime: 2
-  recoilForce: 3
+  reloadingTime: 0
+  recoilForce: 5
   isFullAuto: 1
 --- !u!1 &7699256785445795330
 GameObject:

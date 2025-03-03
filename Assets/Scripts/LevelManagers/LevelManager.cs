@@ -25,7 +25,7 @@ public class LevelManager : MonoBehaviour
         }
     }
 
-    private void LoadLevel(){
+    public void LoadLevel(){
         if (CurrentLevelObj != null)
         {
             Destroy(CurrentLevelObj);
@@ -99,5 +99,9 @@ public class LevelManager : MonoBehaviour
     private void EndGame(){
         PlayerRef.SetActive(false);
         Instantiate(EndMessage, PlayerRef.transform.position + new Vector3(0, 2, 0), Quaternion.identity);
+    }
+
+    public bool isTutorial(){
+        return CurrentLevel == 0;
     }
 }

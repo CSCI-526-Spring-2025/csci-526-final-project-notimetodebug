@@ -16,13 +16,14 @@ public class Player : Creature
     [SerializeField] private List<Gun> guns;
 
     private Transform levelStart;
+    private LevelManager levelManager;
 
     // Start is called before the first frame update
-    private void Start()
+    protected override void Start()
     {
-        base.Start();
-
         rb = GetComponent<Rigidbody2D>();
+        // Find and link the level manager
+        levelManager = FindObjectOfType<LevelManager>();
 
         // Find and link the UI HP bar
         healthUI = FindObjectOfType<UIPlayerHP>();
@@ -45,7 +46,6 @@ public class Player : Creature
         }
     }
 
-    // Update is called once per frame
     private void Update()
     {
         if (levelStart == null)
@@ -91,7 +91,7 @@ public class Player : Creature
             currentGun.OnEquipped();
         }
         if (HP <= 0){
-           Respawn();
+            Respawn();
         }
     }
 
@@ -121,13 +121,23 @@ public class Player : Creature
     }
 
     private void Respawn(){
+        // TODO: update respawn logic when more collectibles are added
         transform.position = levelStart.position;
         HP = maxHP;
+        rb.velocity = Vector2.zero;
 
         if (healthUI != null)
         {
             healthUI.UpdateHealth(HP);
         }
+        if (levelManager.isTutorial() && guns.Count > 1){
+            currentGunIndex = 0;
+            guns.ElementAt(0).OnEquipped();
+            guns.ElementAt(1).Destroy();
+            guns.RemoveAt(1);
+        }
+
+        levelManager.LoadLevel();
     }
 
 }
