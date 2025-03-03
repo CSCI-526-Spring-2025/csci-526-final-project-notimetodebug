@@ -157,5 +157,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed9c6547a0075bd42aa98002f357f1b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Damage: 40
-  BounceBackVelocity: 3
+  Damage: 10
+  BounceBackVelocity: 2

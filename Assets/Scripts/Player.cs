@@ -14,15 +14,18 @@ public class Player : Creature
     [SerializeField] private int currentGunIndex;
 
     [SerializeField] private List<Gun> guns;
+    private bool everClicked = false;
+    private bool everSwitchedGun = false;
 
     private Transform levelStart;
+    private LevelManager levelManager;
 
     // Start is called before the first frame update
-    private void Start()
+    protected override void Start()
     {
-        base.Start();
-
         rb = GetComponent<Rigidbody2D>();
+        // Find and link the level manager
+        levelManager = FindObjectOfType<LevelManager>();
 
         // Find and link the UI HP bar
         healthUI = FindObjectOfType<UIPlayerHP>();
@@ -45,12 +48,15 @@ public class Player : Creature
         }
     }
 
-    // Update is called once per frame
     private void Update()
     {
         if (levelStart == null)
         {
             levelStart = GameObject.Find("LevelStart").transform;
+        }
+        if (!levelManager.isTutorial()){
+            everClicked = true;
+            everSwitchedGun = true;
         }
 
         Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -64,6 +70,11 @@ public class Player : Creature
         Vector3 recoilForce = Vector3.zero;
         if (Input.GetMouseButtonDown(0))
         {
+            if (!everClicked)
+            {
+                everClicked = true;
+                FindObjectOfType<TutorialManager>().NextStep();
+            }
             recoilForce = currentGun.StartFire(fireDirection);
         }
         else if (Input.GetMouseButton(0))
@@ -84,6 +95,11 @@ public class Player : Creature
 
         if (Input.GetKeyDown(KeyCode.Q))
         {
+            if (!everSwitchedGun)
+            {
+                everSwitchedGun = true;
+                FindObjectOfType<TutorialManager>().NextStep();
+            }
             currentGun.OnUnequipped();
             currentGunIndex = (currentGunIndex + 1) % guns.Count;
             currentGun = guns.ElementAt(currentGunIndex);
@@ -91,7 +107,7 @@ public class Player : Creature
             currentGun.OnEquipped();
         }
         if (HP <= 0){
-           Respawn();
+            Respawn();
         }
     }
 
@@ -121,13 +137,23 @@ public class Player : Creature
     }
 
     private void Respawn(){
+        // TODO: update respawn logic when more collectibles are added
         transform.position = levelStart.position;
         HP = maxHP;
+        rb.velocity = Vector2.zero;
 
         if (healthUI != null)
         {
             healthUI.UpdateHealth(HP);
         }
+        if (levelManager.isTutorial() && guns.Count > 1){
+            currentGunIndex = 0;
+            guns.ElementAt(0).OnEquipped();
+            guns.ElementAt(1).Destroy();
+            guns.RemoveAt(1);
+        }
+
+        levelManager.LoadLevel();
     }
 
 }

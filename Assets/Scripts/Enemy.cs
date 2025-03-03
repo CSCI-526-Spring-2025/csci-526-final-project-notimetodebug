@@ -14,7 +14,7 @@ public class Enemy : Creature
     [SerializeField] private GameObject hpBarPrefab; 
     private UIEnemyHP enemyHPBar; 
 
-    void Start()
+    protected override void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         
