@@ -491,11 +491,9 @@ MonoBehaviour:
   player: {fileID: 927984241}
   offset: {x: 0, y: 2, z: -10}
   smoothSpeed: 5
-  baseZoomSize: 5
-  maxZoomOut: 8
-  minZoomIn: 4
-  heightFactor: 0.5
-  zoomSpeed: 2
+  baseZoomSize: 6
+  maxZoomOut: 9
+  zoomSpeed: 1
 --- !u!1 &748797819
 GameObject:
   m_ObjectHideFlags: 0
@@ -682,7 +680,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 107.91504, y: -11}
-  m_SizeDelta: {x: 216.3301, y: 26.978897}
+  m_SizeDelta: {x: 250, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1018641944
 MonoBehaviour:

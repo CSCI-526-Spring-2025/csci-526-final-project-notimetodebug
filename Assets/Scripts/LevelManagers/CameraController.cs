@@ -9,7 +9,7 @@ public class CameraController : MonoBehaviour
     [Header("Camera Zoom Settings")]
     public float baseZoomSize = 6f; // Default zoom level
     public float maxZoomOut = 9f;  // Maximum zoom level when airborne
-    public float zoomSpeed = 2f; // Speed of zoom adjustment
+    public float zoomSpeed = 1f; // Speed of zoom adjustment
 
     private Camera cam;
     private bool isAirborne = false; // Tracks if player is in the air
