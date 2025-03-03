@@ -1043,6 +1043,7 @@ MonoBehaviour:
   fireRate: 15
   reloadingTime: 2
   recoilForce: 1
+  isFullAuto: 1
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
