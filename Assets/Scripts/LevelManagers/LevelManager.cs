@@ -13,6 +13,10 @@ public class LevelManager : MonoBehaviour
 
     void Start(){
         PlayerRef = GameObject.FindWithTag("Player");
+        if (EndMessage != null)
+        {
+            EndMessage.SetActive(false);
+        }
         LoadLevel();
     }
 
@@ -97,8 +101,12 @@ public class LevelManager : MonoBehaviour
     }
 
     private void EndGame(){
-        PlayerRef.SetActive(false);
-        Instantiate(EndMessage, PlayerRef.transform.position + new Vector3(0, 2, 0), Quaternion.identity);
+        // PlayerRef.SetActive(false);
+        if (EndMessage != null)
+        {
+            EndMessage.transform.position = PlayerRef.transform.position + new Vector3(0, 2, 0);
+            EndMessage.SetActive(true);
+        }
     }
 
     public bool isTutorial(){
