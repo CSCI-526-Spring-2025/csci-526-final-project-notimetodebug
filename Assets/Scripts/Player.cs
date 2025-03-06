@@ -15,8 +15,6 @@ public class Player : Creature
     [SerializeField] private int currentGunIndex;
 
     [SerializeField] private List<Gun> guns;
-    private bool everClicked = false;
-    private bool everSwitchedGun = false;
 
     private Transform levelStart;
     private LevelManager levelManager;
@@ -57,10 +55,6 @@ public class Player : Creature
         {
             levelStart = GameObject.Find("LevelStart").transform;
         }
-        if (!levelManager.isTutorial()){
-            everClicked = true;
-            everSwitchedGun = true;
-        }
 
         Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         mousePos.z = 0;
@@ -73,11 +67,6 @@ public class Player : Creature
         Vector3 recoilForce = Vector3.zero;
         if (Input.GetMouseButtonDown(0))
         {
-            if (!everClicked)
-            {
-                everClicked = true;
-                FindObjectOfType<TutorialManager>().NextStep();
-            }
             recoilForce = currentGun.StartFire(fireDirection);
         }
         else if (Input.GetMouseButton(0))
@@ -98,11 +87,6 @@ public class Player : Creature
 
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            if (!everSwitchedGun)
-            {
-                everSwitchedGun = true;
-                FindObjectOfType<TutorialManager>().NextStep();
-            }
             currentGun.OnUnequipped();
             currentGunIndex = (currentGunIndex + 1) % guns.Count;
             currentGun = guns.ElementAt(currentGunIndex);
