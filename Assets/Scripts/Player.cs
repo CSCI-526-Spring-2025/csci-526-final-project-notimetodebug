@@ -16,11 +16,17 @@ public class Player : Creature
 
     [SerializeField] public List<Gun> guns;
 
+    private UIWeaponIndicator weaponIndicator;
+    private UIOverheat bulletUI;
+
     // Start is called before the first frame update
     protected override void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         cameraController = FindObjectOfType<CameraController>();
+
+        weaponIndicator = FindObjectOfType<UIWeaponIndicator>();
+        bulletUI = FindObjectOfType<UIOverheat>();
 
         // // Find and link the UI HP bar
         healthUI = FindObjectOfType<UIPlayerHP>();
@@ -40,6 +46,17 @@ public class Player : Creature
             {
                 guns.ElementAt(i).OnEquipped();
             }
+        }
+
+        if (weaponIndicator != null)
+        {
+            bool isEquipped = !guns[currentGunIndex].IsUsingDefaultBullet();
+            weaponIndicator.UpdateWeaponIndicator(guns[currentGunIndex], isEquipped);
+        }
+        if (bulletUI != null)
+        {
+            bulletUI.SetGun(guns[currentGunIndex]);
+            bulletUI.UpdateBulletUI();
         }
     }
 
@@ -81,7 +98,20 @@ public class Player : Creature
             currentGun = guns.ElementAt(currentGunIndex);
             currentGun.SetDirection(fireDirection);
             currentGun.OnEquipped();
+
+            if (bulletUI != null)
+            {
+                bulletUI.SetGun(currentGun);
+                bulletUI.UpdateBulletUI();
+            }
+
+            if (weaponIndicator != null)
+            {
+                bool isEquipped = !currentGun.IsUsingDefaultBullet();
+                weaponIndicator.UpdateWeaponIndicator(currentGun, isEquipped);
+            }
         }
+
         if (HP <= 0){
             LevelManager.Instance.RespawnPlayer();
         }
@@ -118,6 +148,11 @@ public class Player : Creature
         else
         {
             gun.OnUnequipped();
+        }
+
+        if (weaponIndicator != null)
+        {
+            weaponIndicator.UpdateWeaponIndicator(gun, false);
         }
     }
 }
