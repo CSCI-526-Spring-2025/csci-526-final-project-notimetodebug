@@ -91,11 +91,6 @@ public class Player : Creature
 
         rb.AddForce(recoilForce, ForceMode2D.Impulse);
 
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            currentGun.Reload();
-        }
-
         if (Input.GetKeyDown(KeyCode.Q))
         {
             if (!everSwitchedGun)

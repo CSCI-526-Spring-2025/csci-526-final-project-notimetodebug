@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 
 public abstract class Gun : MonoBehaviour
@@ -9,13 +10,13 @@ public abstract class Gun : MonoBehaviour
     [SerializeField] protected int bulletCapacity = 30;
     [SerializeField] protected int bulletNumber = 30;
     [SerializeField] protected float fireRate = 15;
-    [SerializeField] protected float reloadingTime = 2;
+    [SerializeField] protected float reloadPreparationTime = 1;
+    [SerializeField] protected float reloadRate = 10;
     [SerializeField] protected float recoilForce = 1;
     [SerializeField] protected bool isFullAuto = true;
 
     protected float lastFireTime = 0;
-    protected float startReloadingTime = 0;
-    protected bool isReloading = false;
+    protected float lastReloadTime = 0;
 
     private float bulletGenerateDistance = 1.2f;
 
@@ -25,14 +26,12 @@ public abstract class Gun : MonoBehaviour
 
     protected virtual void Update()
     {
-        if (isReloading)
+        float currentTime = Time.time;
+        if (bulletNumber < bulletCapacity
+                        && currentTime - lastReloadTime >= 1 / reloadRate
+                        && currentTime - lastFireTime >= reloadPreparationTime)
         {
-            float currentTime = Time.time;
-            if (currentTime - startReloadingTime >= reloadingTime)
-            {
-                isReloading = false;
-                bulletNumber = bulletCapacity;
-            }
+            bulletNumber++;
         }
     }
 
@@ -44,7 +43,7 @@ public abstract class Gun : MonoBehaviour
     public virtual Vector3 Fire(Vector3 direction)
     {
         float currentTime = Time.time;
-        if (isReloading || bulletNumber <= 0 || currentTime - lastFireTime < 1 / fireRate)
+        if (bulletNumber <= 0 || currentTime - lastFireTime < 1 / fireRate)
         {
             return Vector3.zero;
         }
@@ -59,9 +58,8 @@ public abstract class Gun : MonoBehaviour
 
     public virtual Vector3 StartFire(Vector3 direction)
     {
-        if (!isReloading && bulletNumber <= 0)
+        if (bulletNumber <= 0)
         {
-            Reload();
             return Vector3.zero;
         }
 
@@ -83,17 +81,6 @@ public abstract class Gun : MonoBehaviour
         GameObject bullet = Instantiate(bulletPrefab,
             transform.position + bulletGenerateDistance * direction, transform.rotation);
         bullet.GetComponent<Bullet>().Fire(direction);
-    }
-
-    public void Reload()
-    {
-        if (bulletNumber >= bulletCapacity || isReloading)
-        {
-            return;
-        }
-
-        isReloading = true;
-        startReloadingTime = Time.time;
     }
 
     public void OnEquipped()
