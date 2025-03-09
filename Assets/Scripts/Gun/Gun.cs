@@ -6,6 +6,7 @@ using UnityEngine.Serialization;
 public abstract class Gun : MonoBehaviour
 {
     [SerializeField] protected GameObject bulletPrefab;
+    [SerializeField] private Sprite gunIcon;
 
     [SerializeField] protected int bulletCapacity = 30;
     [SerializeField] protected int bulletNumber = 30;
@@ -19,9 +20,11 @@ public abstract class Gun : MonoBehaviour
     protected float lastReloadTime = 0;
 
     private float bulletGenerateDistance = 1.2f;
+    private UIOverheat bulletUI;
 
     protected virtual void Start()
     {
+        bulletUI = FindObjectOfType<UIOverheat>();
     }
 
     protected virtual void Update()
@@ -33,6 +36,9 @@ public abstract class Gun : MonoBehaviour
         {
             bulletNumber++;
             lastReloadTime = currentTime;
+            bulletUI?.SetGun(this);
+            bulletUI?.ShowUI(true);
+            bulletUI?.UpdateBulletUI();
         }
     }
 
@@ -53,6 +59,9 @@ public abstract class Gun : MonoBehaviour
 
         lastFireTime = currentTime;
         bulletNumber--;
+        bulletUI?.SetGun(this);
+        bulletUI?.ShowUI(true);
+        bulletUI?.UpdateBulletUI();
 
         return -recoilForce * direction;
     }
@@ -104,4 +113,26 @@ public abstract class Gun : MonoBehaviour
         transform.SetParent(player.transform);
         transform.localPosition = Vector3.zero;
     }
+
+    // UI
+    public bool IsUsingDefaultBullet()
+    {
+        return bulletPrefab.name.ToLower().Contains("default");
+    }
+
+    public Sprite GetGunIcon()
+    {
+        return gunIcon;
+    }
+
+    public int GetRemainingBullets()
+    {
+        return bulletNumber;
+    }
+
+    public int GetBulletCapacity()
+    {
+        return bulletCapacity;
+    }
+
 }
