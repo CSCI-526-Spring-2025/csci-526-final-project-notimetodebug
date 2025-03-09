@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -6,28 +7,26 @@ public class UIWeaponIndicator : MonoBehaviour
     public Image outerCircle; // active/inactive states
     public Image innerSphere; // powerful gun type
 
-    [SerializeField] private Sprite activateStatusSprite; 
-    [SerializeField] private Sprite inactivateStatusSprite; 
+    [SerializeField] private Sprite activateStatusSprite;
+    [SerializeField] private Sprite inactivateStatusSprite;
 
-    private Sprite currentGunSprite = null; 
-
-    public void UpdateWeaponIndicator(Gun gun, bool isEquipped)
+    private void Start()
     {
-        if (gun == null) return;
+        innerSphere.enabled = false;
+    }
 
-        bool isUsingDefault = gun.IsUsingDefaultBullet();
-
-        outerCircle.sprite = isEquipped ? activateStatusSprite : inactivateStatusSprite;
-
-        if (!isUsingDefault && gun.GetGunIcon() != null)
+    public void SetGun(Gun gun)
+    {
+        Sprite icon = gun.GetGunIcon();
+        if (icon != null)
         {
+            innerSphere.sprite = icon;
             innerSphere.enabled = true;
-            innerSphere.sprite = gun.GetGunIcon();
-            currentGunSprite = gun.GetGunIcon(); 
         }
-        else if (isUsingDefault)
-        {
-            innerSphere.enabled = currentGunSprite != null;
-        }
+    }
+
+    public void UpdateWeaponIndicator(bool isEquipped)
+    {
+        outerCircle.sprite = isEquipped ? activateStatusSprite : inactivateStatusSprite;
     }
 }

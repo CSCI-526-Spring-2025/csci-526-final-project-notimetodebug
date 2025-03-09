@@ -20,12 +20,8 @@ public abstract class Gun : MonoBehaviour
     protected float lastReloadTime = 0;
 
     private float bulletGenerateDistance = 1.2f;
-    private UIOverheat bulletUI;
-
-    protected virtual void Start()
-    {
-        bulletUI = FindObjectOfType<UIOverheat>();
-    }
+    private UIBullet bulletUI;
+    private UIWeaponIndicator weaponIndicatorUI;
 
     protected virtual void Update()
     {
@@ -34,11 +30,8 @@ public abstract class Gun : MonoBehaviour
                         && currentTime - lastReloadTime >= 1 / reloadRate
                         && currentTime - lastFireTime >= reloadPreparationTime)
         {
-            bulletNumber++;
             lastReloadTime = currentTime;
-            bulletUI?.SetGun(this);
-            bulletUI?.ShowUI(true);
-            bulletUI?.UpdateBulletUI();
+            ChangeBulletNumber(1);
         }
     }
 
@@ -58,10 +51,7 @@ public abstract class Gun : MonoBehaviour
         GenerateBullet(direction);
 
         lastFireTime = currentTime;
-        bulletNumber--;
-        bulletUI?.SetGun(this);
-        bulletUI?.ShowUI(true);
-        bulletUI?.UpdateBulletUI();
+        ChangeBulletNumber(-1);
 
         return -recoilForce * direction;
     }
@@ -96,11 +86,14 @@ public abstract class Gun : MonoBehaviour
     public void OnEquipped()
     {
         gameObject.SetActive(true);
+        bulletUI?.UpdateBulletUI(this);
+        weaponIndicatorUI?.UpdateWeaponIndicator(true);
     }
 
     public void OnUnequipped()
     {
         gameObject.SetActive(false);
+        weaponIndicatorUI?.UpdateWeaponIndicator(false);
     }
 
     public void Destroy()
@@ -112,8 +105,26 @@ public abstract class Gun : MonoBehaviour
     {
         transform.SetParent(player.transform);
         transform.localPosition = Vector3.zero;
+        
+        weaponIndicatorUI?.SetGun(this);
     }
 
+    public void SetBulletUI(UIBullet bulletUI)
+    {
+        this.bulletUI = bulletUI;
+    }
+
+    public void SetWeaponIndicatorUI(UIWeaponIndicator weaponIndicatorUI)
+    {
+        this.weaponIndicatorUI = weaponIndicatorUI;
+    }
+
+    protected void ChangeBulletNumber(int change)
+    {
+        bulletNumber += change;
+        bulletUI?.UpdateBulletUI(this);
+    }
+    
     // UI
     public bool IsUsingDefaultBullet()
     {

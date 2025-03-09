@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
@@ -8,7 +9,6 @@ using UnityEngine.UI;
 public class Player : Creature
 {
     private Rigidbody2D rb;
-    private CameraController cameraController; 
 
     private Vector3 fireDirection;
 
@@ -16,28 +16,28 @@ public class Player : Creature
 
     [SerializeField] public List<Gun> guns;
 
-    private UIWeaponIndicator weaponIndicator;
-    private UIOverheat bulletUI;
+    private UIWeaponIndicator weaponIndicatorUI;
+    private UIBullet bulletUI;
+
+    private UIPlayerHP healthUI;
 
     // Start is called before the first frame update
     protected override void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        cameraController = FindObjectOfType<CameraController>();
 
-        weaponIndicator = FindObjectOfType<UIWeaponIndicator>();
-        bulletUI = FindObjectOfType<UIOverheat>();
+        weaponIndicatorUI = FindObjectOfType<UIWeaponIndicator>();
+        
+        bulletUI = FindObjectOfType<UIBullet>();
 
-        // // Find and link the UI HP bar
+        // Find and link the UI HP bar
         healthUI = FindObjectOfType<UIPlayerHP>();
-        if (healthUI != null)
-        {
-            healthUI.SetMaxHealth(maxHP);
-            healthUI.UpdateHealth(HP);
-        }
+        healthUI?.SetMaxHealth(maxHP);
+        healthUI?.UpdateHealth(HP);
 
         for (int i = 0; i < guns.Count; i++)
         {
+            guns.ElementAt(i).SetBulletUI(bulletUI);
             if (i != currentGunIndex)
             {
                 guns.ElementAt(i).OnUnequipped();
@@ -46,17 +46,6 @@ public class Player : Creature
             {
                 guns.ElementAt(i).OnEquipped();
             }
-        }
-
-        if (weaponIndicator != null)
-        {
-            bool isEquipped = !guns[currentGunIndex].IsUsingDefaultBullet();
-            weaponIndicator.UpdateWeaponIndicator(guns[currentGunIndex], isEquipped);
-        }
-        if (bulletUI != null)
-        {
-            bulletUI.SetGun(guns[currentGunIndex]);
-            bulletUI.UpdateBulletUI();
         }
     }
 
@@ -88,54 +77,35 @@ public class Player : Creature
 
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            currentGun.OnUnequipped();
-            currentGunIndex = (currentGunIndex + 1) % guns.Count;
-            currentGun = guns.ElementAt(currentGunIndex);
-            currentGun.SetDirection(fireDirection);
-            currentGun.OnEquipped();
-
-            if (bulletUI != null)
-            {
-                bulletUI.SetGun(currentGun);
-                bulletUI.UpdateBulletUI();
-            }
-
-            if (weaponIndicator != null)
-            {
-                bool isEquipped = !currentGun.IsUsingDefaultBullet();
-                weaponIndicator.UpdateWeaponIndicator(currentGun, isEquipped);
-            }
-        }
-
-        if (HP <= 0){
-            LevelManager.Instance.RespawnPlayer();
-        }
-
-        if (cameraController != null)
-        {
-            cameraController.SetAirborne(rb.velocity.y != 0);
+            ChangeGun();
         }
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void ChangeGun()
     {
-        if (cameraController != null)
-        {
-            cameraController.SetAirborne(false);
-        }
-    }
+        Gun currentGun = guns.ElementAt(currentGunIndex);
 
+        currentGun.OnUnequipped();
+        currentGunIndex = (currentGunIndex + 1) % guns.Count;
+        currentGun = guns.ElementAt(currentGunIndex);
+        currentGun.SetDirection(fireDirection);
+        currentGun.OnEquipped();
+    }
 
     public void PickUpGun(Gun gun)
     {
         if (guns.Count > 1)
         {
+            guns.ElementAt(1).OnUnequipped();
             guns.ElementAt(1).Destroy();
             guns.RemoveAt(1);
         }
+
+        gun.SetBulletUI(bulletUI);
+        gun.SetWeaponIndicatorUI(weaponIndicatorUI);
         guns.Add(gun);
         gun.OnPickedUp(this);
-        
+
         if (currentGunIndex == guns.Count - 1)
         {
             gun.OnEquipped();
@@ -144,10 +114,26 @@ public class Player : Creature
         {
             gun.OnUnequipped();
         }
+    }
 
-        if (weaponIndicator != null)
-        {
-            weaponIndicator.UpdateWeaponIndicator(gun, false);
-        }
+    public override void TakeDamage(int damage)
+    {
+        base.TakeDamage(damage);
+        healthUI?.UpdateHealth(HP);
+    }
+
+    protected override void Die()
+    {
+        LevelManager.Instance.RespawnPlayer();
+    }
+
+    public Vector3 GetPosition()
+    {
+        return gameObject.transform.position;
+    }
+
+    public Vector3 GetVelocity()
+    {
+        return rb.velocity;
     }
 }

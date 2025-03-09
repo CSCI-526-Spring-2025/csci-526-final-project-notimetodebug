@@ -89,7 +89,7 @@ GameObject:
   - component: {fileID: 4950407862241531412}
   - component: {fileID: 6631103472235758595}
   m_Layer: 5
-  m_Name: OverheatStatus
+  m_Name: BulletStatus
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

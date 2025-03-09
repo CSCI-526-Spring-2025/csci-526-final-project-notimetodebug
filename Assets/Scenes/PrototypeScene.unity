@@ -311,11 +311,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7ae701dd4849794a83c27d7fcfb409b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 927984241}
+  player: {fileID: 927984242}
   offset: {x: 0, y: 2, z: -10}
   smoothSpeed: 5
-  baseZoomSize: 6
-  maxZoomOut: 9
+  baseZoom: 6
+  maxZoom: 9
   zoomSpeed: 1
 --- !u!1 &906568220
 GameObject:
@@ -385,11 +385,17 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &927984241 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2349850301891874323, guid: 2aa14435f2dfbdd458ef1f486221150c, type: 3}
+--- !u!114 &927984242 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4777991387063992776, guid: 2aa14435f2dfbdd458ef1f486221150c, type: 3}
   m_PrefabInstance: {fileID: 1642445713}
   m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 577db97b731a33f4195f5fb04300ceaa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1479842547
 PrefabInstance:
   m_ObjectHideFlags: 0
