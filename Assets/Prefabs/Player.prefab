@@ -34,7 +34,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 630478599454448842}
-  - {fileID: 5190124637662157741}
+  - {fileID: 4604290012750192166}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &7355432326659894229
@@ -178,7 +178,7 @@ MonoBehaviour:
   currentGunIndex: 0
   guns:
   - {fileID: 682803075138482941}
---- !u!1001 &5578848385329122573
+--- !u!1001 &4219506229691304070
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -266,19 +266,23 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5625844742377926823, guid: 210678145523f4ee1b9dcb706eaee96e, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
     - target: {fileID: 6632411669324899581, guid: 210678145523f4ee1b9dcb706eaee96e, type: 3}
       propertyPath: m_Name
-      value: OverheatStatus
+      value: BulletStatus
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 210678145523f4ee1b9dcb706eaee96e, type: 3}
---- !u!224 &5190124637662157741 stripped
+--- !u!224 &4604290012750192166 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 390418782299281056, guid: 210678145523f4ee1b9dcb706eaee96e, type: 3}
-  m_PrefabInstance: {fileID: 5578848385329122573}
+  m_PrefabInstance: {fileID: 4219506229691304070}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &6958953517403512091
 PrefabInstance:

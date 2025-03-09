@@ -142,7 +142,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 4053602abd47f454a83158e9abeb2b25, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 83f27e65cc48249ebadff8cf8d62fd92, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -166,5 +166,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   outerCircle: {fileID: 6928648479812393398}
   innerSphere: {fileID: 973750822800465205}
-  activateStatusSprite: {fileID: 21300000, guid: ca4465b2a7580482d90660cd1f9419ec, type: 3}
-  inactivateStatusSprite: {fileID: 21300000, guid: 4053602abd47f454a83158e9abeb2b25, type: 3}
+  activateStatusSprite: {fileID: 21300000, guid: 33378f105bfbd4434bc415a7ad46e6c3, type: 3}
+  inactivateStatusSprite: {fileID: 21300000, guid: 83f27e65cc48249ebadff8cf8d62fd92, type: 3}
