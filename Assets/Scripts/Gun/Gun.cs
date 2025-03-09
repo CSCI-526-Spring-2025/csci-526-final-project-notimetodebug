@@ -32,6 +32,7 @@ public abstract class Gun : MonoBehaviour
                         && currentTime - lastFireTime >= reloadPreparationTime)
         {
             bulletNumber++;
+            lastReloadTime = currentTime;
         }
     }
 
