@@ -3,6 +3,7 @@ using UnityEngine;
 
 public abstract class Bullet : MonoBehaviour, IBulletIteractable
 {
+    public string shotBy;
     [SerializeField] protected float initialVelocity = 10;
 
     [field: SerializeField] public int damage { get; protected set; } = 5;

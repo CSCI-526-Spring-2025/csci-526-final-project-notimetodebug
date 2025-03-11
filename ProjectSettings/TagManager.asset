@@ -5,6 +5,9 @@ TagManager:
   serializedVersion: 2
   tags:
   - PlayerDetector
+  - LevelStart
+  - LevelEnd
+  - LevelManager
   layers:
   - Default
   - TransparentFX
@@ -18,7 +21,6 @@ TagManager:
   - 
   - 
   - Bullet
-  - 
   - 
   - 
   - 

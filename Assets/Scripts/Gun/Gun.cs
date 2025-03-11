@@ -23,6 +23,13 @@ public abstract class Gun : MonoBehaviour
     private UIBullet bulletUI;
     private UIWeaponIndicator weaponIndicatorUI;
 
+    private string ownerName;
+
+    protected virtual void Start()
+    {
+        ownerName = transform.parent.name;
+    }
+
     protected virtual void Update()
     {
         float currentTime = Time.time;
@@ -80,6 +87,7 @@ public abstract class Gun : MonoBehaviour
     {
         GameObject bullet = Instantiate(bulletPrefab,
             transform.position + bulletGenerateDistance * direction, transform.rotation);
+        bullet.GetComponent<Bullet>().shotBy = ownerName;
         bullet.GetComponent<Bullet>().Fire(direction);
     }
 

@@ -116,10 +116,12 @@ public class Player : Creature
         }
     }
 
-    public override void TakeDamage(int damage)
+    public override void TakeDamage(int damage, string source = "unknown")
     {
         base.TakeDamage(damage);
         healthUI?.UpdateHealth(HP);
+
+        TelemetryManagerRef.GetComponent<TelemetryManager>().Log(TelemetryManager.EventName.PLAYER_DAMAGED, source);
     }
 
     protected override void Die()

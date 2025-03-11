@@ -261,6 +261,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HP: 0
   maxHP: 0
+  TelemetryManagerRef: {fileID: 4598899751551051706, guid: 34e381cbca23f97439c7a9bf274c8995, type: 3}
   moveSpeed: 2
   gun: {fileID: 248772891457408865}
   Damage: 20
@@ -312,10 +313,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bulletPrefab: {fileID: 244202265789094677, guid: 9cb41830f1a22434db3fddd9fbf5d065, type: 3}
+  gunIcon: {fileID: 0}
   bulletCapacity: 30
   bulletNumber: 30
   fireRate: 1
-  reloadingTime: 2
+  reloadPreparationTime: 1
+  reloadRate: 10
   recoilForce: 8
   isFullAuto: 1
 --- !u!1 &6487818367324194672

@@ -5,6 +5,7 @@ using UnityEngine;
 public class LevelManager : MonoBehaviour
 {
     public static LevelManager Instance { get; private set; }
+    public GameObject TelemetryManagerRef;
 
     [SerializeField] private List<GameObject> Levels = new List<GameObject>();
     [SerializeField] private int CurrentLevel = 0;
@@ -57,6 +58,8 @@ public class LevelManager : MonoBehaviour
 
         CurrentLevelObj = Instantiate(Levels[CurrentLevel], Vector2.zero, Quaternion.identity);
         StartCoroutine(SetPlayerToLevelStart());
+
+
     }
 
     private IEnumerator SetPlayerToLevelStart()
