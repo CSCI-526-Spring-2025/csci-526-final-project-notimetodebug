@@ -1,38 +1,44 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 
 public abstract class Gun : MonoBehaviour
 {
     [SerializeField] protected GameObject bulletPrefab;
+    [SerializeField] private Sprite gunIcon;
 
     [SerializeField] protected int bulletCapacity = 30;
     [SerializeField] protected int bulletNumber = 30;
     [SerializeField] protected float fireRate = 15;
-    [SerializeField] protected float reloadingTime = 2;
+    [SerializeField] protected float reloadPreparationTime = 1;
+    [SerializeField] protected float reloadRate = 10;
     [SerializeField] protected float recoilForce = 1;
     [SerializeField] protected bool isFullAuto = true;
 
     protected float lastFireTime = 0;
-    protected float startReloadingTime = 0;
-    protected bool isReloading = false;
+    protected float lastReloadTime = 0;
 
     private float bulletGenerateDistance = 1.2f;
+    private UIBullet bulletUI;
+    private UIWeaponIndicator weaponIndicatorUI;
+
+    private string ownerName;
 
     protected virtual void Start()
     {
+        ownerName = transform.parent.name;
     }
 
     protected virtual void Update()
     {
-        if (isReloading)
+        float currentTime = Time.time;
+        if (bulletNumber < bulletCapacity
+                        && currentTime - lastReloadTime >= 1 / reloadRate
+                        && currentTime - lastFireTime >= reloadPreparationTime)
         {
-            float currentTime = Time.time;
-            if (currentTime - startReloadingTime >= reloadingTime)
-            {
-                isReloading = false;
-                bulletNumber = bulletCapacity;
-            }
+            lastReloadTime = currentTime;
+            ChangeBulletNumber(1);
         }
     }
 
@@ -44,7 +50,7 @@ public abstract class Gun : MonoBehaviour
     public virtual Vector3 Fire(Vector3 direction)
     {
         float currentTime = Time.time;
-        if (isReloading || bulletNumber <= 0 || currentTime - lastFireTime < 1 / fireRate)
+        if (bulletNumber <= 0 || currentTime - lastFireTime < 1 / fireRate)
         {
             return Vector3.zero;
         }
@@ -52,16 +58,15 @@ public abstract class Gun : MonoBehaviour
         GenerateBullet(direction);
 
         lastFireTime = currentTime;
-        bulletNumber--;
+        ChangeBulletNumber(-1);
 
         return -recoilForce * direction;
     }
 
     public virtual Vector3 StartFire(Vector3 direction)
     {
-        if (!isReloading && bulletNumber <= 0)
+        if (bulletNumber <= 0)
         {
-            Reload();
             return Vector3.zero;
         }
 
@@ -82,28 +87,21 @@ public abstract class Gun : MonoBehaviour
     {
         GameObject bullet = Instantiate(bulletPrefab,
             transform.position + bulletGenerateDistance * direction, transform.rotation);
+        bullet.GetComponent<Bullet>().shotBy = ownerName;
         bullet.GetComponent<Bullet>().Fire(direction);
-    }
-
-    public void Reload()
-    {
-        if (bulletNumber >= bulletCapacity || isReloading)
-        {
-            return;
-        }
-
-        isReloading = true;
-        startReloadingTime = Time.time;
     }
 
     public void OnEquipped()
     {
         gameObject.SetActive(true);
+        bulletUI?.UpdateBulletUI(this);
+        weaponIndicatorUI?.UpdateWeaponIndicator(true);
     }
 
     public void OnUnequipped()
     {
         gameObject.SetActive(false);
+        weaponIndicatorUI?.UpdateWeaponIndicator(false);
     }
 
     public void Destroy()
@@ -115,5 +113,45 @@ public abstract class Gun : MonoBehaviour
     {
         transform.SetParent(player.transform);
         transform.localPosition = Vector3.zero;
+        
+        weaponIndicatorUI?.SetGun(this);
     }
+
+    public void SetBulletUI(UIBullet bulletUI)
+    {
+        this.bulletUI = bulletUI;
+    }
+
+    public void SetWeaponIndicatorUI(UIWeaponIndicator weaponIndicatorUI)
+    {
+        this.weaponIndicatorUI = weaponIndicatorUI;
+    }
+
+    protected void ChangeBulletNumber(int change)
+    {
+        bulletNumber += change;
+        bulletUI?.UpdateBulletUI(this);
+    }
+    
+    // UI
+    public bool IsUsingDefaultBullet()
+    {
+        return bulletPrefab.name.ToLower().Contains("default");
+    }
+
+    public Sprite GetGunIcon()
+    {
+        return gunIcon;
+    }
+
+    public int GetRemainingBullets()
+    {
+        return bulletNumber;
+    }
+
+    public int GetBulletCapacity()
+    {
+        return bulletCapacity;
+    }
+
 }

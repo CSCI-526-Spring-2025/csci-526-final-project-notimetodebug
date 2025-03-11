@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
@@ -8,38 +9,35 @@ using UnityEngine.UI;
 public class Player : Creature
 {
     private Rigidbody2D rb;
-    private CameraController cameraController; 
 
     private Vector3 fireDirection;
 
-    [SerializeField] private int currentGunIndex;
+    [SerializeField] public int currentGunIndex;
 
-    [SerializeField] private List<Gun> guns;
-    private bool everClicked = false;
-    private bool everSwitchedGun = false;
+    [SerializeField] public List<Gun> guns;
 
-    private Transform levelStart;
-    private LevelManager levelManager;
+    private UIWeaponIndicator weaponIndicatorUI;
+    private UIBullet bulletUI;
+
+    private UIPlayerHP healthUI;
 
     // Start is called before the first frame update
     protected override void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        cameraController = FindObjectOfType<CameraController>();
 
-        // Find and link the level manager
-        levelManager = FindObjectOfType<LevelManager>();
+        weaponIndicatorUI = FindObjectOfType<UIWeaponIndicator>();
+        
+        bulletUI = FindObjectOfType<UIBullet>();
 
         // Find and link the UI HP bar
         healthUI = FindObjectOfType<UIPlayerHP>();
-        if (healthUI != null)
-        {
-            healthUI.SetMaxHealth(maxHP);
-            healthUI.UpdateHealth(HP);
-        }
+        healthUI?.SetMaxHealth(maxHP);
+        healthUI?.UpdateHealth(HP);
 
         for (int i = 0; i < guns.Count; i++)
         {
+            guns.ElementAt(i).SetBulletUI(bulletUI);
             if (i != currentGunIndex)
             {
                 guns.ElementAt(i).OnUnequipped();
@@ -53,15 +51,6 @@ public class Player : Creature
 
     private void Update()
     {
-        if (levelStart == null)
-        {
-            levelStart = GameObject.Find("LevelStart").transform;
-        }
-        if (!levelManager.isTutorial()){
-            everClicked = true;
-            everSwitchedGun = true;
-        }
-
         Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         mousePos.z = 0;
         fireDirection = (mousePos - transform.position).normalized;
@@ -73,11 +62,6 @@ public class Player : Creature
         Vector3 recoilForce = Vector3.zero;
         if (Input.GetMouseButtonDown(0))
         {
-            if (!everClicked)
-            {
-                everClicked = true;
-                FindObjectOfType<TutorialManager>().NextStep();
-            }
             recoilForce = currentGun.StartFire(fireDirection);
         }
         else if (Input.GetMouseButton(0))
@@ -91,53 +75,37 @@ public class Player : Creature
 
         rb.AddForce(recoilForce, ForceMode2D.Impulse);
 
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            currentGun.Reload();
-        }
-
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            if (!everSwitchedGun)
-            {
-                everSwitchedGun = true;
-                FindObjectOfType<TutorialManager>().NextStep();
-            }
-            currentGun.OnUnequipped();
-            currentGunIndex = (currentGunIndex + 1) % guns.Count;
-            currentGun = guns.ElementAt(currentGunIndex);
-            currentGun.SetDirection(fireDirection);
-            currentGun.OnEquipped();
-        }
-        if (HP <= 0){
-            Respawn();
-        }
-
-        if (cameraController != null)
-        {
-            cameraController.SetAirborne(rb.velocity.y != 0);
+            ChangeGun();
         }
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void ChangeGun()
     {
-        if (cameraController != null)
-        {
-            cameraController.SetAirborne(false);
-        }
-    }
+        Gun currentGun = guns.ElementAt(currentGunIndex);
 
+        currentGun.OnUnequipped();
+        currentGunIndex = (currentGunIndex + 1) % guns.Count;
+        currentGun = guns.ElementAt(currentGunIndex);
+        currentGun.SetDirection(fireDirection);
+        currentGun.OnEquipped();
+    }
 
     public void PickUpGun(Gun gun)
     {
         if (guns.Count > 1)
         {
+            guns.ElementAt(1).OnUnequipped();
             guns.ElementAt(1).Destroy();
             guns.RemoveAt(1);
         }
+
+        gun.SetBulletUI(bulletUI);
+        gun.SetWeaponIndicatorUI(weaponIndicatorUI);
         guns.Add(gun);
         gun.OnPickedUp(this);
-        
+
         if (currentGunIndex == guns.Count - 1)
         {
             gun.OnEquipped();
@@ -148,29 +116,26 @@ public class Player : Creature
         }
     }
 
+    public override void TakeDamage(int damage, string source = "unknown")
+    {
+        base.TakeDamage(damage);
+        healthUI?.UpdateHealth(HP);
+
+        TelemetryManagerRef.GetComponent<TelemetryManager>().Log(TelemetryManager.EventName.PLAYER_DAMAGED, source);
+    }
+
     protected override void Die()
     {
-        Respawn();
+        LevelManager.Instance.RespawnPlayer();
     }
 
-    private void Respawn(){
-        // TODO: update respawn logic when more collectibles are added
-        transform.position = levelStart.position;
-        HP = maxHP;
-        rb.velocity = Vector2.zero;
-
-        if (healthUI != null)
-        {
-            healthUI.UpdateHealth(HP);
-        }
-        if (levelManager.isTutorial() && guns.Count > 1){
-            currentGunIndex = 0;
-            guns.ElementAt(0).OnEquipped();
-            guns.ElementAt(1).Destroy();
-            guns.RemoveAt(1);
-        }
-
-        levelManager.LoadLevel();
+    public Vector3 GetPosition()
+    {
+        return gameObject.transform.position;
     }
 
+    public Vector3 GetVelocity()
+    {
+        return rb.velocity;
+    }
 }

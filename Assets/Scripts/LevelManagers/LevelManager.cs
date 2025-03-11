@@ -4,14 +4,30 @@ using UnityEngine;
 
 public class LevelManager : MonoBehaviour
 {
+    public static LevelManager Instance { get; private set; }
+    public GameObject TelemetryManagerRef;
+
     [SerializeField] private List<GameObject> Levels = new List<GameObject>();
     [SerializeField] private int CurrentLevel = 0;
     [SerializeField] private GameObject EndMessage;
 
-    private GameObject CurrentLevelObj;
+    public GameObject CurrentLevelObj { get; private set; }
     private GameObject PlayerRef;
 
-    void Start(){
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
+    private void Start()
+    {
         PlayerRef = GameObject.FindWithTag("Player");
         if (EndMessage != null)
         {
@@ -20,16 +36,16 @@ public class LevelManager : MonoBehaviour
         LoadLevel();
     }
 
-    // Switch to next level when pressing N
-    // Debugging tool. Delete/Comment out when done testing.
-    private void Update(){
-        if (Input.GetKeyDown(KeyCode.N))
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.N)) // Debug tool
         {
             NextLevel();
         }
     }
 
-    public void LoadLevel(){
+    public void LoadLevel()
+    {
         if (CurrentLevelObj != null)
         {
             Destroy(CurrentLevelObj);
@@ -37,17 +53,18 @@ public class LevelManager : MonoBehaviour
 
         if (CurrentLevel >= Levels.Count || Levels[CurrentLevel] == null)
         {
-            // Debug.LogError("Invalid level index or level prefab is null!");
             return;
         }
 
         CurrentLevelObj = Instantiate(Levels[CurrentLevel], Vector2.zero, Quaternion.identity);
-
         StartCoroutine(SetPlayerToLevelStart());
+
+        TelemetryManagerRef.GetComponent<TelemetryManager>().Log(TelemetryManager.EventName.LEVEL_START, CurrentLevelObj.name);
     }
 
-    private IEnumerator SetPlayerToLevelStart(){
-        yield return new WaitForEndOfFrame(); 
+    private IEnumerator SetPlayerToLevelStart()
+    {
+        yield return new WaitForEndOfFrame();
 
         if (CurrentLevelObj == null)
         {
@@ -73,22 +90,50 @@ public class LevelManager : MonoBehaviour
             PlayerRef.transform.position = Vector2.zero;
         }
 
-        // refresh Player's HP when a new level starts
+        ResetPlayerState();
+    }
+
+    public void RespawnPlayer()
+    {
+        Debug.Log("Respawning Player...");
+        LoadLevel();
+    }
+
+    private void ResetPlayerState()
+    {
         Creature playerCreature = PlayerRef.GetComponent<Creature>();
         if (playerCreature != null)
         {
-            playerCreature.HP = playerCreature.maxHP; 
+            playerCreature.HP = playerCreature.maxHP;
         }
 
-        // update HP bar
         UIPlayerHP playerHPUI = FindObjectOfType<UIPlayerHP>();
         if (playerHPUI != null)
         {
             playerHPUI.UpdateHealth(playerCreature.HP);
         }
+
+        Rigidbody2D rb = PlayerRef.GetComponent<Rigidbody2D>();
+        if (rb != null)
+        {
+            rb.velocity = Vector2.zero;
         }
 
-    public void NextLevel(){
+        Player player = PlayerRef.GetComponent<Player>();
+        if (player != null && isTutorial())
+        {
+            if (player.guns.Count > 1)
+            {
+                player.currentGunIndex = 0;
+                player.guns[0].OnEquipped();
+                player.guns[1].Destroy();
+                player.guns.RemoveAt(1);
+            }
+        }
+    }
+
+    public void NextLevel()
+    {
         if (CurrentLevel < Levels.Count - 1)
         {
             CurrentLevel++;
@@ -100,8 +145,8 @@ public class LevelManager : MonoBehaviour
         }
     }
 
-    private void EndGame(){
-        // PlayerRef.SetActive(false);
+    private void EndGame()
+    {
         if (EndMessage != null)
         {
             EndMessage.transform.position = PlayerRef.transform.position + new Vector3(0, 2, 0);
@@ -109,7 +154,8 @@ public class LevelManager : MonoBehaviour
         }
     }
 
-    public bool isTutorial(){
+    public bool isTutorial()
+    {
         return CurrentLevel == 0;
     }
 }

@@ -70,11 +70,11 @@ public class Enemy : Creature
             Rigidbody2D creatureRb = creature.GetComponent<Rigidbody2D>();
             creatureRb.velocity += -normal * BounceBackVelocity;
 
-            creature.TakeDamage(Damage);
+            creature.TakeDamage(Damage, "Enemy Touch");
         }
     }
 
-    public override void TakeDamage(int damage)
+    public override void TakeDamage(int damage, string source = "unknown")
     {
         base.TakeDamage(damage);
         if (enemyHPBar != null)

@@ -46,10 +46,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bulletPrefab: {fileID: 244202265789094677, guid: 9cb41830f1a22434db3fddd9fbf5d065, type: 3}
-  bulletCapacity: 30
+  gunIcon: {fileID: 0}
+  bulletCapacity: 20
   bulletNumber: 18
   fireRate: 15
-  reloadingTime: 0
+  reloadPreparationTime: 0.8
+  reloadRate: 10
   recoilForce: 2
   isFullAuto: 1
 --- !u!1 &7699256785445795330

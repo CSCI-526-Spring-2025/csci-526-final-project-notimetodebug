@@ -6,6 +6,6 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/AlphaProgressCheck.unity
+    path: Assets/Scenes/PrototypeScene.unity
     guid: 99e43f81a0f1a0a489f9c694e651cc08
   m_configObjects: {}

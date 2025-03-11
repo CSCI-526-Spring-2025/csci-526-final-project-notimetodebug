@@ -4,7 +4,7 @@ public class Creature : MonoBehaviour, IBulletIteractable
 {
     public int HP;
     public int maxHP;
-    protected UIPlayerHP healthUI; // UI Reference (only used for Player)
+    public GameObject TelemetryManagerRef;
 
     protected virtual void Start()
     {
@@ -13,20 +13,14 @@ public class Creature : MonoBehaviour, IBulletIteractable
 
     public virtual void OnBulletCollision(Bullet bullet)
     {
-        TakeDamage(bullet.damage);
+        TakeDamage(bullet.damage, $"{bullet.shotBy}:Bullet");
         bullet.OnAbsorbed();
     }
 
-    public virtual void TakeDamage(int damage)
+    public virtual void TakeDamage(int damage, string source = "unknown")
     {
         HP -= damage;
         HP = Mathf.Clamp(HP, 0, maxHP);
-
-        // Update UI only if this is the Player
-        if (this is Player && healthUI != null)
-        {
-            healthUI.UpdateHealth(HP);
-        }
 
         if (HP <= 0)
         {
@@ -37,5 +31,6 @@ public class Creature : MonoBehaviour, IBulletIteractable
     protected virtual void Die()
     {
         Debug.Log(gameObject.name + " has died!");
+
     }
 }
