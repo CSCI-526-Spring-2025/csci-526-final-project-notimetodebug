@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Recoil Rush - Analytics</title>
+    <link rel="stylesheet" href="./main.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </head>
+  <body>
+    <div class="content">
+      <h3>Recoil Rush - Analytics</h3>
+      <select name="" id="build-selector">
+        <option value="None">None</option>
+      </select>
+      <canvas id="damage-chart-display" width="800" height="600"></canvas>
+    </div>
+    <script type="module">
+      import { init, changeBuild } from "./index.js";
+      init();
+
+      export function handleBuildChange(ev) {
+        alert("HI");
+        changeBuild(ev.target.value);
+      }
+    </script>
+  </body>
+</html>
