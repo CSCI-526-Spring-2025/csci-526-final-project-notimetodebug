@@ -63,14 +63,15 @@ public class TelemetryManager : MonoBehaviour
 
     public void Log(EventName eventName, string eventData)
     {
-        //if (Application.isEditor) return;
+        if (Application.isEditor) return;
 
         double timestamp = Time.time;
         GameObject currentLevelObj = LevelManagerRef.GetComponent<LevelManager>().CurrentLevelObj;
 
         string levelName = "";
 
-        if(currentLevelObj != null){
+        if (currentLevelObj != null)
+        {
             levelName = LevelManagerRef.GetComponent<LevelManager>().CurrentLevelObj?.name;
         }
 
