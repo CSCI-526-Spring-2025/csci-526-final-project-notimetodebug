@@ -3,6 +3,7 @@ import { fetchData } from "./fetchData.js";
 let data;
 let selectedSessionURL = undefined;
 let damageStats;
+let damageChart = undefined;
 
 export async function init() {
   data = Object.values(await fetchData());
@@ -20,37 +21,54 @@ export function changeBuild(value) {
     selectedSessionURL = `https://csci-526-spring-2025.github.io/csci-526-final-project-notimetodebug/${value}`;
   }
   damageStats = calculateDamageStats(data, selectedSessionURL);
-  drawDamageStatsChart(damageStats);
   console.log(damageStats);
+  drawDamageStatsChart(damageStats);
 }
 
 function drawDamageStatsChart(data) {
   const ctx = document.getElementById("damage-chart-display");
 
-  let labels = ["Spikes", "Player:Bullet", "Enemy:Bullet", "Enemy Touch"];
+  damageChart?.destroy();
+
+  let labels = [
+    ...new Set(
+      Object.keys(data)
+        .map((k) => Object.keys(data[k]))
+        .flat()
+    ),
+  ];
+
+  let enemyDamagePerLevel = Object.keys(data)
+    .filter((damageType) => damageType.startsWith("GroundEnemy"))
+    .reduce((p, c, i, a) => {
+      Object.keys(data[c]).forEach((level) => {
+        if (p[level]) {
+          p[level] += data[c][level];
+        } else {
+          p[level] = data[c][level];
+        }
+      });
+
+      return p;
+    }, {});
+
+  Object.keys(data)
+    .filter((damageType) => damageType.startsWith("GroundEnemy"))
+    .forEach((key) => delete data[key]);
+
+  data["GroundedEnemy:Bullets"] = enemyDamagePerLevel;
 
   let chartData = {
     labels: labels,
-    datasets: Object.keys(data).map((key) => {
-      let enemyBulletHits = Object.keys(data[key])
-        .filter((k) => k.startsWith("GroundEnemy"))
-        .reduce((p, c, i, a) => {
-          p += data[key][c];
-        }, 0);
-
+    datasets: Object.keys(data).map((key, i, a) => {
       return {
         label: key,
-        data: [
-          data[key]["Spikes"],
-          data[key]["Player:Bullet"],
-          enemyBulletHits,
-          data[key]["Enemy Touch"],
-        ],
+        data: labels.map((label) => (data[key] ? data[key][label] ?? 0 : 0)),
       };
     }),
   };
 
-  new Chart(ctx, {
+  damageChart = new Chart(ctx, {
     type: "bar",
     data: chartData,
     options: {
@@ -77,10 +95,10 @@ function calculateDamageStats(data, build) {
   return data
     .filter((ev) => ev.eventName == "PLAYER_DAMAGED" && ev.sessionURL == build)
     .reduce((p, c, i, a) => {
-      if (!p[c.levelName]) p[c.levelName] = {};
-      if (!p[c.levelName][c.eventData]) p[c.levelName][c.eventData] = 0;
+      if (!p[c.eventData]) p[c.eventData] = {};
+      if (!p[c.eventData][c.levelName]) p[c.eventData][c.levelName] = 0;
 
-      p[c.levelName][c.eventData] += 1;
+      p[c.eventData][c.levelName] += 1;
 
       return p;
     }, []);
