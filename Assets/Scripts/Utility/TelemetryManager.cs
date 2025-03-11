@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -25,12 +24,10 @@ public class TelemetryManager : MonoBehaviour
 
     public GameObject LevelManagerRef;
 
-    void Start()
+    private void Awake()
     {
         sessionID = Guid.NewGuid();
-        //LevelManagerRef = GameObject.FindGameObjectsWithTag("LevelManager").FirstOrDefault();
         sessionURL = Application.absoluteURL;
-
         Log(EventName.GAME_START, $"{Time.time}");
     }
 
@@ -42,7 +39,7 @@ public class TelemetryManager : MonoBehaviour
     [Serializable]
     public class TelemetryEvent
     {
-        public EventName eventName;
+        public string eventName;
         public string eventData;
         public double timestamp;
         public string levelName;
@@ -50,36 +47,41 @@ public class TelemetryManager : MonoBehaviour
         public string sessionID;
     }
 
+    private IEnumerator SendTelemetry(TelemetryEvent telemetryEvent)
+    {
+        string json = JsonUtility.ToJson(telemetryEvent);
+        using (UnityWebRequest www = UnityWebRequest.Post(databaseURL, json, "application/json"))
+        {
+            yield return www.SendWebRequest();
+
+            if (www.isDone)
+            {
+                Debug.Log("Telemetry sent successfully");
+            }
+        }
+    }
+
     public void Log(EventName eventName, string eventData)
     {
         //if (Application.isEditor) return;
 
         double timestamp = Time.time;
-        string levelName = LevelManagerRef.GetComponent<LevelManager>().CurrentLevelObj?.name;
+        GameObject currentLevelObj = LevelManagerRef.GetComponent<LevelManager>().CurrentLevelObj;
 
-        // Stringify the event data
+        string levelName = "";
 
-        TelemetryEvent body = new TelemetryEvent
+        if(currentLevelObj != null){
+            levelName = LevelManagerRef.GetComponent<LevelManager>().CurrentLevelObj?.name;
+        }
+
+        StartCoroutine(SendTelemetry(new TelemetryEvent
         {
-            eventName = eventName,
+            eventName = eventName.ToString(),
             eventData = eventData,
             timestamp = timestamp,
             levelName = levelName,
             sessionURL = sessionURL,
             sessionID = sessionID.ToString()
-        };
-
-        string json = JsonUtility.ToJson(body);
-
-        // Send network request to database
-
-        using (UnityWebRequest www = UnityWebRequest.Post(databaseURL, json, "application/json"))
-        {
-            var request = www.SendWebRequest();
-            request.completed += (result) =>
-            {
-                Debug.Log("Telemetry event sent");
-            };
-        }
+        }));
     }
 }
