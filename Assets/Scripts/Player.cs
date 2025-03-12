@@ -138,4 +138,15 @@ public class Player : Creature
     {
         return rb.velocity;
     }
+
+    public void ResetToDefaultGun(){
+        if (guns.Count > 1){
+            for (int i = 1; i < guns.Count; i++){
+                guns[i].Destroy();
+                guns.RemoveAt(i);
+            }
+        }
+        currentGunIndex = 0;
+        guns[0].OnEquipped();
+    }
 }

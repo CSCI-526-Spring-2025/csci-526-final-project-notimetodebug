@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class LevelManager : MonoBehaviour
 {
+
+    //TODO: add collectible score logic when we have them
     public static LevelManager Instance { get; private set; }
     public GameObject TelemetryManagerRef;
 
@@ -11,8 +13,24 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private int CurrentLevel = 0;
     [SerializeField] private GameObject EndMessage;
 
+    private int currentScore = 0;
+    private int maxPossibleScore = 100; // user HP
+    private int enemyKillScore = 0;
+    private int hpRemainingScore = 0;
+    private bool perfectHPBonus = false;
+    private bool allEnemiesKilled = false;
+    // TODO: add score for collectibles when we have them
+
+    // private int collectibleScore = 0;
+    private Dictionary<int, int> scoreByLevel = new Dictionary<int, int>();
+    private Dictionary<int, int> maxScoreByLevel = new Dictionary<int, int>();
+
     public GameObject CurrentLevelObj { get; private set; }
-    private GameObject PlayerRef;
+    public GameObject PlayerRef { get; private set; }
+
+    // Static variables
+    [SerializeField] private int perfectHPBonusValue = 50;
+    [SerializeField] private int allEnemiesKilledBonusValue = 100;
 
     private void Awake()
     {
@@ -33,6 +51,9 @@ public class LevelManager : MonoBehaviour
         {
             EndMessage.SetActive(false);
         }
+
+        //TODO: add main menu, loaded when first opening the game
+        // LoadMainMenu();
         LoadLevel();
     }
 
@@ -44,6 +65,7 @@ public class LevelManager : MonoBehaviour
         }
     }
 
+    // may add parameters int levelIndex to load a specific level from main menu
     public void LoadLevel()
     {
         if (CurrentLevelObj != null)
@@ -61,6 +83,33 @@ public class LevelManager : MonoBehaviour
         StartCoroutine(SetPlayerToLevelStart());
 
         TelemetryManagerRef.GetComponent<TelemetryManager>().Log(TelemetryManager.EventName.LEVEL_START, CurrentLevelObj.name);
+        currentScore = 0;
+        maxPossibleScore = 100;
+
+        Debug.Log("Max possible score for level " + CurrentLevel + " is " + maxPossibleScore);
+
+    }
+
+    public void RegisterEnemyScore(int score){
+        maxPossibleScore += score;
+    }
+
+    public void AddHPRemainingScore(){
+        Player player = PlayerRef.GetComponent<Player>();
+        if (player == null) return;
+        hpRemainingScore = player.HP;
+        perfectHPBonus = player.HP == 100;
+    }
+
+    public void CheckAllEnemiesKilledBonus(){
+        if (FindObjectsOfType<Enemy>().Length == 0){
+            allEnemiesKilled = true;
+        }
+    }
+
+    public void AddScore(int score){
+        enemyKillScore += score;
+        Debug.Log("Killed an enemy, increasing enemyKillScore by " + score + ", current enemyKillScore: " + enemyKillScore);
     }
 
     private IEnumerator SetPlayerToLevelStart()
@@ -137,6 +186,7 @@ public class LevelManager : MonoBehaviour
     {
         if (CurrentLevel < Levels.Count - 1)
         {
+            scoreByLevel[CurrentLevel] = currentScore;
             CurrentLevel++;
             LoadLevel();
         }
@@ -158,5 +208,29 @@ public class LevelManager : MonoBehaviour
     public bool isTutorial()
     {
         return CurrentLevel == 0;
+    }
+
+    public int GetCurrentScore(){
+        return currentScore;
+    }
+
+    public int GetCurrentLevel(){
+        return CurrentLevel;
+    }
+
+    public int GetMaxPossibleScore(){
+        return maxPossibleScore;
+    }
+
+    public Dictionary<string, int> GetScoreBreakdown(){
+        currentScore = enemyKillScore + hpRemainingScore + (allEnemiesKilled ? allEnemiesKilledBonusValue : 0) + (perfectHPBonus ? perfectHPBonusValue : 0);
+        Dictionary<string, int> breakdown = new Dictionary<string, int>(){
+            {"Final score:", currentScore},
+            {"Enemy kill score:", enemyKillScore},
+            {"HP Remaining score:", hpRemainingScore},
+            {"All enemies killed bonus:", allEnemiesKilled ? allEnemiesKilledBonusValue : 0},
+            {"Perfect HP bonus:", perfectHPBonus ? perfectHPBonusValue : 0}
+        };
+        return breakdown;
     }
 }

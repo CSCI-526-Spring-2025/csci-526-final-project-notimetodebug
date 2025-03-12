@@ -10,6 +10,7 @@ public class Enemy : Creature
     [SerializeField]  private Gun gun;
     public int Damage = 40;
     public int BounceBackVelocity = 10;
+    [SerializeField] private int scoreValue = 20;
 
     [SerializeField] private GameObject hpBarPrefab; 
     private UIEnemyHP enemyHPBar; 
@@ -28,6 +29,7 @@ public class Enemy : Creature
     {
         Debug.LogError("HP Bar Prefab not assigned in " + gameObject.name);
     }
+    LevelManager.Instance.RegisterEnemyScore(scoreValue);
     }
 
     void Update()
@@ -85,6 +87,7 @@ public class Enemy : Creature
 
     protected override void Die()
     {
+        LevelManager.Instance.AddScore(scoreValue);
         if (enemyHPBar != null)
         {
             Destroy(enemyHPBar.gameObject);
