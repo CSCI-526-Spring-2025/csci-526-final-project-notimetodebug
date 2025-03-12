@@ -85,6 +85,16 @@ public class LevelManager : MonoBehaviour
         TelemetryManagerRef.GetComponent<TelemetryManager>().Log(TelemetryManager.EventName.LEVEL_START, CurrentLevelObj.name);
         currentScore = 0;
         maxPossibleScore = 100;
+        
+        foreach (var enemy in FindObjectsOfType<Enemy>()){
+            maxPossibleScore += enemy.GetComponent<Creature>().maxHP;
+        }
+
+        // reset player gun when loading a new level
+        Player player = FindObjectOfType<Player>();
+        if (player != null){
+            player.ResetToDefaultGun();
+        }
 
         Debug.Log("Max possible score for level " + CurrentLevel + " is " + maxPossibleScore);
 
