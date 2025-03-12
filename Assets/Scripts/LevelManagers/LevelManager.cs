@@ -57,6 +57,7 @@ public class LevelManager : MonoBehaviour
         }
 
         CurrentLevelObj = Instantiate(Levels[CurrentLevel], Vector2.zero, Quaternion.identity);
+        
         StartCoroutine(SetPlayerToLevelStart());
 
         TelemetryManagerRef.GetComponent<TelemetryManager>().Log(TelemetryManager.EventName.LEVEL_START, CurrentLevelObj.name);
