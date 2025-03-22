@@ -19,11 +19,11 @@ public abstract class Gun : MonoBehaviour
     protected float lastFireTime = 0;
     protected float lastReloadTime = 0;
 
-    private float bulletGenerateDistance = 1.2f;
+    protected float bulletGenerateDistance = 1.2f;
     private UIBullet bulletUI;
     private UIWeaponIndicator weaponIndicatorUI;
 
-    private string ownerName;
+    protected string ownerName;
 
     protected virtual void Start()
     {
