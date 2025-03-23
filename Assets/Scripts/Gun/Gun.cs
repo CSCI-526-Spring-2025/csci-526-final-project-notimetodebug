@@ -65,11 +65,6 @@ public abstract class Gun : MonoBehaviour
 
     public virtual Vector3 StartFire(Vector3 direction)
     {
-        if (bulletNumber <= 0)
-        {
-            return Vector3.zero;
-        }
-
         return Fire(direction);
     }
 
@@ -134,11 +129,6 @@ public abstract class Gun : MonoBehaviour
     }
     
     // UI
-    public bool IsUsingDefaultBullet()
-    {
-        return bulletPrefab.name.ToLower().Contains("default");
-    }
-
     public Sprite GetGunIcon()
     {
         return gunIcon;
