@@ -4,20 +4,25 @@ using UnityEngine;
 
 public class SniperGun : Gun
 {
+    [SerializeField] private LineRenderer laserRenderer;
+    private CameraController cameraController;
+
     private Boolean isAiming = false;
-    public LineRenderer laserRenderer;
     private int laserBounceTimes;
+    [SerializeField] private float aimingZoom = 16f;
 
     private void Start()
     {
+        cameraController = FindObjectOfType<CameraController>();
+
         laserBounceTimes = bulletPrefab.GetComponent<Bullet>().bounceLeft;
-        Debug.Log(bulletPrefab.GetComponent<Bullet>().bounceLeft);
     }
 
     public override Vector3 StartFire(Vector3 direction)
     {
         isAiming = true;
         laserRenderer.enabled = true;
+        cameraController?.SetFixedZoom(aimingZoom);
         return Vector3.zero;
     }
 
@@ -40,21 +45,14 @@ public class SniperGun : Gun
         Vector3 nextPosition = laserRenderer.transform.position;
         for (int i = 0; i < laserBounceTimes; i++)
         {
-            // Debug.Log(i + "origin " + (nextPosition + nextDirection * raycastFrontGap));
-
             RaycastHit2D hit = Physics2D.Raycast(nextPosition + nextDirection * raycastFrontGap,
                 nextDirection, float.PositiveInfinity, LayerMask.GetMask("Platform"));
             laserRenderer.positionCount++;
             laserRenderer.SetPosition(i + 1, hit.point);
-            // Debug.DrawRay(hit.point, hit.normal, Color.red);
             if (!hit.collider.gameObject.GetComponent<Wall>().isMirror)
             {
                 break;
             }
-
-            // Debug.Log(i + "normal " + (Vector3)hit.normal);
-            // Debug.Log(i + "hit point " + (Vector3)hit.point);
-            // Debug.Log(i + "d " + (-(Quaternion.AngleAxis(180, hit.normal) * nextDirection) + "nd " + nextDirection));
 
             nextPosition = hit.point;
             nextDirection = -(Quaternion.AngleAxis(180, hit.normal) * nextDirection);
@@ -70,6 +68,7 @@ public class SniperGun : Gun
     {
         isAiming = false;
         laserRenderer.enabled = false;
+        cameraController?.ReleaseFixedZoom();
         return Fire(direction);
     }
 }
