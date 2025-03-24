@@ -445,7 +445,7 @@ MonoBehaviour:
   offset: {x: 0, y: 2, z: -10}
   smoothSpeed: 5
   baseZoom: 6
-  maxZoom: 9
+  flyingZoom: 9
   zoomSpeed: 1
 --- !u!1 &674359896 stripped
 GameObject:
