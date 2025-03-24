@@ -161,6 +161,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 129304ad9dfc43b2875968e1369f7ccd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  shotBy: 
   initialVelocity: 10
   <damage>k__BackingField: 15
-  bounceLeft: 2
+  <bounceLeft>k__BackingField: 2

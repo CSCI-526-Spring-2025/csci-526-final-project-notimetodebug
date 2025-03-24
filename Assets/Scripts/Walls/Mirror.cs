@@ -7,7 +7,7 @@ public class Mirror : Wall
     // Start is called before the first frame update
     void Start()
     {
-        
+        isMirror = true;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -19,10 +19,5 @@ public class Mirror : Wall
     void Update()
     {
         
-    }
-    
-    public override void OnBulletCollision(Bullet bullet)
-    {
-        bullet.OnBounce();
     }
 }

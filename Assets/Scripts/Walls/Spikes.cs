@@ -29,9 +29,4 @@ public class Spikes : Wall
     void Update()
     {
     }
-
-    public override void OnBulletCollision(Bullet bullet)
-    {
-        bullet.OnAbsorbed();
-    }
 }
