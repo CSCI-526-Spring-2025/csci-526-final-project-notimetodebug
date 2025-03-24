@@ -83,8 +83,8 @@ LineRenderer:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
-        time: 0.09195195
-        value: 0.09343946
+        time: 0.089396104
+        value: 0.14599073
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -191,6 +191,7 @@ MonoBehaviour:
   recoilForce: 10
   isFullAuto: 0
   laserRenderer: {fileID: 7892438178353614580}
+  aimingZoom: 16
 --- !u!1 &7699256785445795330
 GameObject:
   m_ObjectHideFlags: 0
