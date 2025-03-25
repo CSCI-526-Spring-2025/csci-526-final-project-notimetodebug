@@ -22,6 +22,8 @@ public class Player : Creature
 
     private UIPlayerHP healthUI;
     private UILevelFail failUI;
+    
+    private bool isFiring = false;
 
 
     private SpriteRenderer spriteRenderer;
@@ -68,9 +70,10 @@ public class Player : Creature
         currentGun.SetDirection(fireDirection);
 
         Vector3 recoilForce = Vector3.zero;
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButton(0) && !isFiring)
         {
             recoilForce = currentGun.StartFire(fireDirection);
+            isFiring = true;
         }
         else if (Input.GetMouseButton(0))
         {
@@ -79,6 +82,7 @@ public class Player : Creature
         else if (Input.GetMouseButtonUp(0))
         {
             recoilForce = currentGun.StopFire(fireDirection);
+            isFiring = false;
         }
 
         rb.AddForce(recoilForce, ForceMode2D.Impulse);
@@ -98,6 +102,7 @@ public class Player : Creature
         currentGun = guns.ElementAt(currentGunIndex);
         currentGun.SetDirection(fireDirection);
         currentGun.OnEquipped();
+        isFiring = false;
     }
 
     public void PickUpGun(Gun gun)
@@ -175,5 +180,6 @@ public class Player : Creature
         }
         currentGunIndex = 0;
         guns[0].OnEquipped();
+        isFiring = false;
     }
 }

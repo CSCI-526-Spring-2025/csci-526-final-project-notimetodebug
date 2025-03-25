@@ -93,7 +93,7 @@ public abstract class Gun : MonoBehaviour
         weaponIndicatorUI?.UpdateWeaponIndicator(true);
     }
 
-    public void OnUnequipped()
+    public virtual void OnUnequipped()
     {
         gameObject.SetActive(false);
         weaponIndicatorUI?.UpdateWeaponIndicator(false);

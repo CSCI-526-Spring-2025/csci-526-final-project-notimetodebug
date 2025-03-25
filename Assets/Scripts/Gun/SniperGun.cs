@@ -11,7 +11,7 @@ public class SniperGun : Gun
     private int laserBounceTimes;
     [SerializeField] private float aimingZoom = 16f;
 
-    private void Start()
+    protected override void Start()
     {
         cameraController = FindObjectOfType<CameraController>();
 
@@ -70,5 +70,11 @@ public class SniperGun : Gun
         laserRenderer.enabled = false;
         cameraController?.ReleaseFixedZoom();
         return Fire(direction);
+    }
+    
+    public override void OnUnequipped()
+    {
+        cameraController?.ReleaseFixedZoom();
+        base.OnUnequipped();
     }
 }
