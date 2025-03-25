@@ -22,7 +22,7 @@ public class Player : Creature
 
     private UIPlayerHP healthUI;
     private UILevelFail failUI;
-    
+
     private bool isFiring = false;
 
 
@@ -36,7 +36,7 @@ public class Player : Creature
 
 
         weaponIndicatorUI = FindObjectOfType<UIWeaponIndicator>();
-        
+
         bulletUI = FindObjectOfType<UIBullet>();
         failUI = FindObjectOfType<UILevelFail>(true);
 
@@ -70,16 +70,19 @@ public class Player : Creature
         currentGun.SetDirection(fireDirection);
 
         Vector3 recoilForce = Vector3.zero;
-        if (Input.GetMouseButton(0) && !isFiring)
+        if (Input.GetMouseButton(0) || Input.GetKey(KeyCode.W))
         {
-            recoilForce = currentGun.StartFire(fireDirection);
-            isFiring = true;
+            if (!isFiring)
+            {
+                recoilForce = currentGun.StartFire(fireDirection);
+                isFiring = true;
+            }
+            else
+            {
+                recoilForce = currentGun.KeepFire(fireDirection);
+            }
         }
-        else if (Input.GetMouseButton(0))
-        {
-            recoilForce = currentGun.KeepFire(fireDirection);
-        }
-        else if (Input.GetMouseButtonUp(0))
+        else if (!Input.GetMouseButton(0) && !Input.GetKey(KeyCode.W) && isFiring)
         {
             recoilForce = currentGun.StopFire(fireDirection);
             isFiring = false;
@@ -157,8 +160,8 @@ public class Player : Creature
 
     protected override void Die()
     {
-       // LevelManager.Instance.RespawnPlayer();
-       LevelManager.Instance.ShowLevelFailUI();
+        // LevelManager.Instance.RespawnPlayer();
+        LevelManager.Instance.ShowLevelFailUI();
     }
 
     public Vector3 GetPosition()
@@ -171,13 +174,17 @@ public class Player : Creature
         return rb.velocity;
     }
 
-    public void ResetToDefaultGun(){
-        if (guns.Count > 1){
-            for (int i = 1; i < guns.Count; i++){
+    public void ResetToDefaultGun()
+    {
+        if (guns.Count > 1)
+        {
+            for (int i = 1; i < guns.Count; i++)
+            {
                 guns[i].Destroy();
                 guns.RemoveAt(i);
             }
         }
+
         currentGunIndex = 0;
         guns[0].OnEquipped();
         isFiring = false;
