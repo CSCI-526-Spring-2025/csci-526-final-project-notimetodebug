@@ -5,6 +5,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
+using System.Collections;
 
 public class Player : Creature
 {
@@ -20,15 +21,22 @@ public class Player : Creature
     private UIBullet bulletUI;
 
     private UIPlayerHP healthUI;
+    private UILevelFail failUI;
+
+
+    private SpriteRenderer spriteRenderer;
 
     // Start is called before the first frame update
     protected override void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
+
 
         weaponIndicatorUI = FindObjectOfType<UIWeaponIndicator>();
         
         bulletUI = FindObjectOfType<UIBullet>();
+        failUI = FindObjectOfType<UILevelFail>(true);
 
         // Find and link the UI HP bar
         healthUI = FindObjectOfType<UIPlayerHP>();
@@ -120,13 +128,32 @@ public class Player : Creature
     {
         base.TakeDamage(damage);
         healthUI?.UpdateHealth(HP);
+        healthUI?.BlinkHPBar();
+        StartCoroutine(BlinkRed());
 
         TelemetryManagerRef.GetComponent<TelemetryManager>().Log(TelemetryManager.EventName.PLAYER_DAMAGED, source);
     }
 
+    private IEnumerator BlinkRed()
+    {
+        if (spriteRenderer == null) yield break;
+
+        Color originalColor = spriteRenderer.color;
+
+        for (int i = 0; i < 2; i++)
+        {
+            spriteRenderer.color = Color.red;
+            yield return new WaitForSeconds(0.1f);
+
+            spriteRenderer.color = originalColor;
+            yield return new WaitForSeconds(0.1f);
+        }
+    }
+
     protected override void Die()
     {
-        LevelManager.Instance.RespawnPlayer();
+       // LevelManager.Instance.RespawnPlayer();
+       LevelManager.Instance.ShowLevelFailUI();
     }
 
     public Vector3 GetPosition()

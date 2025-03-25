@@ -29,7 +29,7 @@ public class Enemy : Creature
     {
         Debug.LogError("HP Bar Prefab not assigned in " + gameObject.name);
     }
-    LevelManager.Instance.RegisterEnemyScore(scoreValue);
+   // LevelManager.Instance.RegisterEnemyScore(scoreValue);
     }
 
     void Update()
@@ -94,5 +94,10 @@ public class Enemy : Creature
         }
         Destroy(gameObject);
     }
+    public int GetScoreValue()
+    {
+        return scoreValue;
+    }
+
 
 }

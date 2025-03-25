@@ -5,6 +5,17 @@ using UnityEngine;
 public class EndOfLevel : MonoBehaviour
 {
     private bool levelComplete = false;
+    private UIEndLevel uiEndLevel;
+
+    public GameObject uiEndLevelPrefab; 
+
+    private void Start()
+    {
+        GameObject end = Instantiate(uiEndLevelPrefab);
+        end.SetActive(false); 
+        uiEndLevel = end.GetComponent<UIEndLevel>();
+    }
+
 
     private void OnTriggerEnter2D(Collider2D other)
     {
@@ -20,7 +31,7 @@ public class EndOfLevel : MonoBehaviour
 
     private IEnumerator EndLevelSequence()
     {
-        LevelManager.Instance.AddHPRemainingScore();
+        LevelManager.Instance.CheckPerfectHPBonus();
         LevelManager.Instance.CheckAllEnemiesKilledBonus();
 
         Dictionary<string, int> breakdown = LevelManager.Instance.GetScoreBreakdown();
@@ -31,12 +42,14 @@ public class EndOfLevel : MonoBehaviour
             Debug.Log(item.Key + " " + item.Value);
         }
 
-        //TODO: add UI to display score breakdown
+        LevelManager.Instance.StopUpdatingScore();
+        uiEndLevel.ShowEndLevelUI(); 
 
+        yield break; 
 
-        yield return new WaitUntil(() => Input.anyKeyDown);
+       // yield return new WaitUntil(() => Input.anyKeyDown);
 
-        LevelManager.Instance.NextLevel();
+      //  LevelManager.Instance.NextLevel();
     }
 }
 

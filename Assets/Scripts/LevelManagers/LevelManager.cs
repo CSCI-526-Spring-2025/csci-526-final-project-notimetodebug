@@ -4,17 +4,19 @@ using UnityEngine;
 
 public class LevelManager : MonoBehaviour
 {
-
     //TODO: add collectible score logic when we have them
     public static LevelManager Instance { get; private set; }
     public GameObject TelemetryManagerRef;
 
     [SerializeField] private List<GameObject> Levels = new List<GameObject>();
     [SerializeField] private int CurrentLevel = 0;
-    [SerializeField] private GameObject EndMessage;
+
+    [SerializeField] private GameObject uiLevelFailPrefab;
+    private UILevelFail failUI;
 
     private int currentScore = 0;
     private int maxPossibleScore = 100; // user HP
+    private int maxEnemyKillScore = 0;
     private int enemyKillScore = 0;
     private int hpRemainingScore = 0;
     private bool perfectHPBonus = false;
@@ -32,6 +34,12 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private int perfectHPBonusValue = 50;
     [SerializeField] private int allEnemiesKilledBonusValue = 100;
 
+    public delegate void ScoreUpdated();
+    public static event ScoreUpdated OnScoreUpdated;
+
+    private bool isEndLevel = false;
+
+
     private void Awake()
     {
         if (Instance == null)
@@ -47,10 +55,11 @@ public class LevelManager : MonoBehaviour
     private void Start()
     {
         PlayerRef = GameObject.FindWithTag("Player");
-        if (EndMessage != null)
-        {
-            EndMessage.SetActive(false);
-        }
+
+        GameObject fail = Instantiate(uiLevelFailPrefab);
+        fail.SetActive(false);
+        failUI = fail.GetComponent<UILevelFail>();
+        
 
         //TODO: add main menu, loaded when first opening the game
         // LoadMainMenu();
@@ -83,32 +92,50 @@ public class LevelManager : MonoBehaviour
         StartCoroutine(SetPlayerToLevelStart());
 
         TelemetryManagerRef.GetComponent<TelemetryManager>().Log(TelemetryManager.EventName.LEVEL_START, CurrentLevelObj.name);
-        currentScore = 0;
-        maxPossibleScore = 100;
         
+        maxEnemyKillScore = 0;
+        maxPossibleScore = 100;
+        enemyKillScore = 0; 
+        hpRemainingScore = 0;
+
         foreach (var enemy in FindObjectsOfType<Enemy>()){
-            maxPossibleScore += enemy.GetComponent<Creature>().maxHP;
+            int enemyScore = enemy.GetScoreValue(); 
+            maxEnemyKillScore += enemyScore;
         }
+        maxPossibleScore += maxEnemyKillScore;
+        Debug.Log($"[DEBUG] Level {CurrentLevel}: Player HP = 100, Total Enemy Score = {maxEnemyKillScore}, Max Possible Score = {maxPossibleScore}");
+
+        hpRemainingScore = GetHPScore(); // Just fetch the player's current HP
+        currentScore = GetCurrentScore();
 
         // reset player gun when loading a new level
         Player player = FindObjectOfType<Player>();
         if (player != null){
             player.ResetToDefaultGun();
+            UpdateWeaponIndicatorUI(player);
         }
 
-        Debug.Log("Max possible score for level " + CurrentLevel + " is " + maxPossibleScore);
+        OnScoreUpdated?.Invoke();
 
     }
 
-    public void RegisterEnemyScore(int score){
-        maxPossibleScore += score;
+    private void UpdateWeaponIndicatorUI(Player player)
+    {
+        UIWeaponIndicator weaponIndicatorUI = FindObjectOfType<UIWeaponIndicator>();
+        if (weaponIndicatorUI != null && player.guns.Count > 0)
+        {
+            weaponIndicatorUI.SetGun(player.guns[0]); 
+            weaponIndicatorUI.UpdateWeaponIndicator(false);
+        }
     }
 
-    public void AddHPRemainingScore(){
+    public void CheckPerfectHPBonus(){
         Player player = PlayerRef.GetComponent<Player>();
         if (player == null) return;
         hpRemainingScore = player.HP;
-        perfectHPBonus = player.HP == 100;
+        if(hpRemainingScore == 100){
+            perfectHPBonus = true;
+        }
     }
 
     public void CheckAllEnemiesKilledBonus(){
@@ -117,9 +144,20 @@ public class LevelManager : MonoBehaviour
         }
     }
 
-    public void AddScore(int score){
+    public void StopUpdatingScore()
+    {
+        isEndLevel = true;
+    }
+
+    public void AddScore(int score)
+    {
+        if (isEndLevel) return; 
         enemyKillScore += score;
+        currentScore = GetCurrentScore();
         Debug.Log("Killed an enemy, increasing enemyKillScore by " + score + ", current enemyKillScore: " + enemyKillScore);
+        Debug.Log($"Current Score: {GetCurrentScore()}, Max Score: {GetMaxPossibleScore()}");
+        
+        OnScoreUpdated?.Invoke();
     }
 
     private IEnumerator SetPlayerToLevelStart()
@@ -200,27 +238,50 @@ public class LevelManager : MonoBehaviour
             CurrentLevel++;
             LoadLevel();
         }
+    }
+
+    public void ShowLevelFailUI()
+    {
+        if (failUI != null)
+        {
+            failUI.Show();
+        }
         else
         {
-            EndGame();
+            Debug.LogError("Level Fail UI is missing!");
         }
     }
 
+
     private void EndGame()
     {
-        if (EndMessage != null)
-        {
-            EndMessage.transform.position = PlayerRef.transform.position + new Vector3(0, 2, 0);
-            EndMessage.SetActive(true);
-        }
+        //make it actual terminate everything
+
     }
 
     public bool isTutorial()
     {
         return CurrentLevel == 0;
     }
+    public int GetHPScore()
+    {   
+        if (PlayerRef == null)
+        {
+            return 0;
+        }
+        Player player = PlayerRef.GetComponent<Player>();
+        if (player != null)
+        {
+            return player.HP; 
+        }
+        return 0;  
+    }
 
     public int GetCurrentScore(){
+
+        hpRemainingScore = GetHPScore();
+        currentScore = enemyKillScore + hpRemainingScore;
+        Debug.Log($"LevelManager: Updated Current Score = {currentScore}");
         return currentScore;
     }
 
@@ -243,4 +304,7 @@ public class LevelManager : MonoBehaviour
         };
         return breakdown;
     }
+
+
+
 }

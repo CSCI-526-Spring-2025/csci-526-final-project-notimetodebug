@@ -4,6 +4,8 @@ using UnityEngine.UI;
 public class UIBullet : MonoBehaviour
 {
     public Image bulletBar; 
+    public Color startColor = Color.white;
+    public Color overheatColor = Color.red;
 
     public void UpdateBulletUI(Gun gun)
     {
@@ -20,8 +22,11 @@ public class UIBullet : MonoBehaviour
             return;
         }
 
-        float bulletRatio = (float)remainingBullets / bulletCapacity;
+        float bulletRatio = 1f - ((float)remainingBullets / bulletCapacity);
         bulletBar.fillAmount = bulletRatio;
+
+        bulletBar.color = Color.Lerp(startColor, overheatColor, bulletRatio);
+
         ShowUI(remainingBullets < bulletCapacity);
     }
 

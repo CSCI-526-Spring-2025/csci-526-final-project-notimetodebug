@@ -143,4 +143,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 029164eff1c4db843b1950583a4dd7de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LevelManager: {fileID: 0}
+  uiEndLevelPrefab: {fileID: 6956962790872645151, guid: 48b72839b4dd04417af2e93c50c6f92f, type: 3}

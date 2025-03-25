@@ -44,10 +44,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e47c73db6c8e6946bbcf288c4202cef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  TelemetryManagerRef: {fileID: 4598899751551051706, guid: 34e381cbca23f97439c7a9bf274c8995, type: 3}
   Levels:
   - {fileID: 4114279229366912782, guid: 48995ab436b5545c495d11c2b44cbcaa, type: 3}
   - {fileID: 3288383200582504222, guid: 6d0a104add2114fb79b615fbc87d632b, type: 3}
   - {fileID: 7179459655815215672, guid: e4d781909294345c59f6db0f719bc60b, type: 3}
   - {fileID: 4114279229366912782, guid: b6ec8bd805ce37240a87fd8753b68edc, type: 3}
   CurrentLevel: 0
-  EndMessage: {fileID: 0}
+  uiLevelFailPrefab: {fileID: 422490623648527823, guid: f1e6e45cee371481a8fb0c2841abd7af, type: 3}
+  perfectHPBonusValue: 50
+  allEnemiesKilledBonusValue: 100
