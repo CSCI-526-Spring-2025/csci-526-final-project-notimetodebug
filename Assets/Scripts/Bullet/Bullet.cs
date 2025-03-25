@@ -13,6 +13,10 @@ public abstract class Bullet : MonoBehaviour, IBulletIteractable
 
     protected void Start()
     {
+    }
+
+    private void InitRigidbodyRef()
+    {
         rb = GetComponent<Rigidbody2D>();
     }
 
@@ -23,6 +27,10 @@ public abstract class Bullet : MonoBehaviour, IBulletIteractable
 
     public virtual void Fire(Vector3 direction)
     {
+        if (rb is null)
+        {
+            InitRigidbodyRef();
+        }
         rb.velocity = direction * initialVelocity;
         transform.rotation = Quaternion.FromToRotation(Vector3.right, rb.velocity);
     }
