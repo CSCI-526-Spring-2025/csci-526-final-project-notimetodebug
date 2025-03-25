@@ -76,7 +76,7 @@ public class Player : Creature
         {
             recoilForce = currentGun.KeepFire(fireDirection);
         }
-        else
+        else if (Input.GetMouseButtonUp(0))
         {
             recoilForce = currentGun.StopFire(fireDirection);
         }
