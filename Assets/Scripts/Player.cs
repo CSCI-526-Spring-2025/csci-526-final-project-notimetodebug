@@ -24,7 +24,7 @@ public class Player : Creature
     private UILevelFail failUI;
 
     private bool isFiring = false;
-
+    private Coroutine blinkCoroutine;
 
     private SpriteRenderer spriteRenderer;
 
@@ -137,7 +137,11 @@ public class Player : Creature
         base.TakeDamage(damage);
         healthUI?.UpdateHealth(HP);
         healthUI?.BlinkHPBar();
-        StartCoroutine(BlinkRed());
+        if (blinkCoroutine != null)
+        {
+            StopCoroutine(blinkCoroutine);
+        }
+        blinkCoroutine = StartCoroutine(BlinkRed());
 
         TelemetryManagerRef.GetComponent<TelemetryManager>().Log(TelemetryManager.EventName.PLAYER_DAMAGED, source);
     }
@@ -156,11 +160,11 @@ public class Player : Creature
             spriteRenderer.color = originalColor;
             yield return new WaitForSeconds(0.1f);
         }
+        blinkCoroutine = null;
     }
 
     protected override void Die()
     {
-        // LevelManager.Instance.RespawnPlayer();
         LevelManager.Instance.ShowLevelFailUI();
     }
 

@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class LevelManager : MonoBehaviour
 {
-    //TODO: add collectible score logic when we have them
     public static LevelManager Instance { get; private set; }
     public GameObject TelemetryManagerRef;
 
@@ -14,25 +13,25 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private GameObject uiLevelFailPrefab;
     private UILevelFail failUI;
 
+    // Score variables
     private int currentScore = 0;
-    private int maxPossibleScore = 100; // user HP
-    private int maxEnemyKillScore = 0;
     private int enemyKillScore = 0;
-    private int hpRemainingScore = 0;
-    private bool perfectHPBonus = false;
-    private bool allEnemiesKilled = false;
-    // TODO: add score for collectibles when we have them
+    private int collectibleScore = 0;
+    private int maxCollectibleScore = 0;
+    private int maxEnemyKillScore = 0;
+    private int maxPossibleScore = 0;
+    private bool highHPBonus = false;
+    private bool allEnemiesKilledBonus = false;
+    private bool allCollectiblesCollectedBonus = false;
+
+    // Bonus value is 10% of the max possible score
+    private int bonusValue = 0;
 
     // private int collectibleScore = 0;
-    private Dictionary<int, int> scoreByLevel = new Dictionary<int, int>();
-    private Dictionary<int, int> maxScoreByLevel = new Dictionary<int, int>();
+    private Dictionary<int, int> bestScoreByLevel = new Dictionary<int, int>();
 
     public GameObject CurrentLevelObj { get; private set; }
     public GameObject PlayerRef { get; private set; }
-
-    // Static variables
-    [SerializeField] private int perfectHPBonusValue = 50;
-    [SerializeField] private int allEnemiesKilledBonusValue = 100;
 
     public delegate void ScoreUpdated();
     public static event ScoreUpdated OnScoreUpdated;
@@ -77,6 +76,7 @@ public class LevelManager : MonoBehaviour
     // may add parameters int levelIndex to load a specific level from main menu
     public void LoadLevel()
     {
+        isEndLevel = false;
         if (CurrentLevelObj != null)
         {
             Destroy(CurrentLevelObj);
@@ -87,36 +87,60 @@ public class LevelManager : MonoBehaviour
             return;
         }
 
+        // Initialize best score for current level if it doesn't exist
+        if (!bestScoreByLevel.ContainsKey(CurrentLevel))
+        {
+            bestScoreByLevel[CurrentLevel] = 0;
+        }
+
+
         CurrentLevelObj = Instantiate(Levels[CurrentLevel], Vector2.zero, Quaternion.identity);
         
         StartCoroutine(SetPlayerToLevelStart());
 
         TelemetryManagerRef.GetComponent<TelemetryManager>().Log(TelemetryManager.EventName.LEVEL_START, CurrentLevelObj.name);
-        
-        maxEnemyKillScore = 0;
-        maxPossibleScore = 100;
+
         enemyKillScore = 0; 
-        hpRemainingScore = 0;
+        collectibleScore = 0;
+        currentScore = 0;
 
-        foreach (var enemy in FindObjectsOfType<Enemy>()){
-            int enemyScore = enemy.GetScoreValue(); 
-            maxEnemyKillScore += enemyScore;
-        }
-        maxPossibleScore += maxEnemyKillScore;
-        Debug.Log($"[DEBUG] Level {CurrentLevel}: Player HP = 100, Total Enemy Score = {maxEnemyKillScore}, Max Possible Score = {maxPossibleScore}");
+        highHPBonus = false;
+        allEnemiesKilledBonus = false;
+        allCollectiblesCollectedBonus = false;
 
-        hpRemainingScore = GetHPScore(); // Just fetch the player's current HP
-        currentScore = GetCurrentScore();
-
-        // reset player gun when loading a new level
+        bonusValue = (int)(maxPossibleScore * 0.1);
         Player player = FindObjectOfType<Player>();
         if (player != null){
             player.ResetToDefaultGun();
             UpdateWeaponIndicatorUI(player);
         }
 
-        OnScoreUpdated?.Invoke();
+        StartCoroutine(CountEnemiesNextFrame());
+    }
 
+    private IEnumerator CountEnemiesNextFrame(){
+        yield return new WaitForEndOfFrame(); 
+
+        maxEnemyKillScore = 0;
+        maxCollectibleScore = 0;
+        maxPossibleScore = 0;
+
+        foreach (var enemy in FindObjectsOfType<Enemy>())
+        {
+            int enemyScore = enemy.GetScoreValue();
+            maxEnemyKillScore += enemyScore;
+        }
+
+        // foreach (var collectible in FindObjectsOfType<Collectible>())
+        // {
+        //     int score = collectible.GetScoreValue();
+        //     maxCollectibleScore += score;
+        // }
+
+        maxPossibleScore = maxEnemyKillScore + maxCollectibleScore;
+        bonusValue = (int)(maxPossibleScore * 0.1);
+
+        OnScoreUpdated?.Invoke();
     }
 
     private void UpdateWeaponIndicatorUI(Player player)
@@ -129,18 +153,17 @@ public class LevelManager : MonoBehaviour
         }
     }
 
-    public void CheckPerfectHPBonus(){
+    public void CheckHPBonus(){
         Player player = PlayerRef.GetComponent<Player>();
         if (player == null) return;
-        hpRemainingScore = player.HP;
-        if(hpRemainingScore == 100){
-            perfectHPBonus = true;
+        if(player.HP >= 80){
+            highHPBonus = true;
         }
     }
 
     public void CheckAllEnemiesKilledBonus(){
         if (FindObjectsOfType<Enemy>().Length == 0){
-            allEnemiesKilled = true;
+            allEnemiesKilledBonus = true;
         }
     }
 
@@ -155,7 +178,6 @@ public class LevelManager : MonoBehaviour
         enemyKillScore += score;
         currentScore = GetCurrentScore();
         Debug.Log("Killed an enemy, increasing enemyKillScore by " + score + ", current enemyKillScore: " + enemyKillScore);
-        Debug.Log($"Current Score: {GetCurrentScore()}, Max Score: {GetMaxPossibleScore()}");
         
         OnScoreUpdated?.Invoke();
     }
@@ -193,8 +215,8 @@ public class LevelManager : MonoBehaviour
 
     public void RespawnPlayer()
     {
-        Debug.Log("Respawning Player...");
         LoadLevel();
+        ResetPlayerState();
     }
 
     private void ResetPlayerState()
@@ -234,7 +256,14 @@ public class LevelManager : MonoBehaviour
     {
         if (CurrentLevel < Levels.Count - 1)
         {
-            scoreByLevel[CurrentLevel] = currentScore;
+            if (!bestScoreByLevel.ContainsKey(CurrentLevel)){
+                bestScoreByLevel[CurrentLevel] = 0;
+            }
+            else if (currentScore > bestScoreByLevel[CurrentLevel])
+            {
+                bestScoreByLevel[CurrentLevel] = currentScore;
+            }
+            
             CurrentLevel++;
             LoadLevel();
         }
@@ -263,25 +292,10 @@ public class LevelManager : MonoBehaviour
     {
         return CurrentLevel == 0;
     }
-    public int GetHPScore()
-    {   
-        if (PlayerRef == null)
-        {
-            return 0;
-        }
-        Player player = PlayerRef.GetComponent<Player>();
-        if (player != null)
-        {
-            return player.HP; 
-        }
-        return 0;  
-    }
 
     public int GetCurrentScore(){
 
-        hpRemainingScore = GetHPScore();
-        currentScore = enemyKillScore + hpRemainingScore;
-        Debug.Log($"LevelManager: Updated Current Score = {currentScore}");
+        currentScore = enemyKillScore + collectibleScore + (highHPBonus ? bonusValue : 0) + (allEnemiesKilledBonus ? bonusValue : 0) + (allCollectiblesCollectedBonus ? bonusValue : 0);
         return currentScore;
     }
 
@@ -294,13 +308,14 @@ public class LevelManager : MonoBehaviour
     }
 
     public Dictionary<string, int> GetScoreBreakdown(){
-        currentScore = enemyKillScore + hpRemainingScore + (allEnemiesKilled ? allEnemiesKilledBonusValue : 0) + (perfectHPBonus ? perfectHPBonusValue : 0);
+        currentScore = enemyKillScore + collectibleScore + (allEnemiesKilledBonus ? bonusValue : 0) + (highHPBonus ? bonusValue : 0) + (allCollectiblesCollectedBonus ? bonusValue : 0);
         Dictionary<string, int> breakdown = new Dictionary<string, int>(){
             {"Final score:", currentScore},
-            {"Enemy kill score:", enemyKillScore},
-            {"HP Remaining score:", hpRemainingScore},
-            {"All enemies killed bonus:", allEnemiesKilled ? allEnemiesKilledBonusValue : 0},
-            {"Perfect HP bonus:", perfectHPBonus ? perfectHPBonusValue : 0}
+            {"Kills:", enemyKillScore},
+            {"Collectibles:", collectibleScore},
+            {"High HP bonus:", highHPBonus ? bonusValue : 0},
+            {"Kills bonus:", allEnemiesKilledBonus ? bonusValue : 0},
+            {"Collectibles bonus:", allCollectiblesCollectedBonus ? bonusValue : 0}
         };
         return breakdown;
     }

@@ -31,25 +31,13 @@ public class EndOfLevel : MonoBehaviour
 
     private IEnumerator EndLevelSequence()
     {
-        LevelManager.Instance.CheckPerfectHPBonus();
+        LevelManager.Instance.CheckHPBonus();
         LevelManager.Instance.CheckAllEnemiesKilledBonus();
-
-        Dictionary<string, int> breakdown = LevelManager.Instance.GetScoreBreakdown();
-        Debug.Log("Score breakdown: " + breakdown);
-
-        foreach (var item in breakdown)
-        {
-            Debug.Log(item.Key + " " + item.Value);
-        }
 
         LevelManager.Instance.StopUpdatingScore();
         uiEndLevel.ShowEndLevelUI(); 
 
         yield break; 
-
-       // yield return new WaitUntil(() => Input.anyKeyDown);
-
-      //  LevelManager.Instance.NextLevel();
     }
 }
 

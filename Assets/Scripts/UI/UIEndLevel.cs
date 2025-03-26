@@ -44,7 +44,7 @@ public class UIEndLevel : MonoBehaviour
         int maxPossibleScore = LevelManager.Instance.GetMaxPossibleScore(); 
         Dictionary<string, int> breakdown = LevelManager.Instance.GetScoreBreakdown();
 
-        int regularScore = breakdown["HP Remaining score:"] + breakdown["Enemy kill score:"];
+        int regularScore = breakdown["Kills:"] + breakdown["Collectibles:"];
         int finalScore = breakdown["Final score:"];
         currentTotalScore = 0; 
 
@@ -64,15 +64,20 @@ public class UIEndLevel : MonoBehaviour
 
         ResetStars();
 
-
-
         // Animate categories one by one
-        yield return StartCoroutine(AnimateText(hpRemainingText, "HP Remain: ", breakdown["HP Remaining score:"]));
-
-        if (breakdown["Enemy kill score:"] > 0)
+        if (breakdown["Kills:"] > 0)
         {
-            yield return StartCoroutine(AnimateText(enemyKillText, "Enemy Killed: ", breakdown["Enemy kill score:"]));
+            yield return StartCoroutine(AnimateText(enemyKillText, "Enemy kills: ", breakdown["Kills:"]));
+        } else {
+            yield return StartCoroutine(AnimateText(enemyKillText, "Enemy kills: ", 0));
         }
+
+        // if (breakdown["Collectibles:"] > 0)
+        // {
+        //     yield return StartCoroutine(AnimateText(collectibleText, "Collectibles: ", breakdown["Collectibles:"]));
+        // } else {
+        //     yield return StartCoroutine(AnimateText(collectibleText, "Collectibles: ", 0));
+        // }
 
         int starsFilled = 0;
         if (regularScore >= t1)
@@ -93,17 +98,20 @@ public class UIEndLevel : MonoBehaviour
 
         yield return new WaitForSeconds(0.5f);
 
-        if (breakdown["Perfect HP bonus:"] > 0)
+        if (breakdown["High HP bonus:"] > 0)
         {
-            yield return StartCoroutine(AnimateText(fullHPBonusText, "PERFECT HP: ", breakdown["Perfect HP bonus:"]));
+            yield return StartCoroutine(AnimateText(fullHPBonusText, "HIGH HP BONUS: ", breakdown["High HP bonus:"]));
         }
 
-        if (breakdown["All enemies killed bonus:"] > 0)
+        if (breakdown["Kills bonus:"] > 0)
         {
-            yield return StartCoroutine(AnimateText(allEnemiesKilledBonusText, "KILLER: ", breakdown["All enemies killed bonus:"]));
+            yield return StartCoroutine(AnimateText(allEnemiesKilledBonusText, "KILLER BONUS: ", breakdown["Kills bonus:"]));
         }
 
-        
+        // if (breakdown["Collectibles:"] > 0)
+        // {
+        //     yield return StartCoroutine(AnimateText(collectibleText, "Collectibles: ", breakdown["Collectibles:"]));
+        // }
 
         if (finalScore > regularScore)
         {

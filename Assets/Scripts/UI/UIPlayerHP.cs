@@ -20,6 +20,16 @@ public class UIPlayerHP : MonoBehaviour
     {
         healthSlider.value = currentHealth;
         hpText.text = currentHealth + " / " + healthSlider.maxValue; 
+
+        float hpPercentage = currentHealth / healthSlider.maxValue;
+
+        if (hpPercentage < 0.2f){
+            healthSlider.fillRect.GetComponent<Image>().color = Color.red;
+        } else if (hpPercentage < 0.5f){
+            healthSlider.fillRect.GetComponent<Image>().color = Color.yellow;
+        } else {
+            healthSlider.fillRect.GetComponent<Image>().color = Color.green;
+        }
     }
 
     public void BlinkHPBar()
