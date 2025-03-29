@@ -27,6 +27,11 @@ public class UILevelFail : MonoBehaviour
     private void ReturnToMenu()
     {
         Debug.Log("Return to menu clicked.");
-        // Implement main menu logic here
+        gameObject.SetActive(false); 
+        UIMenu menu = FindObjectOfType<UIMenu>();
+        if (menu != null)
+        {
+            menu.ShowMenu();
+        }
     }
 }

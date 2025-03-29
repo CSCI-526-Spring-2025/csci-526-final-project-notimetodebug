@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5904400073656743479}
   - component: {fileID: 6080884352737701600}
+  - component: {fileID: 4383687952086133172}
   m_Layer: 0
   m_Name: LevelManager
   m_TagString: LevelManager
@@ -44,7 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e47c73db6c8e6946bbcf288c4202cef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TelemetryManagerRef: {fileID: 4598899751551051706, guid: 34e381cbca23f97439c7a9bf274c8995, type: 3}
+  TelemetryManagerRef: {fileID: 0}
   Levels:
   - {fileID: 4114279229366912782, guid: 48995ab436b5545c495d11c2b44cbcaa, type: 3}
   - {fileID: 3288383200582504222, guid: 6d0a104add2114fb79b615fbc87d632b, type: 3}
@@ -52,5 +53,19 @@ MonoBehaviour:
   - {fileID: 4114279229366912782, guid: b6ec8bd805ce37240a87fd8753b68edc, type: 3}
   CurrentLevel: 0
   uiLevelFailPrefab: {fileID: 422490623648527823, guid: f1e6e45cee371481a8fb0c2841abd7af, type: 3}
-  perfectHPBonusValue: 50
-  allEnemiesKilledBonusValue: 100
+--- !u!114 &4383687952086133172
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3287195940524714990}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 883cc1979a6294f14a247f54e750d5ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  levelButtonPrefab: {fileID: 1694652060117838538, guid: c669d151842254f2dad05fa9b6e8da03, type: 3}
+  buttonsParent: {fileID: 0}
+  menuPanel: {fileID: 4121349078252183593, guid: cbc2245d255a041e09e69b140b4952ea, type: 3}
+  startPage: {fileID: 0}
