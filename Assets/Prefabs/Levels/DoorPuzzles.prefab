@@ -378,6 +378,26 @@ PrefabInstance:
       propertyPath: doorControllers.Array.data[3]
       value: 
       objectReference: {fileID: 6561645512730779584}
+    - target: {fileID: 3483216590079483344, guid: 88839adc792607c40bb48c8f9220e9d6, type: 3}
+      propertyPath: doorControllersObjects.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 3483216590079483344, guid: 88839adc792607c40bb48c8f9220e9d6, type: 3}
+      propertyPath: doorControllersObjects.Array.data[0]
+      value: 
+      objectReference: {fileID: 5043142568431005829}
+    - target: {fileID: 3483216590079483344, guid: 88839adc792607c40bb48c8f9220e9d6, type: 3}
+      propertyPath: doorControllersObjects.Array.data[1]
+      value: 
+      objectReference: {fileID: 987877421375652201}
+    - target: {fileID: 3483216590079483344, guid: 88839adc792607c40bb48c8f9220e9d6, type: 3}
+      propertyPath: doorControllersObjects.Array.data[2]
+      value: 
+      objectReference: {fileID: 3073804733962875139}
+    - target: {fileID: 3483216590079483344, guid: 88839adc792607c40bb48c8f9220e9d6, type: 3}
+      propertyPath: doorControllersObjects.Array.data[3]
+      value: 
+      objectReference: {fileID: 6561645512730779584}
     - target: {fileID: 4895863654882270512, guid: 88839adc792607c40bb48c8f9220e9d6, type: 3}
       propertyPath: m_Name
       value: Door (1)
@@ -1754,11 +1774,23 @@ PrefabInstance:
     m_TransformParent: {fileID: 8728743814775905556}
     m_Modifications:
     - target: {fileID: 3483216590079483344, guid: 88839adc792607c40bb48c8f9220e9d6, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3483216590079483344, guid: 88839adc792607c40bb48c8f9220e9d6, type: 3}
       propertyPath: doorControllers.Array.size
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3483216590079483344, guid: 88839adc792607c40bb48c8f9220e9d6, type: 3}
       propertyPath: doorControllers.Array.data[0]
+      value: 
+      objectReference: {fileID: 1671554430292576671}
+    - target: {fileID: 3483216590079483344, guid: 88839adc792607c40bb48c8f9220e9d6, type: 3}
+      propertyPath: doorControllersObjects.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3483216590079483344, guid: 88839adc792607c40bb48c8f9220e9d6, type: 3}
+      propertyPath: doorControllersObjects.Array.data[0]
       value: 
       objectReference: {fileID: 1671554430292576671}
     - target: {fileID: 4895863654882270512, guid: 88839adc792607c40bb48c8f9220e9d6, type: 3}

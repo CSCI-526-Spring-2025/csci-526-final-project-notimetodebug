@@ -8,7 +8,8 @@ using UnityEngine;
 public class Door : MonoBehaviour
 {
 
-    public List<GameObject> doorControllers;
+    public List<GameObject> doorControllersObjects;
+    private List<IDoorController> doorControllers;
 
     private Animator animator;
     private bool isDoorOpen = true;
@@ -17,7 +18,7 @@ public class Door : MonoBehaviour
     {
         List<bool> controllerStates = doorControllers
             .Where(controller => controller != null)
-            .Select(controller => controller.GetComponent<IDoorController>().IsDoorOpen())
+            .Select(controller => controller.IsDoorOpen())
             .ToList();
 
         return !controllerStates.Contains(false);
@@ -39,6 +40,10 @@ public class Door : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         animator.SetBool("Open", isDoorOpen);
+        doorControllers = doorControllersObjects
+            .Select(doorControllersObject => doorControllersObject?.GetComponent<IDoorController>())
+            .Where(controller => controller != null)
+            .ToList();
     }
 
     // Update is called once per frame

@@ -13,7 +13,7 @@ public class ShotGun : Gun
         bulletGenerateDistance = 1.5f;
     }
     
-    public override void GenerateBullet(Vector3 direction, bool isSpecialBullet = true)
+    public override void GenerateBullet(Vector3 direction)
     {
         float angleGap = fireAngle / (bulletNumberPerShot - 1);
         for (int i = 0; i < bulletNumberPerShot; i++)
@@ -23,11 +23,11 @@ public class ShotGun : Gun
             Quaternion directionOffset = Quaternion.Euler(0, 0, directionOffsetDegree);
             Vector3 finalDirection = directionOffset * direction;
             
-            GameObject bullet = Instantiate(bulletPrefab,
+            GameObject bulletObj = Instantiate(bulletPrefab,
                 transform.position + bulletGenerateDistance * finalDirection, transform.rotation * directionOffset);
-            bullet.GetComponent<Bullet>().shotBy = ownerName;
-            bullet.GetComponent<Bullet>().isSpecialBullet = true;
-            bullet.GetComponent<Bullet>().Fire(finalDirection);
+            Bullet bullet = bulletObj.GetComponent<Bullet>();
+            bullet.shotBy = ownerName;
+            bullet.Fire(finalDirection);
         }
     }
 }

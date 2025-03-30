@@ -47,7 +47,7 @@ public abstract class Gun : MonoBehaviour
         transform.rotation = Quaternion.FromToRotation(Vector3.right, direction);
     }
 
-    public virtual Vector3 Fire(Vector3 direction, bool isSpecialBullet = false)
+    public virtual Vector3 Fire(Vector3 direction)
     {
         float currentTime = Time.time;
         if (bulletNumber <= 0 || currentTime - lastFireTime < 1 / fireRate)
@@ -55,7 +55,7 @@ public abstract class Gun : MonoBehaviour
             return Vector3.zero;
         }
 
-        GenerateBullet(direction, isSpecialBullet);
+        GenerateBullet(direction);
 
         lastFireTime = currentTime;
         ChangeBulletNumber(-1);
@@ -78,13 +78,13 @@ public abstract class Gun : MonoBehaviour
         return Vector3.zero;
     }
 
-    public virtual void GenerateBullet(Vector3 direction, bool isSpecialBullet = false)
+    public virtual void GenerateBullet(Vector3 direction)
     {
-        GameObject bullet = Instantiate(bulletPrefab,
+        GameObject bulletObj = Instantiate(bulletPrefab,
             transform.position + bulletGenerateDistance * direction, transform.rotation);
-        bullet.GetComponent<Bullet>().shotBy = ownerName;
-        bullet.GetComponent<Bullet>().isSpecialBullet = isSpecialBullet;
-        bullet.GetComponent<Bullet>().Fire(direction);
+        Bullet bullet = bulletObj.GetComponent<Bullet>();
+        bullet.shotBy = ownerName;
+        bullet.Fire(direction);
     }
 
     public void OnEquipped()

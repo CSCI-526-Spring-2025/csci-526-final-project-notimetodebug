@@ -162,6 +162,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shotBy: 
+  isSpecialBullet: 1
   initialVelocity: 10
   <damage>k__BackingField: 5
   <bounceLeft>k__BackingField: 1
