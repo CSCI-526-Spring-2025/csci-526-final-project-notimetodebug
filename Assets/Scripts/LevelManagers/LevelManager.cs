@@ -29,6 +29,7 @@ public class LevelManager : MonoBehaviour
 
     // private int collectibleScore = 0;
     private Dictionary<int, int> bestScoreByLevel = new Dictionary<int, int>();
+    private Dictionary<int, int> maxScoreByLevel = new Dictionary<int, int>();
 
     public GameObject CurrentLevelObj { get; private set; }
     public GameObject PlayerRef { get; private set; }
@@ -58,11 +59,13 @@ public class LevelManager : MonoBehaviour
         GameObject fail = Instantiate(uiLevelFailPrefab);
         fail.SetActive(false);
         failUI = fail.GetComponent<UILevelFail>();
-        
 
-        //TODO: add main menu, loaded when first opening the game
-        // LoadMainMenu();
-        LoadLevel();
+        /*
+        PlayerPrefs.DeleteKey("TutorialCompleted");
+        PlayerPrefs.DeleteAll();
+        PlayerPrefs.Save();
+        */
+
     }
 
     private void Update()
@@ -139,6 +142,8 @@ public class LevelManager : MonoBehaviour
 
         maxPossibleScore = maxEnemyKillScore + maxCollectibleScore;
         bonusValue = (int)(maxPossibleScore * 0.1);
+
+        maxScoreByLevel[CurrentLevel] = maxPossibleScore;
 
         OnScoreUpdated?.Invoke();
     }
@@ -319,6 +324,19 @@ public class LevelManager : MonoBehaviour
         };
         return breakdown;
     }
+
+    public List<GameObject> GetLevels() => Levels;
+    public Dictionary<int, int> GetBestScores() => bestScoreByLevel;
+    public Dictionary<int, int> GetMaxScores() => maxScoreByLevel;
+
+    public void LoadLevel(int index)
+    {
+        CurrentLevel = index;
+        LoadLevel();
+    }
+
+
+
 
 
 

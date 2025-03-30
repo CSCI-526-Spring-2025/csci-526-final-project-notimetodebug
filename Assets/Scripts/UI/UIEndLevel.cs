@@ -36,6 +36,14 @@ public class UIEndLevel : MonoBehaviour
     public void ShowEndLevelUI()
     {
         gameObject.SetActive(true); 
+        if (LevelManager.Instance.GetCurrentLevel() >= LevelManager.Instance.GetLevels().Count - 1)
+        {
+            nextLevelButton.gameObject.SetActive(false);
+        }
+        else
+        {
+            nextLevelButton.gameObject.SetActive(true);
+        }
         StartCoroutine(AnimateScoreBreakdown());
     }
 
@@ -59,7 +67,7 @@ public class UIEndLevel : MonoBehaviour
         allEnemiesKilledBonusText.gameObject.SetActive(false);
         //finalScoreText.gameObject.SetActive(false);
 
-        finalScoreText.gameObject.SetActive(true); // ⭐ Always visible
+        finalScoreText.gameObject.SetActive(true); 
         finalScoreText.text = "Final Score: 0";
 
         ResetStars();
@@ -222,6 +230,11 @@ public class UIEndLevel : MonoBehaviour
     private void ReturnToMenu()
     {
         Debug.Log("Return to menu clicked.");
-        // Implement main menu logic here
+        gameObject.SetActive(false); 
+        UIMenu menu = FindObjectOfType<UIMenu>();
+        if (menu != null)
+        {
+            menu.ShowMenu();
+        }
     }
 }
