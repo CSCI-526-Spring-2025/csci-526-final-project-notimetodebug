@@ -49,7 +49,7 @@ public class SniperGun : Gun
                 nextDirection, float.PositiveInfinity, LayerMask.GetMask("Platform"));
             laserRenderer.positionCount++;
             laserRenderer.SetPosition(i + 1, hit.point);
-            if (!hit.collider.gameObject.GetComponent<Wall>().isMirror)
+            if (hit.collider.gameObject.GetComponent<Wall>() is not Mirror)
             {
                 break;
             }
@@ -69,7 +69,7 @@ public class SniperGun : Gun
         isAiming = false;
         laserRenderer.enabled = false;
         cameraController?.ReleaseFixedZoom();
-        return Fire(direction);
+        return Fire(direction, true);
     }
     
     public override void OnUnequipped()

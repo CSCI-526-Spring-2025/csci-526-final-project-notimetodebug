@@ -2,7 +2,7 @@
 
 public class InfiniteBulletsGun : Gun
 {
-    public override Vector3 Fire(Vector3 direction)
+    public override Vector3 Fire(Vector3 direction, bool isSpecialBullet = false)
     {
         float currentTime = Time.time;
         if (bulletNumber <= 0 || currentTime - lastFireTime < 1 / fireRate)
@@ -10,7 +10,7 @@ public class InfiniteBulletsGun : Gun
             return Vector3.zero;
         }
 
-        GenerateBullet(direction);
+        GenerateBullet(direction, isSpecialBullet);
 
         lastFireTime = currentTime;
 
