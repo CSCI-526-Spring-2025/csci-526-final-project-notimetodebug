@@ -13,7 +13,7 @@ public class ShotGun : Gun
         bulletGenerateDistance = 1.5f;
     }
     
-    public override void GenerateBullet(Vector3 direction)
+    public override void GenerateBullet(Vector3 direction, bool isSpecialBullet = true)
     {
         float angleGap = fireAngle / (bulletNumberPerShot - 1);
         for (int i = 0; i < bulletNumberPerShot; i++)
@@ -26,6 +26,7 @@ public class ShotGun : Gun
             GameObject bullet = Instantiate(bulletPrefab,
                 transform.position + bulletGenerateDistance * finalDirection, transform.rotation * directionOffset);
             bullet.GetComponent<Bullet>().shotBy = ownerName;
+            bullet.GetComponent<Bullet>().isSpecialBullet = true;
             bullet.GetComponent<Bullet>().Fire(finalDirection);
         }
     }

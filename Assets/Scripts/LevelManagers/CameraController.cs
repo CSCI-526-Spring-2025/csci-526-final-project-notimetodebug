@@ -13,7 +13,22 @@ public class CameraController : MonoBehaviour
     private float fixedZoom = 1f;
     private bool isZoomFixed = false;
 
+    private bool showArea = false;
+    private Bounds areaBounds;
+
     private Camera cam;
+
+
+    public void ShowArea(Bounds bounds)
+    {
+        showArea = true;
+        areaBounds = bounds;
+    }
+
+    public void ShowPlayer()
+    {
+        showArea = false;
+    }
 
     void Start()
     {
@@ -23,6 +38,21 @@ public class CameraController : MonoBehaviour
 
     void LateUpdate()
     {
+        if(showArea)
+        {
+            float xExtent = areaBounds.extents.x;
+            float yExtent = areaBounds.extents.y;
+            float centerX = areaBounds.center.x;
+            float centerY = areaBounds.center.y;
+
+            Vector3 targetPosition = new Vector3(centerX, centerY, transform.position.z);
+            float targetZoom = Mathf.Max(xExtent, yExtent);
+
+            transform.position = Vector3.Lerp(transform.position, targetPosition, smoothSpeed * Time.deltaTime);
+            cam.orthographicSize = Mathf.Lerp(cam.orthographicSize, targetZoom, zoomSpeed * Time.deltaTime);
+            return;
+        }
+
         if (player != null)
         {
             // Smoothly follow the player

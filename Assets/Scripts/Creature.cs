@@ -1,6 +1,7 @@
+using Assets.Scripts.EnvironmentInteractibles;
 using UnityEngine;
 
-public class Creature : MonoBehaviour, IBulletIteractable
+public class Creature : MonoBehaviour, IBulletIteractable, IDoorController
 {
     public int HP;
     public int maxHP;
@@ -9,6 +10,11 @@ public class Creature : MonoBehaviour, IBulletIteractable
     protected virtual void Start()
     {
         HP = maxHP; 
+    }
+
+    public bool IsDoorOpen()
+    {
+        return HP <= 0;
     }
 
     public virtual void OnBulletCollision(Bullet bullet)
