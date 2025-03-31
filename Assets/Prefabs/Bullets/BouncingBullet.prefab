@@ -163,6 +163,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shotBy: 
   isSpecialBullet: 1
+  bulletName: Bouncing Bullet
   initialVelocity: 10
   <damage>k__BackingField: 15
   <bounceLeft>k__BackingField: 2

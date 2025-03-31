@@ -1,10 +1,12 @@
 ﻿using System;
+using UnityEditor;
 using UnityEngine;
 
 public abstract class Bullet : MonoBehaviour, IBulletIteractable
 {
     public string shotBy;
     public bool isSpecialBullet = false;
+    public string bulletName;
 
     [SerializeField] protected float initialVelocity = 10;
 
@@ -35,6 +37,7 @@ public abstract class Bullet : MonoBehaviour, IBulletIteractable
         }
         rb.velocity = direction * initialVelocity;
         transform.rotation = Quaternion.FromToRotation(Vector3.right, rb.velocity);
+        TelemetryManager.LogCumulative(TelemetryManager.EventName.PLAYER_SHOT_BULLET, bulletName);
     }
 
     public void OnCollisionEnter2D(Collision2D other)

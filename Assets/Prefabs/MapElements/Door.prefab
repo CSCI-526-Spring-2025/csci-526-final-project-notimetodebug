@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2872838737275739536}
   - component: {fileID: 5086204968409902166}
   - component: {fileID: 6988431855504241387}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Door - Lower
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -154,7 +154,7 @@ GameObject:
   - component: {fileID: 7864408250194311381}
   - component: {fileID: 1591292523869425329}
   - component: {fileID: 3483216590079483344}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Door
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -211,7 +211,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f608bc9dedaee6444b35223f06da2b55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  doorControllers: []
+  doorControllersObjects: []
 --- !u!1 &6936950396854029932
 GameObject:
   m_ObjectHideFlags: 0
@@ -224,7 +224,7 @@ GameObject:
   - component: {fileID: 5346353640283224395}
   - component: {fileID: 3578647152252358869}
   - component: {fileID: 320383944786081070}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Door - Upper
   m_TagString: Untagged
   m_Icon: {fileID: 0}

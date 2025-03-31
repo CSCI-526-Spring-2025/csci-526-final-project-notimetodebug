@@ -163,6 +163,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shotBy: 
   isSpecialBullet: 1
+  bulletName: Shotgun Bullet
   initialVelocity: 10
   <damage>k__BackingField: 5
   <bounceLeft>k__BackingField: 1
