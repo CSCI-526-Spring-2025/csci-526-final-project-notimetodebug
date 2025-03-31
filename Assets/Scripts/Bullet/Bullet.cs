@@ -9,6 +9,7 @@ public abstract class Bullet : MonoBehaviour, IBulletIteractable
     public string bulletName;
 
     [SerializeField] protected float initialVelocity = 10;
+    protected Vector3 initialDirection;
 
     [field: SerializeField] public int damage { get; protected set; } = 5;
     [field: SerializeField] public int bounceLeft { get; protected set; } = 0;
@@ -17,11 +18,10 @@ public abstract class Bullet : MonoBehaviour, IBulletIteractable
 
     protected void Start()
     {
-    }
-
-    private void InitRigidbodyRef()
-    {
         rb = GetComponent<Rigidbody2D>();
+
+        rb.velocity = initialDirection * initialVelocity;
+        transform.rotation = Quaternion.FromToRotation(Vector3.right, rb.velocity);
     }
 
     protected virtual void Update()
@@ -31,12 +31,7 @@ public abstract class Bullet : MonoBehaviour, IBulletIteractable
 
     public virtual void Fire(Vector3 direction)
     {
-        if (rb is null)
-        {
-            InitRigidbodyRef();
-        }
-        rb.velocity = direction * initialVelocity;
-        transform.rotation = Quaternion.FromToRotation(Vector3.right, rb.velocity);
+        initialDirection = direction;
         TelemetryManager.LogCumulative(TelemetryManager.EventName.PLAYER_SHOT_BULLET, bulletName);
     }
 
