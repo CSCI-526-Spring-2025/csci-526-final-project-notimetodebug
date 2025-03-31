@@ -28,7 +28,73 @@ public class Player : Creature
 
     private SpriteRenderer spriteRenderer;
 
-    // Start is called before the first frame update
+    #region Telemetry Only
+
+    private enum MotionState
+    {
+        Idle,
+        Grounded,
+        Flying
+    }
+
+    private MotionState prevMotionState = MotionState.Idle;
+
+    private bool hasMotionStateChanged(out MotionState motionState)
+    {
+        Vector2 velocity = GetVelocity();
+        Collider2D ground = Physics2D.Raycast(transform.position, Vector2.down, 0.85f, LayerMask.GetMask("Platform")).collider;
+
+        bool isGrounded = ground != null
+            && ground.gameObject.TryGetComponent<Wall>(out Wall groundWall)
+            && groundWall is not Spikes;
+
+
+        if (isGrounded && velocity == Vector2.zero)
+        {
+            if (prevMotionState != MotionState.Idle)
+            {
+                motionState = MotionState.Idle;
+                prevMotionState = motionState;
+                return true;
+            }
+            else
+            {
+                motionState = prevMotionState;
+                return false;
+            }
+        }
+        else if (isGrounded)
+        {
+            if (prevMotionState != MotionState.Grounded)
+            {
+                motionState = MotionState.Grounded;
+                prevMotionState = motionState;
+                return true;
+            }
+            else
+            {
+                motionState = prevMotionState;
+                return false;
+            }
+        }
+        else
+        {
+            if (prevMotionState != MotionState.Flying)
+            {
+                motionState = MotionState.Flying;
+                prevMotionState = motionState;
+                return true;
+            }
+            else
+            {
+                motionState = prevMotionState;
+                return false;
+            }
+        }
+    }
+
+    #endregion
+
     protected override void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -94,6 +160,11 @@ public class Player : Creature
         {
             ChangeGun();
         }
+
+        if (hasMotionStateChanged(out MotionState motionState))
+        {
+            TelemetryManager.Log(TelemetryManager.EventName.MOVEMENT_STATE_CHANGE, motionState.ToString());
+        }
     }
 
     private void ChangeGun()
@@ -143,7 +214,7 @@ public class Player : Creature
         }
         blinkCoroutine = StartCoroutine(BlinkRed());
 
-        TelemetryManagerRef.GetComponent<TelemetryManager>().Log(TelemetryManager.EventName.PLAYER_DAMAGED, source);
+        TelemetryManager.Log(TelemetryManager.EventName.PLAYER_DAMAGED, source);
     }
 
     private IEnumerator BlinkRed()

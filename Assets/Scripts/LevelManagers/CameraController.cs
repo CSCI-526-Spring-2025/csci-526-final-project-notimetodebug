@@ -18,7 +18,6 @@ public class CameraController : MonoBehaviour
 
     private Camera cam;
 
-
     public void ShowArea(Bounds bounds)
     {
         showArea = true;

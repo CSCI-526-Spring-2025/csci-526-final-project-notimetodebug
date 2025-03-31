@@ -18,8 +18,9 @@ public class HealingCollectible : MonoBehaviour
         {
             // Heal the player
             HealPlayer(player);
-            
 
+            TelemetryManager.Log(TelemetryManager.EventName.COLLECTIBLE_PICKED_UP, "Healing");
+            
             // Spawn pickup effect if needed in future
             if (pickupEffect != null)
             {

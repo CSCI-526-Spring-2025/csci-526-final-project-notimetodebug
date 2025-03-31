@@ -5,7 +5,6 @@ using UnityEngine;
 public class LevelManager : MonoBehaviour
 {
     public static LevelManager Instance { get; private set; }
-    public GameObject TelemetryManagerRef;
 
     [SerializeField] private List<GameObject> Levels = new List<GameObject>();
     [SerializeField] private int CurrentLevel = 0;
@@ -101,7 +100,7 @@ public class LevelManager : MonoBehaviour
         
         StartCoroutine(SetPlayerToLevelStart());
 
-        TelemetryManagerRef.GetComponent<TelemetryManager>().Log(TelemetryManager.EventName.LEVEL_START, CurrentLevelObj.name);
+        TelemetryManager.Log(TelemetryManager.EventName.LEVEL_START, CurrentLevelObj.name);
 
         enemyKillScore = 0; 
         collectibleScore = 0;

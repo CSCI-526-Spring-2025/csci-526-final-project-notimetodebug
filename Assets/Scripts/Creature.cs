@@ -5,7 +5,6 @@ public class Creature : MonoBehaviour, IBulletIteractable, IDoorController
 {
     public int HP;
     public int maxHP;
-    public GameObject TelemetryManagerRef;
 
     protected virtual void Start()
     {

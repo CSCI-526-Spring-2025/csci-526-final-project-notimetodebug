@@ -163,6 +163,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shotBy: 
   isSpecialBullet: 1
+  bulletName: Sniper Bullet
   initialVelocity: 20
   <damage>k__BackingField: 25
   <bounceLeft>k__BackingField: 4

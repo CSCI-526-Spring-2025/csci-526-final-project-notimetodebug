@@ -76,7 +76,9 @@ public class CollectibleGun : MonoBehaviour
             {
                 collider.enabled = false;
             }
-            
+
+            TelemetryManager.Log(TelemetryManager.EventName.COLLECTIBLE_PICKED_UP, $"Gun: {gunPrefab.name}");
+
             // Destroy the collectible
             Destroy(gameObject, 0.1f);
         }
