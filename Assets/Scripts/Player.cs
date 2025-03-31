@@ -25,8 +25,9 @@ public class Player : Creature
 
     private bool isFiring = false;
     private Coroutine blinkCoroutine;
-
+    
     private SpriteRenderer spriteRenderer;
+    private Color originalColor;
 
     #region Telemetry Only
 
@@ -99,7 +100,7 @@ public class Player : Creature
     {
         rb = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
-
+        originalColor = spriteRenderer.color;
 
         weaponIndicatorUI = FindObjectOfType<UIWeaponIndicator>();
 
@@ -208,7 +209,7 @@ public class Player : Creature
         base.TakeDamage(damage);
         healthUI?.UpdateHealth(HP);
         healthUI?.BlinkHPBar();
-        if (blinkCoroutine != null)
+        if (blinkCoroutine is not null)
         {
             StopCoroutine(blinkCoroutine);
         }
@@ -219,10 +220,6 @@ public class Player : Creature
 
     private IEnumerator BlinkRed()
     {
-        if (spriteRenderer == null) yield break;
-
-        Color originalColor = spriteRenderer.color;
-
         for (int i = 0; i < 2; i++)
         {
             spriteRenderer.color = Color.red;
