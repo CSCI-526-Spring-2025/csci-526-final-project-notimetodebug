@@ -65,7 +65,7 @@
         streamingAssetsUrl: "StreamingAssets",
         companyName: "DefaultCompany",
         productName: "game-recoil-prototype",
-        productVersion: "0.0.131",
+        productVersion: "0.0.133",
         showBanner: unityShowBanner,
       };
 
@@ -119,6 +119,10 @@
                 fullscreenButton.onclick = () => {
                   unityInstance.SetFullscreen(1);
                 };
+
+                window.onbeforeunload = function(e){
+                  unityInstance.SendMessage("TelemetryManager", "OnGameExit");
+                }
               }).catch((message) => {
                 alert(message);
               });
