@@ -54,7 +54,7 @@ MonoBehaviour:
   reloadRate: 10
   recoilForce: 1
   isFullAuto: 0
-  fireAngle: 20
+  fireAngle: 45
   bulletNumberPerShot: 5
 --- !u!1 &7699256785445795330
 GameObject:

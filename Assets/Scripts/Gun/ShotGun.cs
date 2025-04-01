@@ -5,16 +5,14 @@ using Random = UnityEngine.Random;
 
 public class ShotGun : Gun
 {
-    public float fireAngle = 30;
+    public float fireAngle = 45;
     public float bulletNumberPerShot = 5;
 
     public override void GenerateBullet(Vector3 direction)
     {
-        float angleGap = fireAngle / (bulletNumberPerShot - 1);
         for (int i = 0; i < bulletNumberPerShot; i++)
         {
-            float directionOffsetDegree =  - fireAngle / 2 + i * angleGap;
-            Debug.Log(directionOffsetDegree);
+            float directionOffsetDegree = Random.Range(-fireAngle / 2, fireAngle / 2);
             Quaternion directionOffset = Quaternion.Euler(0, 0, directionOffsetDegree);
             Vector3 finalDirection = directionOffset * direction;
 
