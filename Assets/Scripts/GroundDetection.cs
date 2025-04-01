@@ -18,6 +18,9 @@ public class GroundDetection : MonoBehaviour
     }
     private void OnTriggerExit2D(Collider2D other)
     {
-        enemy.Flip();
+        if (other.gameObject.layer == LayerMask.NameToLayer("Platform"))
+        {
+            enemy.Flip(); 
+        }
     }
 }
