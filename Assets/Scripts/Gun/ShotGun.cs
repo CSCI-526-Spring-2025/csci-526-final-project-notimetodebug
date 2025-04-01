@@ -8,11 +8,6 @@ public class ShotGun : Gun
     public float fireAngle = 30;
     public float bulletNumberPerShot = 5;
 
-    protected override void Start()
-    {
-        bulletGenerateDistance = 1.5f;
-    }
-    
     public override void GenerateBullet(Vector3 direction)
     {
         float angleGap = fireAngle / (bulletNumberPerShot - 1);
@@ -22,7 +17,7 @@ public class ShotGun : Gun
             Debug.Log(directionOffsetDegree);
             Quaternion directionOffset = Quaternion.Euler(0, 0, directionOffsetDegree);
             Vector3 finalDirection = directionOffset * direction;
-            
+
             GameObject bulletObj = Instantiate(bulletPrefab,
                 transform.position + bulletGenerateDistance * finalDirection, transform.rotation * directionOffset);
             Bullet bullet = bulletObj.GetComponent<Bullet>();

@@ -2,7 +2,7 @@
 using UnityEditor;
 using UnityEngine;
 
-public abstract class Bullet : MonoBehaviour, IBulletIteractable
+public abstract class Bullet : MonoBehaviour
 {
     public string shotBy;
     public bool isSpecialBullet = false;
@@ -58,27 +58,5 @@ public abstract class Bullet : MonoBehaviour, IBulletIteractable
     public virtual void OnAbsorbed()
     {
         Destroy(gameObject);
-    }
-
-    public void OnBulletCollision(Bullet bullet)
-    {
-        if (damage <= 0 || bullet.damage <= 0)
-        {
-            return;
-        }
-
-        int tempDamage = damage;
-        damage = Math.Max(damage - bullet.damage, 0);
-        bullet.damage = Math.Max(bullet.damage - tempDamage, 0);
-
-        if (damage <= 0)
-        {
-            OnAbsorbed();
-        }
-
-        if (bullet.damage <= 0)
-        {
-            bullet.OnAbsorbed();
-        }
     }
 }
