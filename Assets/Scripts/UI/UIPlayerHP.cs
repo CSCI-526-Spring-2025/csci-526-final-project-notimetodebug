@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro; 
@@ -7,7 +8,13 @@ using System.Collections;
 public class UIPlayerHP : MonoBehaviour
 {
     public Slider healthSlider; 
-    public TextMeshProUGUI hpText; 
+    public TextMeshProUGUI hpText;
+    
+    private Color originalColor;
+    private void Start()
+    {
+        originalColor = healthSlider.fillRect.GetComponent<Image>().color;
+    }
 
     public void SetMaxHealth(int maxHealth)
     {
@@ -40,7 +47,6 @@ public class UIPlayerHP : MonoBehaviour
 
     private IEnumerator BlinkHP()
     {
-        Color originalColor = healthSlider.fillRect.GetComponent<Image>().color;
 
         healthSlider.fillRect.GetComponent<Image>().color = Color.red;
 
