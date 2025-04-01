@@ -256,9 +256,33 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6080884352737701600, guid: 4a62444a0f9b96b4bb8e50777fc231fa, type: 3}
+      propertyPath: Levels.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6080884352737701600, guid: 4a62444a0f9b96b4bb8e50777fc231fa, type: 3}
       propertyPath: TelemetryManagerRef
       value: 
       objectReference: {fileID: 674359896}
+    - target: {fileID: 6080884352737701600, guid: 4a62444a0f9b96b4bb8e50777fc231fa, type: 3}
+      propertyPath: Levels.Array.data[0]
+      value: 
+      objectReference: {fileID: 5676369435336131063, guid: 2accb8a1d18db8b41bb9a8f36cfcda09, type: 3}
+    - target: {fileID: 6080884352737701600, guid: 4a62444a0f9b96b4bb8e50777fc231fa, type: 3}
+      propertyPath: Levels.Array.data[1]
+      value: 
+      objectReference: {fileID: 3288383200582504222, guid: 6d0a104add2114fb79b615fbc87d632b, type: 3}
+    - target: {fileID: 6080884352737701600, guid: 4a62444a0f9b96b4bb8e50777fc231fa, type: 3}
+      propertyPath: Levels.Array.data[2]
+      value: 
+      objectReference: {fileID: 7179459655815215672, guid: e4d781909294345c59f6db0f719bc60b, type: 3}
+    - target: {fileID: 6080884352737701600, guid: 4a62444a0f9b96b4bb8e50777fc231fa, type: 3}
+      propertyPath: Levels.Array.data[3]
+      value: 
+      objectReference: {fileID: 4114279229366912782, guid: b6ec8bd805ce37240a87fd8753b68edc, type: 3}
+    - target: {fileID: 6080884352737701600, guid: 4a62444a0f9b96b4bb8e50777fc231fa, type: 3}
+      propertyPath: Levels.Array.data[4]
+      value: 
+      objectReference: {fileID: 4114279229366912782, guid: b6ec8bd805ce37240a87fd8753b68edc, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
