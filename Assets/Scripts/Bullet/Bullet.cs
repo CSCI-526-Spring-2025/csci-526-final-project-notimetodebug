@@ -14,9 +14,9 @@ public abstract class Bullet : MonoBehaviour
     [field: SerializeField] public int damage { get; protected set; } = 5;
     [field: SerializeField] public int bounceLeft { get; protected set; } = 0;
 
-    private Rigidbody2D rb;
+    protected Rigidbody2D rb;
 
-    protected void Start()
+    protected virtual void Start()
     {
         rb = GetComponent<Rigidbody2D>();
 

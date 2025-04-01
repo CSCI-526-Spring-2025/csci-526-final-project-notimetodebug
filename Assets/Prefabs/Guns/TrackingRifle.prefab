@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7506589807451914705}
   - component: {fileID: 7632166084348932070}
   m_Layer: 0
-  m_Name: Rifle
+  m_Name: TrackingRifle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a40b9f9ce884294981418bc634886fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bulletPrefab: {fileID: 244202265789094677, guid: 9cb41830f1a22434db3fddd9fbf5d065, type: 3}
+  bulletPrefab: {fileID: 244202265789094677, guid: 225654d91958cb94fa1f47be749db743, type: 3}
   gunIcon: {fileID: 21300000, guid: 3f0ac92638cbd4273b1d58b103c7f1aa, type: 3}
   bulletCapacity: 20
   bulletNumber: 20
@@ -128,7 +128,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 1, g: 0.45276454, b: 0.28490567, a: 1}
+  m_Color: {r: 0.28627455, g: 1, b: 0.8932018, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
