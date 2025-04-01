@@ -44,7 +44,6 @@ public class TrackingBullet : Bullet
             Vector3 target = DetectTarget();
             if (target != Vector3.zero)
             {
-                Debug.DrawLine(transform.position, target, Color.red);
                 RotateTowardsTarget(target);
             }
         }
