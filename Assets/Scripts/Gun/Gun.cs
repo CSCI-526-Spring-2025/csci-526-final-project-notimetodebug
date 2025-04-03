@@ -3,8 +3,8 @@ using UnityEngine;
 using UnityEngine.Serialization;
 
 public enum GunType {
-    Default,
-    StrongGun,
+    Rifle,
+    Cannon,
     Shotgun,
     Sniper
 }

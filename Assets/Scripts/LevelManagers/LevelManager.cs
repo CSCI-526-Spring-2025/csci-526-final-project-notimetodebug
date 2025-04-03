@@ -26,7 +26,6 @@ public class LevelManager : MonoBehaviour
     // Bonus value is 10% of the max possible score
     private int bonusValue = 0;
 
-    // private int collectibleScore = 0;
     private Dictionary<int, int> bestScoreByLevel = new Dictionary<int, int>();
     private Dictionary<int, int> maxScoreByLevel = new Dictionary<int, int>();
 
@@ -170,12 +169,18 @@ public class LevelManager : MonoBehaviour
         }
     }
 
+    public void CheckAllCollectiblesCollectedBonus(){
+        if (FindObjectsOfType<CollectibleStar>().Length == 0){
+            allCollectiblesCollectedBonus = true;
+        }
+    }
+
     public void StopUpdatingScore()
     {
         isEndLevel = true;
     }
 
-    public void AddScore(int score)
+    public void AddEnemyKillScore(int score)
     {
         if (isEndLevel) return; 
         enemyKillScore += score;
@@ -327,7 +332,7 @@ public class LevelManager : MonoBehaviour
             {"Collectibles:", collectibleScore},
             {"High HP bonus:", highHPBonus ? bonusValue : 0},
             {"Kills bonus:", allEnemiesKilledBonus ? bonusValue : 0},
-            {"Collectibles bonus:", allCollectiblesCollectedBonus ? bonusValue : 0}
+            {"Collector bonus:", allCollectiblesCollectedBonus ? bonusValue : 0}
         };
         return breakdown;
     }

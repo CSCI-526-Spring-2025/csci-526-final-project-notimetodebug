@@ -89,7 +89,7 @@ public class Enemy : Creature
         if (isDead) return;
         isDead = true;
         Debug.Log("Enemy died, adding score: " + scoreValue);
-        LevelManager.Instance.AddScore(scoreValue);
+        LevelManager.Instance.AddEnemyKillScore(scoreValue);
         if (enemyHPBar != null)
         {
             Destroy(enemyHPBar.gameObject);

@@ -33,6 +33,7 @@ public class EndOfLevel : MonoBehaviour
     {
         LevelManager.Instance.CheckHPBonus();
         LevelManager.Instance.CheckAllEnemiesKilledBonus();
+        LevelManager.Instance.CheckAllCollectiblesCollectedBonus();
 
         LevelManager.Instance.StopUpdatingScore();
 

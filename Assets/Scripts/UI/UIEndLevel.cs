@@ -8,9 +8,11 @@ public class UIEndLevel : MonoBehaviour
 {
     public TextMeshProUGUI finalScoreText;
     public TextMeshProUGUI enemyKillText;
+    public TextMeshProUGUI collectibleText;
     public TextMeshProUGUI hpRemainingText;
     public TextMeshProUGUI fullHPBonusText;
     public TextMeshProUGUI allEnemiesKilledBonusText;
+    public TextMeshProUGUI collectorBonusText;
     public GameObject scoreBreakdownPanel; 
     public Button againButton;
     public Button menuButton;
@@ -65,7 +67,7 @@ public class UIEndLevel : MonoBehaviour
         enemyKillText.gameObject.SetActive(false);
         fullHPBonusText.gameObject.SetActive(false);
         allEnemiesKilledBonusText.gameObject.SetActive(false);
-        //finalScoreText.gameObject.SetActive(false);
+        collectorBonusText.gameObject.SetActive(false);
 
         finalScoreText.gameObject.SetActive(true); 
         finalScoreText.text = "Final Score: 0";
@@ -80,12 +82,12 @@ public class UIEndLevel : MonoBehaviour
             yield return StartCoroutine(AnimateText(enemyKillText, "Enemy kills: ", 0));
         }
 
-        // if (breakdown["Collectibles:"] > 0)
-        // {
-        //     yield return StartCoroutine(AnimateText(collectibleText, "Collectibles: ", breakdown["Collectibles:"]));
-        // } else {
-        //     yield return StartCoroutine(AnimateText(collectibleText, "Collectibles: ", 0));
-        // }
+        if (breakdown["Collectibles:"] > 0)
+        {
+            yield return StartCoroutine(AnimateText(collectibleText, "Collectibles: ", breakdown["Collectibles:"]));
+        } else {
+            yield return StartCoroutine(AnimateText(collectibleText, "Collectibles: ", 0));
+        }
 
         int starsFilled = 0;
         if (regularScore >= t1)
@@ -116,10 +118,10 @@ public class UIEndLevel : MonoBehaviour
             yield return StartCoroutine(AnimateText(allEnemiesKilledBonusText, "KILLER BONUS: ", breakdown["Kills bonus:"]));
         }
 
-        // if (breakdown["Collectibles:"] > 0)
-        // {
-        //     yield return StartCoroutine(AnimateText(collectibleText, "Collectibles: ", breakdown["Collectibles:"]));
-        // }
+        if (breakdown["Collector bonus:"] > 0)
+        {
+            yield return StartCoroutine(AnimateText(collectorBonusText, "Collector bonus: ", breakdown["Collector bonus:"]));
+        }
 
         if (finalScore > regularScore)
         {
@@ -153,8 +155,7 @@ public class UIEndLevel : MonoBehaviour
 
         int currentValue = 0;
         float duration = 2f;
-        float stepTime = duration / Mathf.Max(targetValue, 1); // prevent div by 0
-
+        float stepTime = duration / Mathf.Max(targetValue, 1);
         while (currentValue < targetValue)
         {
             currentValue += Mathf.CeilToInt(targetValue / 20f);
