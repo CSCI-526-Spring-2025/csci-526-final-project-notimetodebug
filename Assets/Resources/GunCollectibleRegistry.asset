@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c56d5f1910243024db5a3e55d2e09afc, type: 3}
+  m_Name: GunCollectibleRegistry
+  m_EditorClassIdentifier: 
+  mappings:
+  - gunPrefab: {fileID: 7632166084348932070, guid: 3b2d9c4b92832674197636e50a594a08, type: 3}
+    collectiblePrefab: {fileID: 7447808090081068697, guid: ee23b51033b6d4c4a9fcd3d1302f336c, type: 3}
+  - gunPrefab: {fileID: 4820497135194483252, guid: 19325da91eef035448b38a68a45aac4a, type: 3}
+    collectiblePrefab: {fileID: 9062028382029069186, guid: dea1f70e170ba7a4bacc9fc43519b0be, type: 3}
+  - gunPrefab: {fileID: 5187759985211964299, guid: f1852e53bde0d7b468a6e4a22b77e340, type: 3}
+    collectiblePrefab: {fileID: 1575836153233160265, guid: c4f0604a4a3451f48a2c52ecebd6fb35, type: 3}

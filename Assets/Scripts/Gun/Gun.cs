@@ -2,6 +2,12 @@
 using UnityEngine;
 using UnityEngine.Serialization;
 
+public enum GunType {
+    Default,
+    StrongGun,
+    Shotgun,
+    Sniper
+}
 
 public abstract class Gun : MonoBehaviour
 {
@@ -16,6 +22,7 @@ public abstract class Gun : MonoBehaviour
     [SerializeField] protected float recoilForce = 1;
     [SerializeField] protected bool isFullAuto = true;
 
+    public GameObject collectiblePrefab;
     protected float lastFireTime = 0;
     protected float lastReloadTime = 0;
 

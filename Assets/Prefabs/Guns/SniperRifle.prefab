@@ -190,6 +190,7 @@ MonoBehaviour:
   reloadRate: 2
   recoilForce: 10
   isFullAuto: 0
+  collectiblePrefab: {fileID: 7447808090081068697, guid: f3ce1b41230566e4284846c3c0b7e0b5, type: 3}
   laserRenderer: {fileID: 7892438178353614580}
   aimingZoom: 16
 --- !u!1 &7699256785445795330

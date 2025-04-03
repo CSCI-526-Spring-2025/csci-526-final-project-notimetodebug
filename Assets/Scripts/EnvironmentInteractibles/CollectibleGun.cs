@@ -15,10 +15,22 @@ public class CollectibleGun : MonoBehaviour
     
     private Vector3 startPosition;
     private bool isCollected = false;
-    
+    private bool playerInRange = false;
+
+    [Header("Pickup Text")]
+    public bool showPickupText = true;
+    public GameObject pickupText;
+
+    [Header("Gun Type")]
+    public GunType gunType;
+
     void Start()
     {
         startPosition = transform.position;
+        if (pickupText != null)
+        {
+            pickupText.SetActive(false);
+        }
     }
     
     void Update()
@@ -32,6 +44,11 @@ public class CollectibleGun : MonoBehaviour
             
             transform.Rotate(Vector3.forward, rotationSpeed * Time.deltaTime);
         }
+
+        if (playerInRange && !isCollected && Input.GetKeyDown(KeyCode.P))
+        {
+            CollectGun();
+        }
     }
     
     void OnTriggerEnter2D(Collider2D other)
@@ -44,43 +61,56 @@ public class CollectibleGun : MonoBehaviour
         
         if (player != null)
         {
-            isCollected = true;
-            
-            // Instantiate the gun prefab as a child of the player
-            Gun newGun = Instantiate(gunPrefab, player.transform);
-            
-            if (newGun.transform != null)
-            {
-                newGun.transform.localPosition = Vector3.zero;
-                newGun.transform.localRotation = Quaternion.identity;
+            playerInRange = true;
+            if (pickupText != null && showPickupText){
+                pickupText.SetActive(true);
             }
-            
-            player.PickUpGun(newGun);
-            
-            Renderer renderer = GetComponent<Renderer>();
-            if (renderer != null)
-            {
-                renderer.enabled = false;
-            }
-            
-            // Disable any child renderers
-            Renderer[] childRenderers = GetComponentsInChildren<Renderer>();
-            foreach (Renderer r in childRenderers)
-            {
-                r.enabled = false;
-            }
-            
-            // Disable the collider
-            Collider2D collider = GetComponent<Collider2D>();
-            if (collider != null)
-            {
-                collider.enabled = false;
-            }
-
-            TelemetryManager.Log(TelemetryManager.EventName.COLLECTIBLE_PICKED_UP, $"Gun: {gunPrefab.name}");
-
-            // Destroy the collectible
-            Destroy(gameObject, 0.1f);
         }
+    }
+
+    void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.GetComponent<Player>() != null)
+        {
+            playerInRange = false;
+            if (pickupText != null){
+                pickupText.SetActive(false);
+            }
+        }
+    }
+
+    void CollectGun(){
+        isCollected = true;
+
+        Player player = FindObjectOfType<Player>();
+        if (player == null || gunPrefab == null)
+            return;
+
+        // player.PickUpGun(gunPrefab);
+        Gun newGun = Instantiate(gunPrefab, player.transform);
+        newGun.transform.localPosition = Vector3.zero;
+        newGun.transform.rotation = Quaternion.identity;
+
+        player.PickUpGun(newGun);
+
+        foreach (Renderer r in GetComponentsInChildren<Renderer>())
+        {
+            r.enabled = false;
+        }
+
+        if (pickupText != null)
+        {
+            pickupText.SetActive(false);
+        }
+
+        Collider2D collider = GetComponent<Collider2D>();
+        if (collider != null)
+        {
+            collider.enabled = false;
+        }
+
+        TelemetryManager.Log(TelemetryManager.EventName.COLLECTIBLE_PICKED_UP, $"Gun: {gunPrefab.name}");
+
+        Destroy(gameObject, 0.1f);
     }
 }

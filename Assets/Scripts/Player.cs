@@ -16,6 +16,7 @@ public class Player : Creature
     [SerializeField] public int currentGunIndex;
 
     [SerializeField] public List<Gun> guns;
+    [SerializeField] private GunCollectibleRegistry gunCollectibleRegistry;
 
     private UIWeaponIndicator weaponIndicatorUI;
     private UIBullet bulletUI;
@@ -180,13 +181,44 @@ public class Player : Creature
         isFiring = false;
     }
 
-    public void PickUpGun(Gun gun)
+    // public void PickUpGun(Gun gun)
+    // {
+    //     if (guns.Count > 1)
+    //     {
+    //         guns.ElementAt(1).OnUnequipped();
+    //         guns.ElementAt(1).Destroy();
+    //         guns.RemoveAt(1);
+    //     }
+
+    //     gun.SetBulletUI(bulletUI);
+    //     gun.SetWeaponIndicatorUI(weaponIndicatorUI);
+    //     guns.Add(gun);
+    //     gun.OnPickedUp(this);
+
+    //     if (currentGunIndex == guns.Count - 1)
+    //     {
+    //         gun.OnEquipped();
+    //     }
+    //     else
+    //     {
+    //         gun.OnUnequipped();
+    //     }
+    // }
+        public void PickUpGun(Gun gun)
     {
         if (guns.Count > 1)
         {
-            guns.ElementAt(1).OnUnequipped();
-            guns.ElementAt(1).Destroy();
+            Gun oldSpecialGun = guns.ElementAt(1);
+            oldSpecialGun.OnUnequipped();
             guns.RemoveAt(1);
+
+            GameObject collectiblePrefab = gunCollectibleRegistry.GetCollectiblePrefab(oldSpecialGun);
+
+            if (collectiblePrefab != null) {
+                Vector3 dropPosition = transform.position + Vector3.right * 1.5f + Vector3.up * 0.5f;
+                Instantiate(collectiblePrefab, dropPosition, Quaternion.identity);
+            } 
+            oldSpecialGun.Destroy();
         }
 
         gun.SetBulletUI(bulletUI);
@@ -194,14 +226,13 @@ public class Player : Creature
         guns.Add(gun);
         gun.OnPickedUp(this);
 
-        if (currentGunIndex == guns.Count - 1)
-        {
+        if (currentGunIndex == guns.Count - 1){
             gun.OnEquipped();
         }
-        else
-        {
+        else {
             gun.OnUnequipped();
         }
+        
     }
 
     public override void TakeDamage(int damage, string source = "unknown")

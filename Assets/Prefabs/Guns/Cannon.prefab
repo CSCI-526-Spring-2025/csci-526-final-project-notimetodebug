@@ -54,6 +54,7 @@ MonoBehaviour:
   reloadRate: 10
   recoilForce: 5
   isFullAuto: 1
+  collectiblePrefab: {fileID: 7447808090081068697, guid: f3ce1b41230566e4284846c3c0b7e0b5, type: 3}
 --- !u!1 &7699256785445795330
 GameObject:
   m_ObjectHideFlags: 0

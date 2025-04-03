@@ -677,6 +677,10 @@ PrefabInstance:
       propertyPath: TelemetryManagerRef
       value: 
       objectReference: {fileID: 674359896}
+    - target: {fileID: 4777991387063992776, guid: 2aa14435f2dfbdd458ef1f486221150c, type: 3}
+      propertyPath: gunCollectibleRegistry
+      value: 
+      objectReference: {fileID: 11400000, guid: 8fb0b3d27adebe14ab62859aa997ed1c, type: 2}
     - target: {fileID: 5779584262437222251, guid: 2aa14435f2dfbdd458ef1f486221150c, type: 3}
       propertyPath: m_PresetInfoIsWorld
       value: 1
