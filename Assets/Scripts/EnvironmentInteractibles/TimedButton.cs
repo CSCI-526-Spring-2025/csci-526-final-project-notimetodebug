@@ -4,7 +4,7 @@ using Assets.Scripts.EnvironmentInteractibles;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class TimedButton : MonoBehaviour, IDoorController
+public class TimedButton : MonoBehaviour, IItemController
 {
     public float triggerTime = 2;
 
@@ -34,7 +34,7 @@ public class TimedButton : MonoBehaviour, IDoorController
         buttonReleaseTime = Time.time + triggerTime;
     }
 
-    public bool IsDoorOpen()
+    public bool IsItemActive()
     {
         return isButtonPressed;
     }

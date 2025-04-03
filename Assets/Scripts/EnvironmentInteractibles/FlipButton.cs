@@ -3,11 +3,11 @@ using UnityEngine;
 
 namespace Assets.Scripts.EnvironmentInteractibles
 {
-    public class FlipButton : MonoBehaviour, IDoorController
+    public class FlipButton : MonoBehaviour, IItemController
     {
         private bool isButtonPressed = false;
 
-        public bool IsDoorOpen() {
+        public bool IsItemActive() {
             return isButtonPressed;
         }
 
