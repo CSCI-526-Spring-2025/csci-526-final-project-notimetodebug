@@ -1,7 +1,7 @@
 using Assets.Scripts.EnvironmentInteractibles;
 using UnityEngine;
 
-public class Creature : MonoBehaviour, IBulletIteractable, IDoorController
+public class Creature : MonoBehaviour, IBulletIteractable, IItemController
 {
     public int HP;
     public int maxHP;
@@ -11,7 +11,7 @@ public class Creature : MonoBehaviour, IBulletIteractable, IDoorController
         HP = maxHP; 
     }
 
-    public bool IsDoorOpen()
+    public bool IsItemActive()
     {
         return HP <= 0;
     }

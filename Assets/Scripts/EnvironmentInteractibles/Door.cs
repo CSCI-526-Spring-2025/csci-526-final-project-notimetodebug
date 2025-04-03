@@ -9,7 +9,7 @@ public class Door : MonoBehaviour
 {
 
     public List<GameObject> doorControllersObjects;
-    private List<IDoorController> doorControllers;
+    private List<IItemController> doorControllers;
 
     private Animator animator;
     private bool isDoorOpen = true;
@@ -18,7 +18,7 @@ public class Door : MonoBehaviour
     {
         List<bool> controllerStates = doorControllers
             .Where(controller => controller != null)
-            .Select(controller => controller.IsDoorOpen())
+            .Select(controller => controller.IsItemActive())
             .ToList();
 
         return !controllerStates.Contains(false);
@@ -41,7 +41,7 @@ public class Door : MonoBehaviour
         animator = GetComponent<Animator>();
         animator.SetBool("Open", isDoorOpen);
         doorControllers = doorControllersObjects
-            .Select(doorControllersObject => doorControllersObject?.GetComponent<IDoorController>())
+            .Select(doorControllersObject => doorControllersObject?.GetComponent<IItemController>())
             .Where(controller => controller != null)
             .ToList();
     }

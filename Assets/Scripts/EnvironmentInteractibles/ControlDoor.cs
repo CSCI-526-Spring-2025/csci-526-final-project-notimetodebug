@@ -3,26 +3,26 @@ using System.Collections.Generic;
 using Assets.Scripts.EnvironmentInteractibles;
 using UnityEngine;
 
-public class ControlDoor : MonoBehaviour, IDoorController
+public class ControlDoor : MonoBehaviour, IItemController
 {
-    public bool openOnTrigger;
-    private bool isDoorOpen = false;
+    public bool activativeOnTrigger;
+    private bool isItemActive = false;
 
-    public bool IsDoorOpen()
+    public bool IsItemActive()
     {
-        return isDoorOpen;
+        return isItemActive;
     }
 
     [ContextMenu("Trigger")]
     private void Trigger()
     {
-        if (openOnTrigger)
+        if (activativeOnTrigger)
         {
-            isDoorOpen = true;
+            isItemActive = true;
         }
         else
         {
-            isDoorOpen = false;
+            isItemActive = false;
         }
     }
 
@@ -36,7 +36,7 @@ public class ControlDoor : MonoBehaviour, IDoorController
     // Start is called before the first frame update
     void Start()
     {
-        isDoorOpen = !openOnTrigger;
+        isItemActive = !activativeOnTrigger;
     }
 
     // Update is called once per frame

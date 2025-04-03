@@ -3,8 +3,8 @@ using UnityEngine;
 
 namespace Assets.Scripts.EnvironmentInteractibles
 {
-    public interface IDoorController
+    public interface IItemController
     {
-        public bool IsDoorOpen();
+        public bool IsItemActive();
     }
 }
