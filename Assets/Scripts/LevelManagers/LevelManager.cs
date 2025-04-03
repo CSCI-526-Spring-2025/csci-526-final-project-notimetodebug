@@ -133,11 +133,10 @@ public class LevelManager : MonoBehaviour
             maxEnemyKillScore += enemyScore;
         }
 
-        // foreach (var collectible in FindObjectsOfType<Collectible>())
-        // {
-        //     int score = collectible.GetScoreValue();
-        //     maxCollectibleScore += score;
-        // }
+        foreach (var star in FindObjectsOfType<CollectibleStar>())
+        {
+            maxCollectibleScore += star.points;
+        }
 
         maxPossibleScore = maxEnemyKillScore + maxCollectibleScore;
         bonusValue = (int)(maxPossibleScore * 0.1);
@@ -183,6 +182,15 @@ public class LevelManager : MonoBehaviour
         currentScore = GetCurrentScore();
         Debug.Log("Killed an enemy, increasing enemyKillScore by " + score + ", current enemyKillScore: " + enemyKillScore);
         
+        OnScoreUpdated?.Invoke();
+    }
+
+    public void AddCollectibleScore(int score)
+    {
+        if (isEndLevel) return;
+        collectibleScore += score;
+        currentScore = GetCurrentScore();
+        Debug.Log("Collected a star, increasing collectibleScore by " + score + ", current collectibleScore: " + collectibleScore);
         OnScoreUpdated?.Invoke();
     }
 
