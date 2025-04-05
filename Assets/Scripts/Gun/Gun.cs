@@ -13,6 +13,12 @@ public abstract class Gun : MonoBehaviour
 {
     [SerializeField] protected GameObject bulletPrefab;
     [SerializeField] private Sprite gunIcon;
+    [SerializeField] private string gunName;
+    [SerializeField] [TextArea] private string gunDescription;
+
+    public string GetGunName() => gunName;
+    public string GetGunDescription() => gunDescription;
+
 
     [SerializeField] protected int bulletCapacity = 30;
     [SerializeField] protected int bulletNumber = 30;

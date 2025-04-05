@@ -160,7 +160,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 0
+  m_PresetInfoIsWorld: 1
 --- !u!114 &4950407862241531412
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -191,3 +191,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bulletBar: {fileID: 5625844742377926823}
+  startColor: {r: 1, g: 1, b: 1, a: 1}
+  overheatColor: {r: 1, g: 0, b: 0, a: 1}

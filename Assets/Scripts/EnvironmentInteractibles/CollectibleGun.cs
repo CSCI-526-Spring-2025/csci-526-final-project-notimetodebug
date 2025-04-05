@@ -18,8 +18,8 @@ public class CollectibleGun : MonoBehaviour
     private bool playerInRange = false;
 
     [Header("Pickup Text")]
-    public bool showPickupText = true;
-    public GameObject pickupText;
+    public bool showPickupHint = true;
+    public GameObject pickupHint;
 
     [Header("Gun Type")]
     public GunType gunType;
@@ -27,9 +27,9 @@ public class CollectibleGun : MonoBehaviour
     void Start()
     {
         startPosition = transform.position;
-        if (pickupText != null)
+        if (pickupHint != null)
         {
-            pickupText.SetActive(false);
+            pickupHint.SetActive(false);
         }
     }
     
@@ -62,8 +62,9 @@ public class CollectibleGun : MonoBehaviour
         if (player != null)
         {
             playerInRange = true;
-            if (pickupText != null && showPickupText){
-                pickupText.SetActive(true);
+            if (pickupHint != null && showPickupHint)
+            {
+                pickupHint.SetActive(true);
             }
         }
     }
@@ -73,9 +74,11 @@ public class CollectibleGun : MonoBehaviour
         if (other.GetComponent<Player>() != null)
         {
             playerInRange = false;
-            if (pickupText != null){
-                pickupText.SetActive(false);
+            if (pickupHint != null)
+            {
+                pickupHint.SetActive(false);
             }
+
         }
     }
 
@@ -98,9 +101,9 @@ public class CollectibleGun : MonoBehaviour
             r.enabled = false;
         }
 
-        if (pickupText != null)
+        if (pickupHint != null)
         {
-            pickupText.SetActive(false);
+            pickupHint.SetActive(false);
         }
 
         Collider2D collider = GetComponent<Collider2D>();
