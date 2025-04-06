@@ -26,7 +26,7 @@ public class Player : Creature
 
     private bool isFiring = false;
     private Coroutine blinkCoroutine;
-    
+
     private SpriteRenderer spriteRenderer;
     private Color originalColor;
 
@@ -44,11 +44,12 @@ public class Player : Creature
     private bool hasMotionStateChanged(out MotionState motionState)
     {
         Vector2 velocity = GetVelocity();
-        Collider2D ground = Physics2D.Raycast(transform.position, Vector2.down, 0.85f, LayerMask.GetMask("Platform")).collider;
+        Collider2D ground = Physics2D.Raycast(transform.position, Vector2.down, 0.85f, LayerMask.GetMask("Platform"))
+            .collider;
 
         bool isGrounded = ground != null
-            && ground.gameObject.TryGetComponent<Wall>(out Wall groundWall)
-            && groundWall is not Spikes;
+                          && ground.gameObject.TryGetComponent<Wall>(out Wall groundWall)
+                          && groundWall is not Spikes;
 
 
         if (isGrounded && velocity == Vector2.zero)
@@ -180,31 +181,7 @@ public class Player : Creature
         currentGun.OnEquipped();
         isFiring = false;
     }
-
-    // public void PickUpGun(Gun gun)
-    // {
-    //     if (guns.Count > 1)
-    //     {
-    //         guns.ElementAt(1).OnUnequipped();
-    //         guns.ElementAt(1).Destroy();
-    //         guns.RemoveAt(1);
-    //     }
-
-    //     gun.SetBulletUI(bulletUI);
-    //     gun.SetWeaponIndicatorUI(weaponIndicatorUI);
-    //     guns.Add(gun);
-    //     gun.OnPickedUp(this);
-
-    //     if (currentGunIndex == guns.Count - 1)
-    //     {
-    //         gun.OnEquipped();
-    //     }
-    //     else
-    //     {
-    //         gun.OnUnequipped();
-    //     }
-    // }
-        public void PickUpGun(Gun gun)
+    public void PickUpGun(Gun gun)
     {
         if (guns.Count > 1)
         {
@@ -214,10 +191,12 @@ public class Player : Creature
 
             GameObject collectiblePrefab = gunCollectibleRegistry.GetCollectiblePrefab(oldSpecialGun);
 
-            if (collectiblePrefab != null) {
+            if (collectiblePrefab != null)
+            {
                 Vector3 dropPosition = transform.position + Vector3.right * 1.5f + Vector3.up * 0.5f;
                 Instantiate(collectiblePrefab, dropPosition, Quaternion.identity);
-            } 
+            }
+
             oldSpecialGun.Destroy();
         }
 
@@ -226,24 +205,26 @@ public class Player : Creature
         guns.Add(gun);
         gun.OnPickedUp(this);
 
-        if (currentGunIndex == guns.Count - 1){
+        if (currentGunIndex == guns.Count - 1)
+        {
             gun.OnEquipped();
         }
-        else {
+        else
+        {
             gun.OnUnequipped();
         }
-        
     }
 
     public override void TakeDamage(int damage, string source = "unknown")
     {
-        base.TakeDamage(damage);
+        base.TakeDamage(damage, source);
         healthUI?.UpdateHealth(HP);
         healthUI?.BlinkHPBar();
         if (blinkCoroutine is not null)
         {
             StopCoroutine(blinkCoroutine);
         }
+
         blinkCoroutine = StartCoroutine(BlinkRed());
 
         TelemetryManager.Log(TelemetryManager.EventName.PLAYER_DAMAGED, source);
@@ -259,6 +240,7 @@ public class Player : Creature
             spriteRenderer.color = originalColor;
             yield return new WaitForSeconds(0.1f);
         }
+
         blinkCoroutine = null;
     }
 
