@@ -2,7 +2,8 @@
 using UnityEngine;
 using UnityEngine.Serialization;
 
-public enum GunType {
+public enum GunType
+{
     Rifle,
     Cannon,
     Shotgun,
@@ -31,28 +32,35 @@ public abstract class Gun : MonoBehaviour
     public GameObject collectiblePrefab;
     protected float lastFireTime = 0;
     protected float lastReloadTime = 0;
+    protected bool isOverheat = false;
+    protected bool isEquipped = false;
 
     protected float bulletGenerateDistance = 1.2f;
     private UIBullet bulletUI;
     private UIWeaponIndicator weaponIndicatorUI;
+
+    private Renderer renderer;
 
     protected string ownerName;
 
     protected virtual void Start()
     {
         ownerName = transform.parent.name;
+        renderer = gameObject.GetComponentInChildren<Renderer>();
     }
 
     protected virtual void Update()
     {
         float currentTime = Time.time;
         if (bulletNumber < bulletCapacity
-                        && currentTime - lastReloadTime >= 1 / reloadRate
-                        && currentTime - lastFireTime >= reloadPreparationTime)
+            && currentTime - lastReloadTime >= 1 / reloadRate
+            && currentTime - lastFireTime >= reloadPreparationTime)
         {
             lastReloadTime = currentTime;
             ChangeBulletNumber(1);
         }
+
+        renderer.enabled = isEquipped;
     }
 
     public virtual void SetDirection(Vector3 direction)
@@ -62,6 +70,11 @@ public abstract class Gun : MonoBehaviour
 
     public virtual Vector3 Fire(Vector3 direction)
     {
+        if (isOverheat)
+        {
+            return Vector3.zero;
+        }
+
         float currentTime = Time.time;
         if (bulletNumber <= 0 || currentTime - lastFireTime < 1 / fireRate)
         {
@@ -102,14 +115,14 @@ public abstract class Gun : MonoBehaviour
 
     public void OnEquipped()
     {
-        gameObject.SetActive(true);
+        isEquipped = true;
         bulletUI?.UpdateBulletUI(this);
         weaponIndicatorUI?.UpdateWeaponIndicator(true);
     }
 
     public virtual void OnUnequipped()
     {
-        gameObject.SetActive(false);
+        isEquipped = false;
         weaponIndicatorUI?.UpdateWeaponIndicator(false);
     }
 
@@ -122,7 +135,7 @@ public abstract class Gun : MonoBehaviour
     {
         transform.SetParent(player.transform);
         transform.localPosition = Vector3.zero;
-        
+
         weaponIndicatorUI?.SetGun(this);
     }
 
@@ -139,9 +152,21 @@ public abstract class Gun : MonoBehaviour
     protected void ChangeBulletNumber(int change)
     {
         bulletNumber += change;
-        bulletUI?.UpdateBulletUI(this);
+        if (isEquipped)
+        {
+            bulletUI?.UpdateBulletUI(this);
+        }
+        
+        if (!isOverheat && bulletNumber == 0)
+        {
+            isOverheat = true;
+        }
+        else if (isOverheat && bulletNumber == bulletCapacity)
+        {
+            isOverheat = false;
+        }
     }
-    
+
     // UI
     public Sprite GetGunIcon()
     {
@@ -157,5 +182,4 @@ public abstract class Gun : MonoBehaviour
     {
         return bulletCapacity;
     }
-
 }
