@@ -178,7 +178,7 @@ MonoBehaviour:
   currentGunIndex: 0
   guns:
   - {fileID: 682803075138482941}
-  gunCollectibleRegistry: {fileID: 0}
+  gunCollectibleRegistry: {fileID: 11400000, guid: 8fb0b3d27adebe14ab62859aa997ed1c, type: 2}
 --- !u!1001 &628230691399647915
 PrefabInstance:
   m_ObjectHideFlags: 0
