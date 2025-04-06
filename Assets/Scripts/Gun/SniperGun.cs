@@ -43,7 +43,7 @@ public class SniperGun : Gun
         laserRenderer.SetPosition(0, laserRenderer.transform.position);
         Vector3 nextDirection = direction;
         Vector3 nextPosition = laserRenderer.transform.position;
-        for (int i = 0; i < laserBounceTimes; i++)
+        for (int i = 0; i <= laserBounceTimes; i++)
         {
             RaycastHit2D hit = Physics2D.Raycast(nextPosition + nextDirection * raycastFrontGap,
                 nextDirection, float.PositiveInfinity, LayerMask.GetMask("Platform"));
