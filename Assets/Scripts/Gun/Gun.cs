@@ -39,14 +39,14 @@ public abstract class Gun : MonoBehaviour
     private UIBullet bulletUI;
     private UIWeaponIndicator weaponIndicatorUI;
 
-    private Renderer renderer;
+    private Renderer gunRenderer;
 
     protected string ownerName;
 
     protected virtual void Start()
     {
         ownerName = transform.parent.name;
-        renderer = gameObject.GetComponentInChildren<Renderer>();
+        gunRenderer = gameObject.GetComponentInChildren<Renderer>();
     }
 
     protected virtual void Update()
@@ -60,7 +60,7 @@ public abstract class Gun : MonoBehaviour
             ChangeBulletNumber(1);
         }
 
-        renderer.enabled = isEquipped;
+        gunRenderer.enabled = isEquipped;
     }
 
     public virtual void SetDirection(Vector3 direction)
