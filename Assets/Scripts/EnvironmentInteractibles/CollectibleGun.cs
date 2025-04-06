@@ -45,7 +45,7 @@ public class CollectibleGun : MonoBehaviour
             transform.Rotate(Vector3.forward, rotationSpeed * Time.deltaTime);
         }
 
-        if (playerInRange && !isCollected && Input.GetKeyDown(KeyCode.P))
+        if (playerInRange && !isCollected && Input.GetKeyDown(KeyCode.A))
         {
             CollectGun();
         }
