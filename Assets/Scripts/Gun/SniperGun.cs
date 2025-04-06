@@ -13,8 +13,8 @@ public class SniperGun : Gun
 
     protected override void Start()
     {
+        base.Start();
         cameraController = FindObjectOfType<CameraController>();
-
         laserBounceTimes = bulletPrefab.GetComponent<Bullet>().bounceLeft;
     }
 

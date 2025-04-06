@@ -39,14 +39,14 @@ public abstract class Gun : MonoBehaviour
     private UIBullet bulletUI;
     private UIWeaponIndicator weaponIndicatorUI;
 
-    private Renderer gunRenderer;
+    private SpriteRenderer gunRenderer;
 
     protected string ownerName;
 
     protected virtual void Start()
     {
         ownerName = transform.parent.name;
-        gunRenderer = gameObject.GetComponentInChildren<Renderer>();
+        gunRenderer = gameObject.GetComponentInChildren<SpriteRenderer>();
     }
 
     protected virtual void Update()
