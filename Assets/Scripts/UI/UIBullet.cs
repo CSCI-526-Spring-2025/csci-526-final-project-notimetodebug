@@ -32,6 +32,7 @@ public class UIBullet : MonoBehaviour
 
         if (overheatIcon != null)
         {
+            overheatIcon.color = Color.Lerp(startColor, overheatColor, bulletRatio);
             overheatIcon.gameObject.SetActive(gun.IsOverheated());
         }
     }
