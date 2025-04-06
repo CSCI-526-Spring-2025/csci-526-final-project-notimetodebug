@@ -50,7 +50,7 @@ MonoBehaviour:
   gunName: Canon
   gunDescription: Strong recoil, high damage
   bulletCapacity: 20
-  bulletNumber: 16
+  bulletNumber: 20
   fireRate: 8
   reloadPreparationTime: 1
   reloadRate: 10

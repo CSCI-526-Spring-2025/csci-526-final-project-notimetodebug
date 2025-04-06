@@ -152,11 +152,7 @@ public abstract class Gun : MonoBehaviour
     protected void ChangeBulletNumber(int change)
     {
         bulletNumber += change;
-        if (isEquipped)
-        {
-            bulletUI?.UpdateBulletUI(this);
-        }
-        
+
         if (!isOverheat && bulletNumber == 0)
         {
             isOverheat = true;
@@ -164,6 +160,11 @@ public abstract class Gun : MonoBehaviour
         else if (isOverheat && bulletNumber == bulletCapacity)
         {
             isOverheat = false;
+        }
+
+        if (isEquipped)
+        {
+            bulletUI?.UpdateBulletUI(this);
         }
     }
 
@@ -182,4 +183,10 @@ public abstract class Gun : MonoBehaviour
     {
         return bulletCapacity;
     }
+
+    public bool IsOverheated()
+    {
+        return isOverheat;
+    }
+
 }

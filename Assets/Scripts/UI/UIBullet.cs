@@ -6,6 +6,7 @@ public class UIBullet : MonoBehaviour
     public Image bulletBar; 
     public Color startColor = Color.white;
     public Color overheatColor = Color.red;
+    public Image overheatIcon;
 
     public void UpdateBulletUI(Gun gun)
     {
@@ -28,6 +29,11 @@ public class UIBullet : MonoBehaviour
         bulletBar.color = Color.Lerp(startColor, overheatColor, bulletRatio);
 
         ShowUI(remainingBullets < bulletCapacity);
+
+        if (overheatIcon != null)
+        {
+            overheatIcon.gameObject.SetActive(gun.IsOverheated());
+        }
     }
 
     public void ShowUI(bool show)
