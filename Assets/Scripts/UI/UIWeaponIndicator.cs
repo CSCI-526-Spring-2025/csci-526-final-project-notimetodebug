@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.EventSystems;
+using System.Collections;
 
 public class UIWeaponIndicator : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
@@ -15,6 +16,7 @@ public class UIWeaponIndicator : MonoBehaviour, IPointerEnterHandler, IPointerEx
     [SerializeField] private Sprite inactivateStatusSprite;
 
     private Gun currentGun;
+    private Coroutine hideCoroutine;
 
     private void Start()
     {
@@ -32,6 +34,20 @@ public class UIWeaponIndicator : MonoBehaviour, IPointerEnterHandler, IPointerEx
             innerSphere.sprite = icon;
             innerSphere.enabled = true;
         }
+
+        Player player = FindObjectOfType<Player>();
+        if (player.guns.Count <= 1)
+        return;
+
+        nameText.text = currentGun.GetGunName();
+        descText.text = currentGun.GetGunDescription();
+        descriptionPanel.SetActive(true);
+
+        if (hideCoroutine != null)
+        {
+            StopCoroutine(hideCoroutine);
+        }
+        hideCoroutine = StartCoroutine(HideDescriptionAfterDelay(2f));
     }
 
     public void UpdateWeaponIndicator(bool isEquipped)
@@ -41,18 +57,22 @@ public class UIWeaponIndicator : MonoBehaviour, IPointerEnterHandler, IPointerEx
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if (currentGun == null) return;
         Player player = FindObjectOfType<Player>();
-        if (player == null || player.guns.Count <= 1)
+        if (player.guns.Count <= 1)
         return;
 
-        nameText.text = currentGun.GetGunName();
-        descText.text = currentGun.GetGunDescription();
         descriptionPanel.SetActive(true);
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
         descriptionPanel.SetActive(false);
+    }
+
+    private IEnumerator HideDescriptionAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        descriptionPanel.SetActive(false);
+        hideCoroutine = null;
     }
 }
