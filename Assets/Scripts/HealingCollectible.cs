@@ -36,14 +36,6 @@ public class HealingCollectible : MonoBehaviour
     
     private void HealPlayer(Player player)
     {
-
-        int currentHP = player.HP;
-        int maxHP = player.maxHP;
-        
-        int newHP = Mathf.Min(currentHP + healingAmount, maxHP);
-        
-        player.HP = newHP;
-        
-        FindObjectOfType<UIPlayerHP>()?.UpdateHealth(newHP);
+        player.TakeDamage(-healingAmount);
     }
 }
