@@ -181,6 +181,7 @@ public class Player : Creature
         currentGun.OnEquipped();
         isFiring = false;
     }
+
     public void PickUpGun(Gun gun)
     {
         if (guns.Count > 1)
@@ -278,8 +279,8 @@ public class Player : Creature
         }
 
         currentGunIndex = 0;
+        guns[0].ResetBullets();
         guns[0].OnEquipped();
-        isFiring = false;
     }
 
     public void ResetState()
@@ -287,12 +288,16 @@ public class Player : Creature
         this.HP = maxHP;
         healthUI?.UpdateHealth(this.HP);
 
-        Rigidbody2D rb = GetComponent<Rigidbody2D>();
-        if (rb != null)
+        if (blinkCoroutine is not null)
         {
-            rb.velocity = Vector2.zero;
+            StopCoroutine(blinkCoroutine);
+            spriteRenderer.color = originalColor;
+            blinkCoroutine = null;
         }
 
+        rb.velocity = Vector2.zero;
+
+        isFiring = false;
         ResetToDefaultGun();
     }
 }

@@ -189,4 +189,9 @@ public abstract class Gun : MonoBehaviour
         return isOverheat;
     }
 
+    public void ResetBullets()
+    {
+        bulletNumber = bulletCapacity;
+        isOverheat = false;
+    }
 }
