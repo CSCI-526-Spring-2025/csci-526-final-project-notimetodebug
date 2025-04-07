@@ -6,21 +6,34 @@ public class HealingCollectible : MonoBehaviour
 {
     [SerializeField] private int healingAmount = 20;
     [SerializeField] private bool destroyOnPickup = true;
-
     [SerializeField] private GameObject pickupEffect;
+    
+    // Bobbing effect parameters
+    [Header("Bobbing Effect")]
+    [SerializeField] private float bobbingHeight = 0.2f;
+    [SerializeField] private float bobbingSpeed = 2f;
+    
+    private Vector3 startPosition;
+    
+    private void Start()
+    {
+        startPosition = transform.position;
+    }
+    
+    private void Update()
+    {
+        float newY = startPosition.y + Mathf.Sin(Time.time * bobbingSpeed) * bobbingHeight;
+        transform.position = new Vector3(transform.position.x, newY, transform.position.z);
+    }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        // Check if the colliding object is the player
         Player player = collision.GetComponent<Player>();
         
         if (player != null)
         {
-            // Heal the player
             HealPlayer(player);
             
-
-            // Spawn pickup effect if needed in future
             if (pickupEffect != null)
             {
                 Instantiate(pickupEffect, transform.position, Quaternion.identity);
@@ -35,7 +48,6 @@ public class HealingCollectible : MonoBehaviour
     
     private void HealPlayer(Player player)
     {
-
         int currentHP = player.HP;
         int maxHP = player.maxHP;
         
