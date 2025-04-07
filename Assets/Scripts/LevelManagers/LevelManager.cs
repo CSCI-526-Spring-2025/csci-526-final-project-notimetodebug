@@ -57,13 +57,6 @@ public class LevelManager : MonoBehaviour
         GameObject fail = Instantiate(uiLevelFailPrefab);
         fail.SetActive(false);
         failUI = fail.GetComponent<UILevelFail>();
-
-        /*
-        PlayerPrefs.DeleteKey("TutorialCompleted");
-        PlayerPrefs.DeleteAll();
-        PlayerPrefs.Save();
-        */
-
     }
 
     private void Update()

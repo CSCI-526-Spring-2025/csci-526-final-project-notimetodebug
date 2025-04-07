@@ -36,6 +36,6 @@ public class HealingCollectible : MonoBehaviour
     
     private void HealPlayer(Player player)
     {
-        player.TakeDamage(-healingAmount);
+        player.Heal(healingAmount);
     }
 }

@@ -40,15 +40,30 @@ public class UIPlayerHP : MonoBehaviour
         */
     }
 
-    public void BlinkHPBar()
+    public void BlinkDamageHPBar()
     {
-        StartCoroutine(BlinkHP());
+        StartCoroutine(BlinkRed());
     }
 
-    private IEnumerator BlinkHP()
+    public void BlinkHealHPBar()
+    {
+        StartCoroutine(BlinkGreen());
+    }
+
+    private IEnumerator BlinkRed()
     {
 
         healthSlider.fillRect.GetComponent<Image>().color = Color.red;
+
+        yield return new WaitForSeconds(0.1f);
+
+        healthSlider.fillRect.GetComponent<Image>().color = originalColor;
+    }
+
+    private IEnumerator BlinkGreen()
+    {
+        Color lightGreen = new Color(0.7f, 1f, 0.7f);
+        healthSlider.fillRect.GetComponent<Image>().color = lightGreen;
 
         yield return new WaitForSeconds(0.1f);
 

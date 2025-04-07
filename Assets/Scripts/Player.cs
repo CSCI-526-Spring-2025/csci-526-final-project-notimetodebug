@@ -219,7 +219,7 @@ public class Player : Creature
     {
         base.TakeDamage(damage, source);
         healthUI?.UpdateHealth(HP);
-        healthUI?.BlinkHPBar();
+        healthUI?.BlinkDamageHPBar();
         if (blinkCoroutine is not null)
         {
             StopCoroutine(blinkCoroutine);
@@ -228,6 +228,13 @@ public class Player : Creature
         blinkCoroutine = StartCoroutine(BlinkRed());
 
         TelemetryManager.Log(TelemetryManager.EventName.PLAYER_DAMAGED, source);
+    }
+
+    public void Heal(int amount)
+    {
+        HP = Mathf.Min(HP + amount, maxHP);
+        healthUI?.UpdateHealth(HP);
+        healthUI?.BlinkHealHPBar();
     }
 
     private IEnumerator BlinkRed()
