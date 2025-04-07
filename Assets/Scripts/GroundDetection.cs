@@ -5,19 +5,26 @@ using UnityEngine;
 public class GroundDetection : MonoBehaviour
 {
     public Enemy enemy;
-    // Start is called before the first frame update
-    void Start()
+    private int groundContactCount = 0; 
+
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        
+        if (other.gameObject.layer == LayerMask.NameToLayer("Platform"))
+        {
+            groundContactCount++; 
+        }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
     private void OnTriggerExit2D(Collider2D other)
     {
-        enemy.Flip();
+        if (other.gameObject.layer == LayerMask.NameToLayer("Platform"))
+        {
+            groundContactCount--;
+
+            if (groundContactCount <= 0) 
+            {
+                enemy.Flip();
+            }
+        }
     }
 }

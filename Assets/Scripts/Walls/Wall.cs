@@ -1,6 +1,10 @@
+using System;
 using UnityEngine;
 
-public abstract class Wall: MonoBehaviour, IBulletIteractable
+public abstract class Wall : MonoBehaviour, IBulletIteractable
 {
-    public abstract void OnBulletCollision(Bullet bullet);
+    public virtual void OnBulletCollision(Bullet bullet)
+    {
+        bullet.OnAbsorbed();
+    }
 }
