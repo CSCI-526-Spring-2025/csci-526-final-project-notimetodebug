@@ -281,4 +281,18 @@ public class Player : Creature
         guns[0].OnEquipped();
         isFiring = false;
     }
+
+    public void ResetState()
+    {
+        this.HP = maxHP;
+        healthUI?.UpdateHealth(this.HP);
+
+        Rigidbody2D rb = GetComponent<Rigidbody2D>();
+        if (rb != null)
+        {
+            rb.velocity = Vector2.zero;
+        }
+
+        ResetToDefaultGun();
+    }
 }

@@ -220,46 +220,8 @@ public class LevelManager : MonoBehaviour
             PlayerRef.transform.position = Vector2.zero;
         }
 
-        ResetPlayerState();
-    }
-
-    public void RespawnPlayer()
-    {
-        LoadLevel();
-        ResetPlayerState();
-    }
-
-    private void ResetPlayerState()
-    {
-        Creature playerCreature = PlayerRef.GetComponent<Creature>();
-        if (playerCreature != null)
-        {
-            playerCreature.HP = playerCreature.maxHP;
-        }
-
-        UIPlayerHP playerHPUI = FindObjectOfType<UIPlayerHP>();
-        if (playerHPUI != null)
-        {
-            playerHPUI.UpdateHealth(playerCreature.HP);
-        }
-
-        Rigidbody2D rb = PlayerRef.GetComponent<Rigidbody2D>();
-        if (rb != null)
-        {
-            rb.velocity = Vector2.zero;
-        }
-
         Player player = PlayerRef.GetComponent<Player>();
-        if (player != null && isTutorial())
-        {
-            if (player.guns.Count > 1)
-            {
-                player.currentGunIndex = 0;
-                player.guns[0].OnEquipped();
-                player.guns[1].Destroy();
-                player.guns.RemoveAt(1);
-            }
-        }
+        player?.ResetState();
     }
 
     public void NextLevel()
