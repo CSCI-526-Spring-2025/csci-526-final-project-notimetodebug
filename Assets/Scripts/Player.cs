@@ -195,7 +195,8 @@ public class Player : Creature
             if (collectiblePrefab != null)
             {
                 Vector3 dropPosition = transform.position + Vector3.right * 1.5f + Vector3.up * 0.5f;
-                Instantiate(collectiblePrefab, dropPosition, Quaternion.identity);
+                GameObject collectibleObj = Instantiate(collectiblePrefab, dropPosition, Quaternion.identity);
+                LevelManager.Instance.DynamicallyAddGameObject(collectibleObj);
             }
 
             oldSpecialGun.Destroy();

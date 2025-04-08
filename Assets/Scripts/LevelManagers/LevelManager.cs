@@ -302,9 +302,12 @@ public class LevelManager : MonoBehaviour
         LoadLevel();
     }
 
-
-
-
-
-
+    public void DynamicallyAddGameObject(GameObject obj)
+    {
+        if (CurrentLevelObj is null)
+        {
+            return;
+        }
+        obj.transform.SetParent(CurrentLevelObj.transform);
+    }
 }

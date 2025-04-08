@@ -108,6 +108,7 @@ public abstract class Gun : MonoBehaviour
     {
         GameObject bulletObj = Instantiate(bulletPrefab,
             transform.position + bulletGenerateDistance * direction, transform.rotation);
+        LevelManager.Instance.DynamicallyAddGameObject(bulletObj);
         Bullet bullet = bulletObj.GetComponent<Bullet>();
         bullet.shotBy = ownerName;
         bullet.Fire(direction);

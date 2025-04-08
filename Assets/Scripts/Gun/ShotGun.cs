@@ -18,6 +18,7 @@ public class ShotGun : Gun
 
             GameObject bulletObj = Instantiate(bulletPrefab,
                 transform.position + bulletGenerateDistance * finalDirection, transform.rotation * directionOffset);
+            LevelManager.Instance.DynamicallyAddGameObject(bulletObj);
             Bullet bullet = bulletObj.GetComponent<Bullet>();
             bullet.shotBy = ownerName;
             bullet.Fire(finalDirection);
