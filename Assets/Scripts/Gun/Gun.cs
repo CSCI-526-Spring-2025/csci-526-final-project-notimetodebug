@@ -2,11 +2,24 @@
 using UnityEngine;
 using UnityEngine.Serialization;
 
+public enum GunType
+{
+    Rifle,
+    Cannon,
+    Shotgun,
+    Sniper
+}
 
 public abstract class Gun : MonoBehaviour
 {
     [SerializeField] protected GameObject bulletPrefab;
     [SerializeField] private Sprite gunIcon;
+    [SerializeField] private string gunName;
+    [SerializeField] [TextArea] private string gunDescription;
+
+    public string GetGunName() => gunName;
+    public string GetGunDescription() => gunDescription;
+
 
     [SerializeField] protected int bulletCapacity = 30;
     [SerializeField] protected int bulletNumber = 30;
@@ -16,30 +29,38 @@ public abstract class Gun : MonoBehaviour
     [SerializeField] protected float recoilForce = 1;
     [SerializeField] protected bool isFullAuto = true;
 
+    public GameObject collectiblePrefab;
     protected float lastFireTime = 0;
     protected float lastReloadTime = 0;
+    protected bool isOverheat = false;
+    protected bool isEquipped = false;
 
-    private float bulletGenerateDistance = 1.2f;
+    protected float bulletGenerateDistance = 1.2f;
     private UIBullet bulletUI;
     private UIWeaponIndicator weaponIndicatorUI;
 
-    private string ownerName;
+    private SpriteRenderer gunRenderer;
+
+    protected string ownerName;
 
     protected virtual void Start()
     {
         ownerName = transform.parent.name;
+        gunRenderer = gameObject.GetComponentInChildren<SpriteRenderer>();
     }
 
     protected virtual void Update()
     {
         float currentTime = Time.time;
         if (bulletNumber < bulletCapacity
-                        && currentTime - lastReloadTime >= 1 / reloadRate
-                        && currentTime - lastFireTime >= reloadPreparationTime)
+            && currentTime - lastReloadTime >= 1 / reloadRate
+            && currentTime - lastFireTime >= reloadPreparationTime)
         {
             lastReloadTime = currentTime;
             ChangeBulletNumber(1);
         }
+
+        gunRenderer.enabled = isEquipped;
     }
 
     public virtual void SetDirection(Vector3 direction)
@@ -49,6 +70,11 @@ public abstract class Gun : MonoBehaviour
 
     public virtual Vector3 Fire(Vector3 direction)
     {
+        if (isOverheat)
+        {
+            return Vector3.zero;
+        }
+
         float currentTime = Time.time;
         if (bulletNumber <= 0 || currentTime - lastFireTime < 1 / fireRate)
         {
@@ -65,11 +91,6 @@ public abstract class Gun : MonoBehaviour
 
     public virtual Vector3 StartFire(Vector3 direction)
     {
-        if (bulletNumber <= 0)
-        {
-            return Vector3.zero;
-        }
-
         return Fire(direction);
     }
 
@@ -85,22 +106,23 @@ public abstract class Gun : MonoBehaviour
 
     public virtual void GenerateBullet(Vector3 direction)
     {
-        GameObject bullet = Instantiate(bulletPrefab,
+        GameObject bulletObj = Instantiate(bulletPrefab,
             transform.position + bulletGenerateDistance * direction, transform.rotation);
-        bullet.GetComponent<Bullet>().shotBy = ownerName;
-        bullet.GetComponent<Bullet>().Fire(direction);
+        Bullet bullet = bulletObj.GetComponent<Bullet>();
+        bullet.shotBy = ownerName;
+        bullet.Fire(direction);
     }
 
     public void OnEquipped()
     {
-        gameObject.SetActive(true);
+        isEquipped = true;
         bulletUI?.UpdateBulletUI(this);
         weaponIndicatorUI?.UpdateWeaponIndicator(true);
     }
 
-    public void OnUnequipped()
+    public virtual void OnUnequipped()
     {
-        gameObject.SetActive(false);
+        isEquipped = false;
         weaponIndicatorUI?.UpdateWeaponIndicator(false);
     }
 
@@ -113,7 +135,7 @@ public abstract class Gun : MonoBehaviour
     {
         transform.SetParent(player.transform);
         transform.localPosition = Vector3.zero;
-        
+
         weaponIndicatorUI?.SetGun(this);
     }
 
@@ -130,15 +152,23 @@ public abstract class Gun : MonoBehaviour
     protected void ChangeBulletNumber(int change)
     {
         bulletNumber += change;
-        bulletUI?.UpdateBulletUI(this);
-    }
-    
-    // UI
-    public bool IsUsingDefaultBullet()
-    {
-        return bulletPrefab.name.ToLower().Contains("default");
+
+        if (!isOverheat && bulletNumber == 0)
+        {
+            isOverheat = true;
+        }
+        else if (isOverheat && bulletNumber == bulletCapacity)
+        {
+            isOverheat = false;
+        }
+
+        if (isEquipped)
+        {
+            bulletUI?.UpdateBulletUI(this);
+        }
     }
 
+    // UI
     public Sprite GetGunIcon()
     {
         return gunIcon;
@@ -154,4 +184,14 @@ public abstract class Gun : MonoBehaviour
         return bulletCapacity;
     }
 
+    public bool IsOverheated()
+    {
+        return isOverheat;
+    }
+
+    public void ResetBullets()
+    {
+        bulletNumber = bulletCapacity;
+        isOverheat = false;
+    }
 }

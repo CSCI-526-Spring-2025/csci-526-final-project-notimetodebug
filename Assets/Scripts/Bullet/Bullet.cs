@@ -1,18 +1,27 @@
 ﻿using System;
+using UnityEditor;
 using UnityEngine;
 
-public abstract class Bullet : MonoBehaviour, IBulletIteractable
+public abstract class Bullet : MonoBehaviour
 {
     public string shotBy;
+    public bool isSpecialBullet = false;
+    public string bulletName;
+
     [SerializeField] protected float initialVelocity = 10;
+    protected Vector3 initialDirection;
 
     [field: SerializeField] public int damage { get; protected set; } = 5;
-    [SerializeField] protected int bounceLeft = 0;
+    [field: SerializeField] public int bounceLeft { get; protected set; } = 0;
 
-    private Rigidbody2D rb;
+    protected Rigidbody2D rb;
 
-    protected void Start()
+    protected virtual void Start()
     {
+        rb = GetComponent<Rigidbody2D>();
+
+        rb.velocity = initialDirection * initialVelocity;
+        transform.rotation = Quaternion.FromToRotation(Vector3.right, rb.velocity);
     }
 
     protected virtual void Update()
@@ -22,61 +31,16 @@ public abstract class Bullet : MonoBehaviour, IBulletIteractable
 
     public virtual void Fire(Vector3 direction)
     {
-        rb = GetComponent<Rigidbody2D>();
-
-        rb.velocity = direction * initialVelocity;
-        transform.rotation = Quaternion.FromToRotation(Vector3.right, rb.velocity);
+        initialDirection = direction;
+        TelemetryManager.LogCumulative(TelemetryManager.EventName.PLAYER_SHOT_BULLET, bulletName);
     }
 
     public void OnCollisionEnter2D(Collision2D other)
     {
-        if (damage <= 0)
-        {
-            return;
-        }
-
         if (other.gameObject.TryGetComponent<IBulletIteractable>(out IBulletIteractable bulletIteractable))
         {
             bulletIteractable.OnBulletCollision(this);
         }
-
-        // if (other.gameObject.TryGetComponent<Creature>(out Creature creature))
-        // {
-        //     creature.HP -= damage;
-        //     OnAbsorbed();
-        // }
-
-        // if (other.gameObject.TryGetComponent<Bullet>(out Bullet bullet))
-        // {
-        //     if (bullet.damage > damage)
-        //     {
-        //         bullet.damage -= damage;
-        //         OnAbsorbed();
-        //     }
-        //     else
-        //     {
-        //         damage -= bullet.damage;
-        //         bullet.OnAbsorbed();
-        //     }
-        // }
-
-        // if (other.gameObject.TryGetComponent(out Wall wall))
-        // {
-        //     if (wall is Mirror)
-        //     {
-        //         OnBounce();
-        //     }
-        //
-        //     if (wall is Spikes)
-        //     {
-        //         OnAbsorbed();
-        //     }
-        //
-        //     if (wall is Normal)
-        //     {
-        //         OnAbsorbed();
-        //     }
-        // }
     }
 
     public virtual void OnBounce()
@@ -94,21 +58,5 @@ public abstract class Bullet : MonoBehaviour, IBulletIteractable
     public virtual void OnAbsorbed()
     {
         Destroy(gameObject);
-    }
-
-    public void OnBulletCollision(Bullet bullet)
-    {
-        int tempDamage = damage;
-        damage = Math.Max(damage - bullet.damage, 0);
-        bullet.damage = Math.Max(bullet.damage - tempDamage, 0);
-        
-        if (damage <= 0)
-        {
-            OnAbsorbed();
-        }
-        if (bullet.damage <= 0)
-        {
-            bullet.OnAbsorbed();
-        }
     }
 }

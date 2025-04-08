@@ -1,14 +1,19 @@
+using Assets.Scripts.EnvironmentInteractibles;
 using UnityEngine;
 
-public class Creature : MonoBehaviour, IBulletIteractable
+public class Creature : MonoBehaviour, IBulletIteractable, IItemController
 {
     public int HP;
     public int maxHP;
-    public GameObject TelemetryManagerRef;
 
     protected virtual void Start()
     {
         HP = maxHP; 
+    }
+
+    public bool IsItemActive()
+    {
+        return HP <= 0;
     }
 
     public virtual void OnBulletCollision(Bullet bullet)

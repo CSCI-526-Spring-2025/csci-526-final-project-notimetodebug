@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5017577313621385683}
   - component: {fileID: 5686831338404452661}
   - component: {fileID: 2490165864090184955}
-  m_Layer: 10
+  m_Layer: 11
   m_Name: DefaultBullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -161,6 +161,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 129304ad9dfc43b2875968e1369f7ccd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  shotBy: 
+  isSpecialBullet: 0
+  bulletName: Default Bullet
   initialVelocity: 10
-  damage: 5
-  bounceLeft: 0
+  <damage>k__BackingField: 5
+  <bounceLeft>k__BackingField: 0
