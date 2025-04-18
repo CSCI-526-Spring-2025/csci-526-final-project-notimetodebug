@@ -645,9 +645,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3882597813957864989, guid: 2aa14435f2dfbdd458ef1f486221150c, type: 3}
+      propertyPath: m_Mass
+      value: 1.45
+      objectReference: {fileID: 0}
+    - target: {fileID: 3882597813957864989, guid: 2aa14435f2dfbdd458ef1f486221150c, type: 3}
+      propertyPath: m_LinearDrag
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 4763812576834516874, guid: 2aa14435f2dfbdd458ef1f486221150c, type: 3}
       propertyPath: m_Name
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 4777991387063992776, guid: 2aa14435f2dfbdd458ef1f486221150c, type: 3}
+      propertyPath: speedLimit
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 6102805229515245224, guid: 2aa14435f2dfbdd458ef1f486221150c, type: 3}
       propertyPath: overheatColor.b
