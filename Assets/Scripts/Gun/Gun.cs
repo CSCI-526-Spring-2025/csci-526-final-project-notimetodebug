@@ -53,7 +53,8 @@ public abstract class Gun : MonoBehaviour
     {
         float currentTime = Time.time;
         if (bulletNumber < bulletCapacity
-            && currentTime - lastReloadTime >= 1 / reloadRate
+            && (currentTime - lastReloadTime >= 1 / reloadRate ||
+                isOverheat && currentTime - lastReloadTime >= 1 / (3 * reloadRate))
             && currentTime - lastFireTime >= reloadPreparationTime)
         {
             lastReloadTime = currentTime;
