@@ -47,6 +47,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bulletPrefab: {fileID: 244202265789094677, guid: 9cb41830f1a22434db3fddd9fbf5d065, type: 3}
   gunIcon: {fileID: 0}
+  gunName: 
+  gunDescription: 
   bulletCapacity: 30
   bulletNumber: 30
   fireRate: 15
@@ -82,7 +84,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.6, y: 0, z: 0}
-  m_LocalScale: {x: 1.2, y: 0.1, z: 1}
+  m_LocalScale: {x: 1.2, y: 0.25, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7506589807451914705}

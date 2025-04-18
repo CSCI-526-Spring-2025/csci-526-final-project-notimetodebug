@@ -19,6 +19,7 @@ public class Enemy : Creature
     protected override void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        gun?.OnEquipped();
         
         if (hpBarPrefab != null)
         {
