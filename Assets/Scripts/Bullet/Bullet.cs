@@ -43,6 +43,11 @@ public abstract class Bullet : MonoBehaviour
         }
     }
 
+    public virtual void OnDoingDamage()
+    {
+        OnAbsorbed();
+    }
+    
     public virtual void OnBounce()
     {
         if (bounceLeft <= 0)

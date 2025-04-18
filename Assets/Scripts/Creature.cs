@@ -19,7 +19,7 @@ public class Creature : MonoBehaviour, IBulletIteractable, IItemController
     public virtual void OnBulletCollision(Bullet bullet)
     {
         TakeDamage(bullet.damage, $"{bullet.shotBy}:Bullet");
-        bullet.OnAbsorbed();
+        bullet.OnDoingDamage();
     }
 
     public virtual void TakeDamage(int damage, string source = "unknown")
