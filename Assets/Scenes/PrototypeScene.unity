@@ -669,6 +669,10 @@ PrefabInstance:
       propertyPath: overheatColor.g
       value: 0.16509432
       objectReference: {fileID: 0}
+    - target: {fileID: 7355432326659894229, guid: 2aa14435f2dfbdd458ef1f486221150c, type: 3}
+      propertyPath: m_SortingOrder
+      value: 5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
