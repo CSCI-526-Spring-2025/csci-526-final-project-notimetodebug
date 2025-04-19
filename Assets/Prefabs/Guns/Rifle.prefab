@@ -49,8 +49,8 @@ MonoBehaviour:
   gunIcon: {fileID: 21300000, guid: 3f0ac92638cbd4273b1d58b103c7f1aa, type: 3}
   gunName: 
   gunDescription: 
-  bulletCapacity: 30
-  bulletNumber: 30
+  bulletCapacity: 25
+  bulletNumber: 25
   fireRate: 15
   reloadPreparationTime: 0.7
   reloadRate: 10
