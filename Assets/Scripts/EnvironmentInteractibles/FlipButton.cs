@@ -6,7 +6,8 @@ namespace Assets.Scripts.EnvironmentInteractibles
     public class FlipButton : MonoBehaviour, IItemController
     {
         private bool isButtonPressed = false;
-
+        [SerializeField] private LayerMask allowedLayers;
+        
         public bool IsItemActive() {
             return isButtonPressed;
         }
@@ -22,7 +23,10 @@ namespace Assets.Scripts.EnvironmentInteractibles
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
-            TriggerButton();
+            if (((1 << collision.gameObject.layer) & allowedLayers) != 0)
+            {
+                TriggerButton();
+            }
         }
 
         // Use this for initialization

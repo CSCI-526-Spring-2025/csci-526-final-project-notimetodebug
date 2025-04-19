@@ -10,6 +10,7 @@ public class TimedButton : MonoBehaviour, IItemController
 
     private bool isButtonPressed = false;
     private float buttonReleaseTime = 0;
+    [SerializeField] private LayerMask allowedLayers;
 
     private void TurnOnButton()
     {
@@ -41,7 +42,10 @@ public class TimedButton : MonoBehaviour, IItemController
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        TriggerButton();
+        if (((1 << collision.gameObject.layer) & allowedLayers) != 0)
+        {
+            TriggerButton();
+        }
 
         if (collision.gameObject.TryGetComponent<Bullet>(out Bullet bullet))
         {

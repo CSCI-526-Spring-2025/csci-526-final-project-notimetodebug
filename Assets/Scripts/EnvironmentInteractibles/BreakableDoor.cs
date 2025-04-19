@@ -20,10 +20,7 @@ public class BreakableDoor : Wall
                 animator.SetTrigger("Destroy");
                 boxCollider.enabled = false;
             }
-        } else
-        {
-            animator.SetTrigger("Shake");
-        }
+        } 
 
         bullet.OnAbsorbed();
     }
