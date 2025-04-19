@@ -47,6 +47,8 @@ public class UIWeaponIndicator : MonoBehaviour, IPointerEnterHandler, IPointerEx
 
         nameText.text = currentGun.GetGunName();
         descText.text = currentGun.GetGunDescription();
+
+        /*
         descriptionPanel.SetActive(true);
 
         if (hideCoroutine != null)
@@ -54,16 +56,13 @@ public class UIWeaponIndicator : MonoBehaviour, IPointerEnterHandler, IPointerEx
             StopCoroutine(hideCoroutine);
         }
         hideCoroutine = StartCoroutine(HideDescriptionAfterDelay(2f));
+        */
+        ShowGunDescriptionTemporarily();
     }
 
     public void UpdateWeaponIndicator(bool isEquipped)
     {
        // outerCircle.sprite = isEquipped ? activateStatusSprite : inactivateStatusSprite;
-
-        if (hideCoroutine != null)
-        {
-            StopCoroutine(hideCoroutine);
-        }
         StartCoroutine(PlayWeaponStatusTransition(isEquipped));
     }
 
@@ -77,6 +76,7 @@ public class UIWeaponIndicator : MonoBehaviour, IPointerEnterHandler, IPointerEx
 
     public void OnPointerEnter(PointerEventData eventData)
     {
+        Debug.Log("Pointer entered weapon indicator");
         Player player = FindObjectOfType<Player>();
         if (player.guns.Count <= 1)
         return;
@@ -86,7 +86,21 @@ public class UIWeaponIndicator : MonoBehaviour, IPointerEnterHandler, IPointerEx
 
     public void OnPointerExit(PointerEventData eventData)
     {
+        Debug.Log("Pointer exited weapon indicator");
         descriptionPanel.SetActive(false);
+    }
+    
+    
+    private void ShowGunDescriptionTemporarily()
+    {
+        descriptionPanel.SetActive(true);
+
+        if (hideCoroutine != null)
+        {
+            StopCoroutine(hideCoroutine);
+        }
+
+        hideCoroutine = StartCoroutine(HideDescriptionAfterDelay(2f));
     }
 
     private IEnumerator HideDescriptionAfterDelay(float delay)
