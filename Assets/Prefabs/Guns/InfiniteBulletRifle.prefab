@@ -47,7 +47,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bulletPrefab: {fileID: 244202265789094677, guid: 9cb41830f1a22434db3fddd9fbf5d065, type: 3}
   gunIcon: {fileID: 0}
-  gunName: 
+  gunName: Inf
   gunDescription: 
   bulletCapacity: 30
   bulletNumber: 30

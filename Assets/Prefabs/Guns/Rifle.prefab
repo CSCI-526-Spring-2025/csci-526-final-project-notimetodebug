@@ -47,7 +47,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bulletPrefab: {fileID: 244202265789094677, guid: 9cb41830f1a22434db3fddd9fbf5d065, type: 3}
   gunIcon: {fileID: 21300000, guid: 3f0ac92638cbd4273b1d58b103c7f1aa, type: 3}
-  gunName: 
+  gunName: Rifle
   gunDescription: 
   bulletCapacity: 36
   bulletNumber: 36
