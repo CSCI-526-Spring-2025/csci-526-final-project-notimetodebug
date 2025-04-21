@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7506589807451914705}
   - component: {fileID: 7632166084348932070}
   m_Layer: 0
-  m_Name: Rifle
+  m_Name: Default
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -47,12 +47,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bulletPrefab: {fileID: 244202265789094677, guid: 9cb41830f1a22434db3fddd9fbf5d065, type: 3}
   gunIcon: {fileID: 21300000, guid: 3f0ac92638cbd4273b1d58b103c7f1aa, type: 3}
-  gunName: Rifle
+  gunName: Default
   gunDescription: 
-  bulletCapacity: 36
-  bulletNumber: 36
+  bulletCapacity: 30
+  bulletNumber: 30
   fireRate: 15
-  reloadPreparationTime: 0.7
+  reloadPreparationTime: 0.2
   reloadRate: 10
   recoilForce: 2
   isFullAuto: 1

@@ -76,7 +76,6 @@ public class UIWeaponIndicator : MonoBehaviour, IPointerEnterHandler, IPointerEx
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        Debug.Log("Pointer entered weapon indicator");
         Player player = FindObjectOfType<Player>();
         if (player.guns.Count <= 1)
         return;
@@ -86,7 +85,6 @@ public class UIWeaponIndicator : MonoBehaviour, IPointerEnterHandler, IPointerEx
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        Debug.Log("Pointer exited weapon indicator");
         descriptionPanel.SetActive(false);
     }
     

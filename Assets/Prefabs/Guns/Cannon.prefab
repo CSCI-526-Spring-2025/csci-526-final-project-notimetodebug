@@ -52,9 +52,9 @@ MonoBehaviour:
   bulletCapacity: 20
   bulletNumber: 20
   fireRate: 8
-  reloadPreparationTime: 1
+  reloadPreparationTime: 0.8
   reloadRate: 10
-  recoilForce: 5
+  recoilForce: 8
   isFullAuto: 1
   collectiblePrefab: {fileID: 7447808090081068697, guid: ee23b51033b6d4c4a9fcd3d1302f336c, type: 3}
 --- !u!1 &7699256785445795330

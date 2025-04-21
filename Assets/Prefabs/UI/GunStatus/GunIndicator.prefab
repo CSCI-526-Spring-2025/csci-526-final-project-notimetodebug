@@ -34,7 +34,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -29.9, y: -18.9}
+  m_AnchoredPosition: {x: -29.9, y: -18.3}
   m_SizeDelta: {x: 95, y: 95}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4028835688480263914
@@ -142,7 +142,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 1871095325, guid: d86d8681f7e354fc88114657cd0cf3da, type: 3}
+  m_Sprite: {fileID: 1194076823, guid: 729b92230076f46da86911173710076b, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -169,7 +169,7 @@ MonoBehaviour:
   descriptionPanel: {fileID: 0}
   nameText: {fileID: 0}
   descText: {fileID: 0}
-  activeStaticSprite: {fileID: -1933594016, guid: d86d8681f7e354fc88114657cd0cf3da, type: 3}
-  inactiveStaticSprite: {fileID: 1871095325, guid: d86d8681f7e354fc88114657cd0cf3da, type: 3}
-  activeTransitionSprite: {fileID: 1094165036, guid: d86d8681f7e354fc88114657cd0cf3da, type: 3}
-  inactiveTransitionSprite: {fileID: 484090943, guid: d86d8681f7e354fc88114657cd0cf3da, type: 3}
+  activeStaticSprite: {fileID: -995008414, guid: 729b92230076f46da86911173710076b, type: 3}
+  inactiveStaticSprite: {fileID: 1194076823, guid: 729b92230076f46da86911173710076b, type: 3}
+  activeTransitionSprite: {fileID: 358741292, guid: 729b92230076f46da86911173710076b, type: 3}
+  inactiveTransitionSprite: {fileID: -1103281561, guid: 729b92230076f46da86911173710076b, type: 3}

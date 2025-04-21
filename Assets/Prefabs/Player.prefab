@@ -390,7 +390,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3037680909872467411, guid: 48c130fb8a93d654facb436c20411c9a, type: 3}
       propertyPath: m_Name
-      value: Rifle
+      value: Default
       objectReference: {fileID: 0}
     - target: {fileID: 7506589807451914705, guid: 48c130fb8a93d654facb436c20411c9a, type: 3}
       propertyPath: m_LocalPosition.x
