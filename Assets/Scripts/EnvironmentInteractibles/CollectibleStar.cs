@@ -10,6 +10,9 @@ public class CollectibleStar : MonoBehaviour
     [Header("Points")]
     public int points = 10;
 
+    [Header("Collection Effect")]
+    public GameObject sparklesPrefab;
+
     private Vector3 startPosition;
     private bool isCollected = false;
 

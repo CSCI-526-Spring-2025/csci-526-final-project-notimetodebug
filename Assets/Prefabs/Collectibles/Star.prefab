@@ -222,6 +222,7 @@ MonoBehaviour:
   bobSpeed: 3
   rotationSpeed: 10
   points: 10
+  sparklesPrefab: {fileID: 5338162399768662516, guid: 94f0d57ec94fe12489acf08a9a957b98, type: 3}
 --- !u!60 &3595155602673749682
 PolygonCollider2D:
   m_ObjectHideFlags: 0
