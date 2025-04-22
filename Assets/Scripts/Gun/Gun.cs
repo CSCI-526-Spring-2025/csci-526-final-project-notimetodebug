@@ -28,6 +28,7 @@ public abstract class Gun : MonoBehaviour
     [SerializeField] protected float reloadRate = 10;
     [SerializeField] protected float recoilForce = 1;
     [SerializeField] protected bool isFullAuto = true;
+    [SerializeField] protected bool isInfiniteBullet = false;
 
     public GameObject collectiblePrefab;
     protected float lastFireTime = 0;
@@ -153,6 +154,11 @@ public abstract class Gun : MonoBehaviour
 
     protected void ChangeBulletNumber(int change)
     {
+        if (isInfiniteBullet)
+        {
+            return;
+        }
+        
         bulletNumber += change;
 
         if (!isOverheat && bulletNumber == 0)
