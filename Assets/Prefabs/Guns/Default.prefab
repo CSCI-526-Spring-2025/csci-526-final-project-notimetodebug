@@ -49,13 +49,14 @@ MonoBehaviour:
   gunIcon: {fileID: 21300000, guid: 3f0ac92638cbd4273b1d58b103c7f1aa, type: 3}
   gunName: Default
   gunDescription: 
-  bulletCapacity: 30
-  bulletNumber: 30
+  bulletCapacity: 35
+  bulletNumber: 35
   fireRate: 15
-  reloadPreparationTime: 0.2
+  reloadPreparationTime: 0.3
   reloadRate: 10
   recoilForce: 2
   isFullAuto: 1
+  isInfiniteBullet: 0
   collectiblePrefab: {fileID: 0}
 --- !u!1 &7699256785445795330
 GameObject:
