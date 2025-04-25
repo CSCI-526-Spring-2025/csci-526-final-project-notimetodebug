@@ -25,8 +25,31 @@ public class UIMenu : MonoBehaviour
        // menuPanel.SetActive(false); 
         startPage.SetActive(true);   
 
-        Button startButton = startPage.GetComponentInChildren<Button>();
-        startButton.onClick.AddListener(OnStartButtonClicked);
+        Transform buttonsGroup = startPage.transform.Find("layout/buttons");
+
+        if (buttonsGroup != null)
+        {
+            Button startButton = buttonsGroup.Find("start").GetComponent<Button>();
+            Button menuButton = buttonsGroup.Find("menu").GetComponent<Button>();
+
+            startButton.onClick.AddListener(() => {
+                LevelManager.Instance.LoadLevel(0);
+                startPage.SetActive(false);
+            });
+
+            menuButton.onClick.AddListener(() => {
+                startPage.SetActive(false);
+                ShowMenu();
+            });
+        }
+        else
+        {
+            Debug.LogError("button missing in start page");
+        }
+
+       
+    
+
     }
 
     void OnStartButtonClicked()
