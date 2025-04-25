@@ -19,14 +19,42 @@ public class UIMenu : MonoBehaviour
     private Dictionary<int, int> bestScores;
     private Dictionary<int, int> maxScores;
 
+    [Header("Super Star Settings")]
+    public Sprite superStarSprite;
+    public Sprite normalStarSprite;
+
+
 
     private void Start()
     {
        // menuPanel.SetActive(false); 
         startPage.SetActive(true);   
 
-        Button startButton = startPage.GetComponentInChildren<Button>();
-        startButton.onClick.AddListener(OnStartButtonClicked);
+        Transform buttonsGroup = startPage.transform.Find("layout/buttons");
+
+        if (buttonsGroup != null)
+        {
+            Button startButton = buttonsGroup.Find("start").GetComponent<Button>();
+            Button menuButton = buttonsGroup.Find("menu").GetComponent<Button>();
+
+            startButton.onClick.AddListener(() => {
+                LevelManager.Instance.LoadLevel(0);
+                startPage.SetActive(false);
+            });
+
+            menuButton.onClick.AddListener(() => {
+                startPage.SetActive(false);
+                ShowMenu();
+            });
+        }
+        else
+        {
+            Debug.LogError("button missing in start page");
+        }
+
+       
+    
+
     }
 
     void OnStartButtonClicked()
@@ -70,13 +98,12 @@ public class UIMenu : MonoBehaviour
 
             if (bestScore > maxScore)
             {
-                // super star
-                SetStarColors(starContainer, 3, Color.blue);
+                SetStarColors(starContainer, 3, Color.yellow, useSuperStar: true);
             }
             else
             {
                 int stars = CalculateStars(bestScore, maxScore);
-                SetStarColors(starContainer, stars, Color.yellow);
+                SetStarColors(starContainer, stars, Color.yellow, useSuperStar: false);
             }
 
             int index = i;
@@ -118,14 +145,33 @@ public class UIMenu : MonoBehaviour
         return 0;
     }
 
-    private void SetStarColors(Transform starContainer, int filledCount, Color filledColor)
+    private void SetStarColors(Transform starContainer, int filledCount, Color filledColor, bool useSuperStar = false)
     {
         for (int i = 0; i < 3; i++)
         {
             Image starImage = starContainer.GetChild(i).GetComponent<Image>();
-            starImage.color = i < filledCount ? filledColor : Color.gray;
+
+            if (i < filledCount)
+            {
+                if (useSuperStar)
+                {
+                    starImage.sprite = superStarSprite;
+                    starImage.color = Color.white; 
+                }
+                else
+                {
+                    starImage.sprite = normalStarSprite;
+                    starImage.color = filledColor;
+                }
+            }
+            else
+            {
+                starImage.sprite = normalStarSprite;
+                starImage.color = Color.gray;
+            }
         }
     }
+
 
 
     public void ShowMenu()

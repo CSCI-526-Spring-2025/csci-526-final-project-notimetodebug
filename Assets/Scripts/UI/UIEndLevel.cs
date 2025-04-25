@@ -28,6 +28,11 @@ public class UIEndLevel : MonoBehaviour
 
     private int currentTotalScore = 0;
 
+    [SerializeField] private ScrollRect scrollRect; 
+    [Header("Super Star Sprite")]
+    public Sprite superStarSprite;
+
+
     private void Start()
     {
         againButton.onClick.AddListener(RestartLevel);
@@ -141,10 +146,9 @@ public class UIEndLevel : MonoBehaviour
 
         if (finalScore > maxPossibleScore)
         {
-            star1.color = superColor;
-            star2.color = superColor;
-            star3.color = superColor;
+            yield return StartCoroutine(FillAllStars());
         }
+
         
     }
 
@@ -164,6 +168,9 @@ public class UIEndLevel : MonoBehaviour
             textComponent.text = prefix + currentValue;
             finalScoreText.text = "Final Score: " + (currentTotalScore + currentValue);
 
+            Canvas.ForceUpdateCanvases(); 
+            scrollRect.verticalNormalizedPosition = 0f;
+
             yield return new WaitForSeconds(stepTime);
         }
 
@@ -171,6 +178,9 @@ public class UIEndLevel : MonoBehaviour
         textComponent.text = prefix + targetValue;
         currentTotalScore += targetValue;
         finalScoreText.text = "Final Score: " + currentTotalScore;
+
+        Canvas.ForceUpdateCanvases();
+        scrollRect.verticalNormalizedPosition = 0f;
 
         yield return new WaitForSeconds(0.5f);
     }
@@ -192,20 +202,46 @@ public class UIEndLevel : MonoBehaviour
 
     private IEnumerator FillAllStars()
     {
+        Image[] originalStars = new Image[] { star1, star2, star3 };
+        List<GameObject> overlays = new List<GameObject>();
+
+        foreach (Image original in originalStars)
+        {
+            GameObject overlayObj = new GameObject("SuperStarOverlay");
+            overlayObj.transform.SetParent(original.transform, false);
+
+            Image overlay = overlayObj.AddComponent<Image>();
+            overlay.sprite = superStarSprite;
+            overlay.rectTransform.sizeDelta = original.rectTransform.sizeDelta;
+            overlay.color = new Color(1f, 1f, 1f, 0f); 
+            overlays.Add(overlayObj);
+        }
+
         float duration = 0.5f;
         float elapsed = 0f;
+
         while (elapsed < duration)
         {
-            star1.color = Color.Lerp(unfilledColor, superColor, elapsed / duration);
-            star2.color = Color.Lerp(unfilledColor, superColor, elapsed / duration);
-            star3.color = Color.Lerp(unfilledColor, superColor, elapsed / duration);
             elapsed += Time.deltaTime;
+            float alpha = Mathf.Clamp01(elapsed / duration);
+            foreach (GameObject obj in overlays)
+            {
+                Image img = obj.GetComponent<Image>();
+                Color col = img.color;
+                col.a = alpha;
+                img.color = col;
+            }
             yield return null;
         }
-        star1.color = superColor;
-        star2.color = superColor;
-        star3.color = superColor;
+
+        for (int i = 0; i < originalStars.Length; i++)
+        {
+            originalStars[i].sprite = superStarSprite;
+            originalStars[i].color = Color.white; 
+            Destroy(overlays[i]); 
+        }
     }
+
 
     private void ResetStars()
     {
