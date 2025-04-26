@@ -46,7 +46,9 @@ public class CollectibleStar : MonoBehaviour
         {
             isCollected = true;
 
-            LevelManager.Instance.AddCollectibleScore(points);
+            //LevelManager.Instance.AddCollectibleScore(points);
+            LevelManager.Instance.AddCollectibleScore(points, transform.position);
+
 
             TelemetryManager.Log(TelemetryManager.EventName.COLLECTIBLE_PICKED_UP, "Star");
 
