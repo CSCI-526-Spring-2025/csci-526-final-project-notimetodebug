@@ -5,8 +5,8 @@ using UnityEngine;
 public class Enemy : Creature
 {
     public float moveSpeed = 2f;             // Speed of movement
-    private Rigidbody2D rb;
-    private bool movingRight = true;
+    protected Rigidbody2D rb;
+    protected bool movingRight = true;
     [SerializeField]  private Gun gun;
     public int Damage = 40;
     public int BounceBackVelocity = 10;
@@ -38,14 +38,15 @@ public class Enemy : Creature
         Move();
     }
 
-    void Move()
+    public virtual void Move()
     {
         rb.velocity = new Vector2(movingRight ? moveSpeed : -moveSpeed, rb.velocity.y);
 
     }
 
-    public void Flip()
+    public virtual void Flip()
     {
+        
         movingRight = !movingRight;
         transform.Rotate(0f, 180f, 0f);
     }
