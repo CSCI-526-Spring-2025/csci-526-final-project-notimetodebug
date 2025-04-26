@@ -24,7 +24,7 @@ public class FlyingEnemy : Enemy
         elapsedTime += Time.deltaTime;
         float verticalOffset = Mathf.Sin(elapsedTime * frequency) * amplitude;
         float verticalVelocity = (verticalOffset - (rb.position.y - startY)) / Time.deltaTime;
-        Debug.Log("Current Direction: " + (movingRight ? "Right" : "Left") + ", Velocity: " + rb.velocity.x);
+        //Debug.Log("Current Direction: " + (movingRight ? "Right" : "Left") + ", Velocity: " + rb.velocity.x);
         rb.velocity = new Vector2(movingRight ? moveSpeed : -moveSpeed, verticalVelocity);
 
     }
