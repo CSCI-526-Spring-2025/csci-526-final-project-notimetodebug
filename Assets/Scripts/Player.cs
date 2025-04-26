@@ -220,7 +220,7 @@ public class Player : Creature
         }
         else
         {
-            gun.OnUnequipped();
+            ChangeGun();
         }
     }
 

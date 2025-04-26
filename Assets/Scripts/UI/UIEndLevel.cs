@@ -125,7 +125,7 @@ public class UIEndLevel : MonoBehaviour
 
         if (breakdown["Collector bonus:"] > 0)
         {
-            yield return StartCoroutine(AnimateText(collectorBonusText, "Collector bonus: ", breakdown["Collector bonus:"]));
+            yield return StartCoroutine(AnimateText(collectorBonusText, "COLLECTOR BONUS: ", breakdown["Collector bonus:"]));
         }
 
         if (finalScore > regularScore)
@@ -166,7 +166,7 @@ public class UIEndLevel : MonoBehaviour
             currentValue = Mathf.Min(currentValue, targetValue);
 
             textComponent.text = prefix + currentValue;
-            finalScoreText.text = "Final Score: " + (currentTotalScore + currentValue);
+            finalScoreText.text = "FINAL SCORE: " + (currentTotalScore + currentValue);
 
             Canvas.ForceUpdateCanvases(); 
             scrollRect.verticalNormalizedPosition = 0f;
@@ -177,7 +177,7 @@ public class UIEndLevel : MonoBehaviour
         // Final update
         textComponent.text = prefix + targetValue;
         currentTotalScore += targetValue;
-        finalScoreText.text = "Final Score: " + currentTotalScore;
+        finalScoreText.text = "FINAL SCORE: " + currentTotalScore;
 
         Canvas.ForceUpdateCanvases();
         scrollRect.verticalNormalizedPosition = 0f;
