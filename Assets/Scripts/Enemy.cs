@@ -33,7 +33,7 @@ public class Enemy : Creature
         }
     }
 
-    void Update()
+    void FixedUpdate()
     {
         Move();
     }
