@@ -153,7 +153,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3987968730149308885}
   m_Layer: 0
-  m_Name: Gold 2
+  m_Name: Level_5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2215,7 +2215,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4370448640044710542, guid: ad99d7599423640c19ac7d6bfbd01304, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 60.01
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4370448640044710542, guid: ad99d7599423640c19ac7d6bfbd01304, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -2838,7 +2838,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4370448640044710542, guid: ad99d7599423640c19ac7d6bfbd01304, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 60.01
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4370448640044710542, guid: ad99d7599423640c19ac7d6bfbd01304, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -4407,7 +4407,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7684709652367686386, guid: ee23b51033b6d4c4a9fcd3d1302f336c, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 50.01
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7684709652367686386, guid: ee23b51033b6d4c4a9fcd3d1302f336c, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -4461,7 +4461,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 96339522219454458, guid: 12f3e33d9d7a54ce294cd58e58e7c1ae, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 70.01
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 96339522219454458, guid: 12f3e33d9d7a54ce294cd58e58e7c1ae, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -6280,7 +6280,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 96339522219454458, guid: 12f3e33d9d7a54ce294cd58e58e7c1ae, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 70.01
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 96339522219454458, guid: 12f3e33d9d7a54ce294cd58e58e7c1ae, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -6971,7 +6971,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7684709652367686386, guid: ee23b51033b6d4c4a9fcd3d1302f336c, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 50.01
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7684709652367686386, guid: ee23b51033b6d4c4a9fcd3d1302f336c, type: 3}
       propertyPath: m_AnchoredPosition.x
