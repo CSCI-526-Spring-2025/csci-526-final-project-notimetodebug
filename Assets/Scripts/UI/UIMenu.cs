@@ -100,11 +100,24 @@ public class UIMenu : MonoBehaviour
                 text.text = FormatLevelName(rawName);
             }
 
-            int bestScore = bestScores.ContainsKey(i) ? bestScores[i] : 0;
+           // int bestScore = bestScores.ContainsKey(i) ? bestScores[i] : 0;
+
+            int bestScore = 0;
+            int maxScore = 0;
             
+            if (editorMode)
+            {
+                maxScore = 10;
+                bestScore = 1000;  
+            }
+            else
+            {
+                bestScore = bestScores.ContainsKey(i) ? bestScores[i] : 0;
+                maxScore = maxScores.ContainsKey(i) ? maxScores[i] : 1000;
+            }
 
             Debug.Log($"Level {i} ({rawName}) - BestScore: {bestScore}");
-            int maxScore = maxScores.ContainsKey(i) ? maxScores[i] : 1000;
+            
 
             Transform starContainer = buttonGO.transform.Find("StarContainer");
 
@@ -149,6 +162,10 @@ public class UIMenu : MonoBehaviour
 
     private bool AreAllPreviousLevelsCompleted()
     {
+        if (editorMode)
+        {
+            return true;
+        }
         for (int i = 0; i < levelPrefabs.Count - 1; i++)
         {
             if (!bestScores.ContainsKey(i) || bestScores[i] == 0)
