@@ -223,6 +223,10 @@ PrefabInstance:
       propertyPath: normalStarSprite
       value: 
       objectReference: {fileID: 21300000, guid: 8cab6dd13fd0743b295a7c65ef909eb8, type: 3}
+    - target: {fileID: 4383687952086133172, guid: 4a62444a0f9b96b4bb8e50777fc231fa, type: 3}
+      propertyPath: challengeButtonPrefab
+      value: 
+      objectReference: {fileID: 6554983344462884468, guid: 71ba99427616f45c495737e3c0c8fb2f, type: 3}
     - target: {fileID: 5904400073656743479, guid: 4a62444a0f9b96b4bb8e50777fc231fa, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -586,7 +590,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 400, y: -475}
-  m_SizeDelta: {x: 1160, y: 150}
+  m_SizeDelta: {x: 0, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &529890615
 MonoBehaviour:

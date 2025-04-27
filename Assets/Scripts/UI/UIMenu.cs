@@ -2,10 +2,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.Collections;
 
 public class UIMenu : MonoBehaviour
 {
     public GameObject levelButtonPrefab;
+    public GameObject challengeButtonPrefab; 
     public GameObject startPage;  
     public GameObject menuPanelPrefab; 
     
@@ -78,18 +80,28 @@ public class UIMenu : MonoBehaviour
 
         levelPrefabs = LevelManager.Instance.GetLevels();
         bestScores = LevelManager.Instance.GetBestScores();
+        maxScores = LevelManager.Instance.GetMaxScores();
 
         for (int i = 0; i < levelPrefabs.Count; i++)
         {
-            GameObject buttonGO = Instantiate(levelButtonPrefab, buttonsParent);
+            bool isLastLevel = (i == levelPrefabs.Count - 1);
+
+            GameObject buttonGO = Instantiate(
+            isLastLevel ? challengeButtonPrefab : levelButtonPrefab,
+            buttonsParent
+            );
+
             buttonGO.name = "LevelButton_" + i;
 
             TextMeshProUGUI text = buttonGO.transform.Find("Level#Text").GetComponent<TextMeshProUGUI>();
             string rawName = levelPrefabs[i].name;
-            text.text = FormatLevelName(rawName);
+            if (text != null && !isLastLevel)
+            {
+                text.text = FormatLevelName(rawName);
+            }
 
             int bestScore = bestScores.ContainsKey(i) ? bestScores[i] : 0;
-            maxScores = LevelManager.Instance.GetMaxScores();
+            
 
             Debug.Log($"Level {i} ({rawName}) - BestScore: {bestScore}");
             int maxScore = maxScores.ContainsKey(i) ? maxScores[i] : 1000;
@@ -107,13 +119,68 @@ public class UIMenu : MonoBehaviour
             }
 
             int index = i;
-            buttonGO.GetComponent<Button>().onClick.AddListener(() =>
+            Button btn = buttonGO.GetComponent<Button>();
+
+            if (isLastLevel)
             {
-                HideMenu();
-                LevelManager.Instance.LoadLevel(index);
-            });
+                btn.onClick.AddListener(() =>
+                {
+                    if (AreAllPreviousLevelsCompleted())
+                    {
+                        HideMenu();
+                        LevelManager.Instance.LoadLevel(index);
+                    }
+                    else
+                    {
+                        StartCoroutine(ShowHintTemporarily(buttonGO));
+                    }
+                });
+            }
+            else
+            {
+                btn.onClick.AddListener(() =>
+                {
+                    HideMenu();
+                    LevelManager.Instance.LoadLevel(index);
+                });
+            }
         }
     }
+
+    private bool AreAllPreviousLevelsCompleted()
+    {
+        for (int i = 0; i < levelPrefabs.Count - 1; i++)
+        {
+            if (!bestScores.ContainsKey(i) || bestScores[i] == 0)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private IEnumerator ShowHintTemporarily(GameObject challengeButton)
+    {
+        Transform text = challengeButton.transform.Find("Level#Text");
+        Transform starContainer = challengeButton.transform.Find("StarContainer");
+        Transform hint = challengeButton.transform.Find("hint");
+
+        if (text != null && starContainer != null && hint != null)
+        {
+            text.gameObject.SetActive(false);
+            starContainer.gameObject.SetActive(false);
+            
+            hint.gameObject.SetActive(true);
+
+            yield return new WaitForSeconds(3f);
+
+            text.gameObject.SetActive(true);
+            starContainer.gameObject.SetActive(true);
+            hint.gameObject.SetActive(false);
+        }
+    }
+
+
 
     private void ClearButtons()
     {
