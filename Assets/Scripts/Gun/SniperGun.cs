@@ -68,12 +68,16 @@ public class SniperGun : Gun
     {
         isAiming = false;
         laserRenderer.enabled = false;
+        laserRenderer.positionCount = 0;
         cameraController?.ReleaseFixedZoom();
         return Fire(direction);
     }
     
     public override void OnUnequipped()
     {
+        isAiming = false;
+        laserRenderer.enabled = false;
+        laserRenderer.positionCount = 0;
         cameraController?.ReleaseFixedZoom();
         base.OnUnequipped();
     }
