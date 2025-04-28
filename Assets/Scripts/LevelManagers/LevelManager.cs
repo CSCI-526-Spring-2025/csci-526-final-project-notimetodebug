@@ -209,7 +209,8 @@ public class LevelManager : MonoBehaviour
         }
 
         GameObject particle = Instantiate(scoreParticlePrefab, worldPosition, Quaternion.identity);
-
+        LevelManager.Instance.DynamicallyAddGameObject(particle);
+            
         var flyScript = particle.GetComponent<UIParticleFly>();
         if (flyScript != null)
         {
