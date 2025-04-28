@@ -35,7 +35,7 @@ public abstract class Gun : MonoBehaviour
     protected bool isOverheat = false;
     protected bool isEquipped = false;
 
-    protected float bulletGenerateDistance = 1.2f;
+    protected float bulletGenerateDistance = 1.4f;
     private UIBullet bulletUI;
     private UIWeaponIndicator weaponIndicatorUI;
 
