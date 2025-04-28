@@ -47,15 +47,6 @@ public class EndOfLevel : MonoBehaviour
             Debug.Log($"Updated BestScore for level {levelIndex} to {finalScore}");
         }
 
-        // to really save tutorial completed, can further extend to save player score if needed
-        /*
-        if (levelIndex == 0 && !PlayerPrefs.HasKey("TutorialCompleted"))
-        {
-            PlayerPrefs.SetInt("TutorialCompleted", 1);
-            PlayerPrefs.Save(); 
-        }
-        */
-
         uiEndLevel.ShowEndLevelUI(); 
 
         yield break; 

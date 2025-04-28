@@ -84,10 +84,10 @@ public class UIMenu : MonoBehaviour
 
         for (int i = 0; i < levelPrefabs.Count; i++)
         {
-            bool isLastLevel = (i == levelPrefabs.Count - 1);
+            bool isBonusLevel = (i == levelPrefabs.Count - 1) || (i == levelPrefabs.Count - 2);
 
             GameObject buttonGO = Instantiate(
-            isLastLevel ? challengeButtonPrefab : levelButtonPrefab,
+            isBonusLevel ? challengeButtonPrefab : levelButtonPrefab,
             buttonsParent
             );
 
@@ -95,9 +95,16 @@ public class UIMenu : MonoBehaviour
 
             TextMeshProUGUI text = buttonGO.transform.Find("Level#Text").GetComponent<TextMeshProUGUI>();
             string rawName = levelPrefabs[i].name;
-            if (text != null && !isLastLevel)
+            if (text != null)
             {
-                text.text = FormatLevelName(rawName);
+                if (isBonusLevel)
+                {
+                    text.text = "Bonus " + (i == levelPrefabs.Count - 2 ? "1" : "2");
+                }
+                else
+                {
+                    text.text = FormatLevelName(rawName);
+                }
             }
 
            // int bestScore = bestScores.ContainsKey(i) ? bestScores[i] : 0;
@@ -134,7 +141,7 @@ public class UIMenu : MonoBehaviour
             int index = i;
             Button btn = buttonGO.GetComponent<Button>();
 
-            if (isLastLevel)
+            if (isBonusLevel)
             {
                 btn.onClick.AddListener(() =>
                 {
@@ -166,7 +173,7 @@ public class UIMenu : MonoBehaviour
         {
             return true;
         }
-        for (int i = 0; i < levelPrefabs.Count - 1; i++)
+        for (int i = 0; i < levelPrefabs.Count - 2; i++)
         {
             if (!bestScores.ContainsKey(i) || bestScores[i] == 0)
             {
@@ -178,24 +185,27 @@ public class UIMenu : MonoBehaviour
 
     private IEnumerator ShowHintTemporarily(GameObject challengeButton)
     {
+        if (challengeButton == null)
+            yield break;
+
         Transform text = challengeButton.transform.Find("Level#Text");
         Transform starContainer = challengeButton.transform.Find("StarContainer");
         Transform hint = challengeButton.transform.Find("hint");
 
-        if (text != null && starContainer != null && hint != null)
+        if (text != null) text.gameObject.SetActive(false);
+        if (starContainer != null) starContainer.gameObject.SetActive(false);
+        if (hint != null) hint.gameObject.SetActive(true);
+
+        yield return new WaitForSeconds(3f);
+
+        if (challengeButton != null)
         {
-            text.gameObject.SetActive(false);
-            starContainer.gameObject.SetActive(false);
-            
-            hint.gameObject.SetActive(true);
-
-            yield return new WaitForSeconds(3f);
-
-            text.gameObject.SetActive(true);
-            starContainer.gameObject.SetActive(true);
-            hint.gameObject.SetActive(false);
+            if (text != null) text.gameObject.SetActive(true);
+            if (starContainer != null) starContainer.gameObject.SetActive(true);
+            if (hint != null) hint.gameObject.SetActive(false);
         }
     }
+
 
 
 

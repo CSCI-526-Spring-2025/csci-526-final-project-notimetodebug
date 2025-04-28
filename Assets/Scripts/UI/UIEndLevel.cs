@@ -70,6 +70,7 @@ public class UIEndLevel : MonoBehaviour
         // Hide all at start
         hpRemainingText.gameObject.SetActive(false);
         enemyKillText.gameObject.SetActive(false);
+        collectibleText.gameObject.SetActive(false);
         fullHPBonusText.gameObject.SetActive(false);
         allEnemiesKilledBonusText.gameObject.SetActive(false);
         collectorBonusText.gameObject.SetActive(false);
