@@ -46,6 +46,10 @@ public class TrackingBullet : Bullet
             {
                 RotateTowardsTarget(target);
             }
+            else
+            {
+                currentAnglularVelocity = 0;
+            }
         }
     }
 

@@ -30,7 +30,6 @@ public abstract class Gun : MonoBehaviour
     [SerializeField] protected bool isFullAuto = true;
     [SerializeField] protected bool isInfiniteBullet = false;
 
-    public GameObject collectiblePrefab;
     protected float lastFireTime = 0;
     protected float lastReloadTime = 0;
     protected bool isOverheat = false;

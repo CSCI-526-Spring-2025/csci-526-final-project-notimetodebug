@@ -167,8 +167,8 @@ MonoBehaviour:
   bulletName: Tracing Bullet
   initialVelocity: 15
   <damage>k__BackingField: 5
-  <bounceLeft>k__BackingField: 1
-  angularVelocity: 120
+  <bounceLeft>k__BackingField: 2
+  angularVelocity: 140
   detectionRadius: 4
   startDetectionTime: 0.3
 --- !u!1 &5842441284416306470
