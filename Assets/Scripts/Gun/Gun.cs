@@ -28,14 +28,14 @@ public abstract class Gun : MonoBehaviour
     [SerializeField] protected float reloadRate = 10;
     [SerializeField] protected float recoilForce = 1;
     [SerializeField] protected bool isFullAuto = true;
+    [SerializeField] protected bool isInfiniteBullet = false;
 
-    public GameObject collectiblePrefab;
     protected float lastFireTime = 0;
     protected float lastReloadTime = 0;
     protected bool isOverheat = false;
     protected bool isEquipped = false;
 
-    protected float bulletGenerateDistance = 1.2f;
+    protected float bulletGenerateDistance = 1.4f;
     private UIBullet bulletUI;
     private UIWeaponIndicator weaponIndicatorUI;
 
@@ -53,7 +53,8 @@ public abstract class Gun : MonoBehaviour
     {
         float currentTime = Time.time;
         if (bulletNumber < bulletCapacity
-            && currentTime - lastReloadTime >= 1 / reloadRate
+            && (currentTime - lastReloadTime >= 1 / reloadRate ||
+                isOverheat && currentTime - lastReloadTime >= 1 / (3 * reloadRate))
             && currentTime - lastFireTime >= reloadPreparationTime)
         {
             lastReloadTime = currentTime;
@@ -108,6 +109,7 @@ public abstract class Gun : MonoBehaviour
     {
         GameObject bulletObj = Instantiate(bulletPrefab,
             transform.position + bulletGenerateDistance * direction, transform.rotation);
+        LevelManager.Instance.DynamicallyAddGameObject(bulletObj);
         Bullet bullet = bulletObj.GetComponent<Bullet>();
         bullet.shotBy = ownerName;
         bullet.Fire(direction);
@@ -151,6 +153,11 @@ public abstract class Gun : MonoBehaviour
 
     protected void ChangeBulletNumber(int change)
     {
+        if (isInfiniteBullet)
+        {
+            return;
+        }
+        
         bulletNumber += change;
 
         if (!isOverheat && bulletNumber == 0)

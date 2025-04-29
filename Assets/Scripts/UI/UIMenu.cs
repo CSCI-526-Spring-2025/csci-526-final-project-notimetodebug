@@ -2,10 +2,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.Collections;
 
 public class UIMenu : MonoBehaviour
 {
     public GameObject levelButtonPrefab;
+    public GameObject challengeButtonPrefab; 
     public GameObject startPage;  
     public GameObject menuPanelPrefab; 
     
@@ -19,14 +21,42 @@ public class UIMenu : MonoBehaviour
     private Dictionary<int, int> bestScores;
     private Dictionary<int, int> maxScores;
 
+    [Header("Super Star Settings")]
+    public Sprite superStarSprite;
+    public Sprite normalStarSprite;
+
+
 
     private void Start()
     {
        // menuPanel.SetActive(false); 
         startPage.SetActive(true);   
 
-        Button startButton = startPage.GetComponentInChildren<Button>();
-        startButton.onClick.AddListener(OnStartButtonClicked);
+        Transform buttonsGroup = startPage.transform.Find("layout/buttons");
+
+        if (buttonsGroup != null)
+        {
+            Button startButton = buttonsGroup.Find("start").GetComponent<Button>();
+            Button menuButton = buttonsGroup.Find("menu").GetComponent<Button>();
+
+            startButton.onClick.AddListener(() => {
+                LevelManager.Instance.LoadLevel(0);
+                startPage.SetActive(false);
+            });
+
+            menuButton.onClick.AddListener(() => {
+                startPage.SetActive(false);
+                ShowMenu();
+            });
+        }
+        else
+        {
+            Debug.LogError("button missing in start page");
+        }
+
+       
+    
+
     }
 
     void OnStartButtonClicked()
@@ -50,43 +80,134 @@ public class UIMenu : MonoBehaviour
 
         levelPrefabs = LevelManager.Instance.GetLevels();
         bestScores = LevelManager.Instance.GetBestScores();
+        maxScores = LevelManager.Instance.GetMaxScores();
 
         for (int i = 0; i < levelPrefabs.Count; i++)
         {
-            GameObject buttonGO = Instantiate(levelButtonPrefab, buttonsParent);
+            bool isBonusLevel = (i == levelPrefabs.Count - 1) || (i == levelPrefabs.Count - 2);
+
+            GameObject buttonGO = Instantiate(
+            isBonusLevel ? challengeButtonPrefab : levelButtonPrefab,
+            buttonsParent
+            );
+
             buttonGO.name = "LevelButton_" + i;
 
             TextMeshProUGUI text = buttonGO.transform.Find("Level#Text").GetComponent<TextMeshProUGUI>();
             string rawName = levelPrefabs[i].name;
-            text.text = FormatLevelName(rawName);
+            if (text != null)
+            {
+                if (isBonusLevel)
+                {
+                    text.text = "Bonus " + (i == levelPrefabs.Count - 2 ? "1" : "2");
+                }
+                else
+                {
+                    text.text = FormatLevelName(rawName);
+                }
+            }
 
-            int bestScore = bestScores.ContainsKey(i) ? bestScores[i] : 0;
-            maxScores = LevelManager.Instance.GetMaxScores();
+           // int bestScore = bestScores.ContainsKey(i) ? bestScores[i] : 0;
+
+            int bestScore = 0;
+            int maxScore = 0;
+            
+            if (editorMode)
+            {
+                maxScore = 10;
+                bestScore = 1000;  
+            }
+            else
+            {
+                bestScore = bestScores.ContainsKey(i) ? bestScores[i] : 0;
+                maxScore = maxScores.ContainsKey(i) ? maxScores[i] : 1000;
+            }
 
             Debug.Log($"Level {i} ({rawName}) - BestScore: {bestScore}");
-            int maxScore = maxScores.ContainsKey(i) ? maxScores[i] : 1000;
+            
 
             Transform starContainer = buttonGO.transform.Find("StarContainer");
 
             if (bestScore > maxScore)
             {
-                // super star
-                SetStarColors(starContainer, 3, Color.blue);
+                SetStarColors(starContainer, 3, Color.yellow, useSuperStar: true);
             }
             else
             {
                 int stars = CalculateStars(bestScore, maxScore);
-                SetStarColors(starContainer, stars, Color.yellow);
+                SetStarColors(starContainer, stars, Color.yellow, useSuperStar: false);
             }
 
             int index = i;
-            buttonGO.GetComponent<Button>().onClick.AddListener(() =>
+            Button btn = buttonGO.GetComponent<Button>();
+
+            if (isBonusLevel)
             {
-                HideMenu();
-                LevelManager.Instance.LoadLevel(index);
-            });
+                btn.onClick.AddListener(() =>
+                {
+                    if (AreAllPreviousLevelsCompleted())
+                    {
+                        HideMenu();
+                        LevelManager.Instance.LoadLevel(index);
+                    }
+                    else
+                    {
+                        StartCoroutine(ShowHintTemporarily(buttonGO));
+                    }
+                });
+            }
+            else
+            {
+                btn.onClick.AddListener(() =>
+                {
+                    HideMenu();
+                    LevelManager.Instance.LoadLevel(index);
+                });
+            }
         }
     }
+
+    private bool AreAllPreviousLevelsCompleted()
+    {
+        if (editorMode)
+        {
+            return true;
+        }
+        for (int i = 0; i < levelPrefabs.Count - 2; i++)
+        {
+            if (!bestScores.ContainsKey(i) || bestScores[i] == 0)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private IEnumerator ShowHintTemporarily(GameObject challengeButton)
+    {
+        if (challengeButton == null)
+            yield break;
+
+        Transform text = challengeButton.transform.Find("Level#Text");
+        Transform starContainer = challengeButton.transform.Find("StarContainer");
+        Transform hint = challengeButton.transform.Find("hint");
+
+        if (text != null) text.gameObject.SetActive(false);
+        if (starContainer != null) starContainer.gameObject.SetActive(false);
+        if (hint != null) hint.gameObject.SetActive(true);
+
+        yield return new WaitForSeconds(3f);
+
+        if (challengeButton != null)
+        {
+            if (text != null) text.gameObject.SetActive(true);
+            if (starContainer != null) starContainer.gameObject.SetActive(true);
+            if (hint != null) hint.gameObject.SetActive(false);
+        }
+    }
+
+
+
 
     private void ClearButtons()
     {
@@ -118,14 +239,33 @@ public class UIMenu : MonoBehaviour
         return 0;
     }
 
-    private void SetStarColors(Transform starContainer, int filledCount, Color filledColor)
+    private void SetStarColors(Transform starContainer, int filledCount, Color filledColor, bool useSuperStar = false)
     {
         for (int i = 0; i < 3; i++)
         {
             Image starImage = starContainer.GetChild(i).GetComponent<Image>();
-            starImage.color = i < filledCount ? filledColor : Color.gray;
+
+            if (i < filledCount)
+            {
+                if (useSuperStar)
+                {
+                    starImage.sprite = superStarSprite;
+                    starImage.color = Color.white; 
+                }
+                else
+                {
+                    starImage.sprite = normalStarSprite;
+                    starImage.color = filledColor;
+                }
+            }
+            else
+            {
+                starImage.sprite = normalStarSprite;
+                starImage.color = Color.gray;
+            }
         }
     }
+
 
 
     public void ShowMenu()

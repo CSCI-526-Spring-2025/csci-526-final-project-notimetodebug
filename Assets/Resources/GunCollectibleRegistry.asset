@@ -19,3 +19,5 @@ MonoBehaviour:
     collectiblePrefab: {fileID: 4591912500492849379, guid: 12f3e33d9d7a54ce294cd58e58e7c1ae, type: 3}
   - gunPrefab: {fileID: 5187759985211964299, guid: f1852e53bde0d7b468a6e4a22b77e340, type: 3}
     collectiblePrefab: {fileID: 2549111714544548807, guid: ad99d7599423640c19ac7d6bfbd01304, type: 3}
+  - gunPrefab: {fileID: 7632166084348932070, guid: dedf6140d76341941af3c50f1883e9c0, type: 3}
+    collectiblePrefab: {fileID: 2549111714544548807, guid: 1f35f28cf30940649b8ed4a3f4ce9246, type: 3}

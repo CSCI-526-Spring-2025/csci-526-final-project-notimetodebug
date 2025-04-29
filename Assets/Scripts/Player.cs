@@ -30,6 +30,8 @@ public class Player : Creature
     private SpriteRenderer spriteRenderer;
     private Color originalColor;
 
+    private FloatingTextDisplay floatingTextDisplay;
+
     #region Telemetry Only
 
     private enum MotionState
@@ -114,6 +116,8 @@ public class Player : Creature
         healthUI?.SetMaxHealth(maxHP);
         healthUI?.UpdateHealth(HP);
 
+        floatingTextDisplay = transform.Find("Floating Text Display").GetComponent<FloatingTextDisplay>();
+
         for (int i = 0; i < guns.Count; i++)
         {
             guns.ElementAt(i).SetBulletUI(bulletUI);
@@ -179,6 +183,9 @@ public class Player : Creature
         currentGun = guns.ElementAt(currentGunIndex);
         currentGun.SetDirection(fireDirection);
         currentGun.OnEquipped();
+
+        floatingTextDisplay.DisplayFloatingText(currentGun.GetGunName());
+
         isFiring = false;
     }
 
@@ -195,7 +202,8 @@ public class Player : Creature
             if (collectiblePrefab != null)
             {
                 Vector3 dropPosition = transform.position + Vector3.right * 1.5f + Vector3.up * 0.5f;
-                Instantiate(collectiblePrefab, dropPosition, Quaternion.identity);
+                GameObject collectibleObj = Instantiate(collectiblePrefab, dropPosition, Quaternion.identity);
+                LevelManager.Instance.DynamicallyAddGameObject(collectibleObj);
             }
 
             oldSpecialGun.Destroy();
@@ -212,7 +220,7 @@ public class Player : Creature
         }
         else
         {
-            gun.OnUnequipped();
+            ChangeGun();
         }
     }
 

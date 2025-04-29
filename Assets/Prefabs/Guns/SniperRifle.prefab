@@ -190,7 +190,7 @@ MonoBehaviour:
   fireRate: 2
   reloadPreparationTime: 1
   reloadRate: 2
-  recoilForce: 10
+  recoilForce: 20
   isFullAuto: 0
   collectiblePrefab: {fileID: 2549111714544548807, guid: ad99d7599423640c19ac7d6bfbd01304, type: 3}
   laserRenderer: {fileID: 7892438178353614580}

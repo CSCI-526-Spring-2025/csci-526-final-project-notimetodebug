@@ -13,15 +13,23 @@ public class Door : MonoBehaviour
 
     private Animator animator;
     private bool isDoorOpen = true;
+    [SerializeField] private bool requiresAllControllersToBeActive = true;
 
     private bool ShouldDoorOpen()
     {
-        List<bool> controllerStates = doorControllers
-            .Where(controller => controller != null)
-            .Select(controller => controller.IsItemActive())
-            .ToList();
+        if (requiresAllControllersToBeActive)
+        {
+            List<bool> controllerStates = doorControllers
+                .Where(controller => controller != null)
+                .Select(controller => controller.IsItemActive())
+                .ToList();
 
-        return !controllerStates.Contains(false);
+            return !controllerStates.Contains(false);
+        }
+        else
+        {
+            return doorControllers.Any(controller => controller != null && controller.IsItemActive());
+        }
     }
 
     private bool ShouldStateChange()

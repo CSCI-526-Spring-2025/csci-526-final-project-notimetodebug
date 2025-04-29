@@ -10,6 +10,9 @@ public class CollectibleStar : MonoBehaviour
     [Header("Points")]
     public int points = 10;
 
+    [Header("Collection Effect")]
+    public GameObject sparklesPrefab;
+
     private Vector3 startPosition;
     private bool isCollected = false;
 
@@ -43,7 +46,9 @@ public class CollectibleStar : MonoBehaviour
         {
             isCollected = true;
 
-            LevelManager.Instance.AddCollectibleScore(points);
+            //LevelManager.Instance.AddCollectibleScore(points);
+            LevelManager.Instance.AddCollectibleScore(points, transform.position);
+
 
             TelemetryManager.Log(TelemetryManager.EventName.COLLECTIBLE_PICKED_UP, "Star");
 

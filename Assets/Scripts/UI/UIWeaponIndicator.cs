@@ -12,8 +12,14 @@ public class UIWeaponIndicator : MonoBehaviour, IPointerEnterHandler, IPointerEx
     public TextMeshProUGUI nameText;
     public TextMeshProUGUI descText;
 
-    [SerializeField] private Sprite activateStatusSprite;
-    [SerializeField] private Sprite inactivateStatusSprite;
+    //[SerializeField] private Sprite activateStatusSprite;
+    //[SerializeField] private Sprite inactivateStatusSprite;
+
+    [SerializeField] private Sprite activeStaticSprite;
+    [SerializeField] private Sprite inactiveStaticSprite;
+    [SerializeField] private Sprite activeTransitionSprite;
+    [SerializeField] private Sprite inactiveTransitionSprite;
+
 
     private Gun currentGun;
     private Coroutine hideCoroutine;
@@ -41,6 +47,8 @@ public class UIWeaponIndicator : MonoBehaviour, IPointerEnterHandler, IPointerEx
 
         nameText.text = currentGun.GetGunName();
         descText.text = currentGun.GetGunDescription();
+
+        /*
         descriptionPanel.SetActive(true);
 
         if (hideCoroutine != null)
@@ -48,12 +56,23 @@ public class UIWeaponIndicator : MonoBehaviour, IPointerEnterHandler, IPointerEx
             StopCoroutine(hideCoroutine);
         }
         hideCoroutine = StartCoroutine(HideDescriptionAfterDelay(2f));
+        */
+        ShowGunDescriptionTemporarily();
     }
 
     public void UpdateWeaponIndicator(bool isEquipped)
     {
-        outerCircle.sprite = isEquipped ? activateStatusSprite : inactivateStatusSprite;
+       // outerCircle.sprite = isEquipped ? activateStatusSprite : inactivateStatusSprite;
+        StartCoroutine(PlayWeaponStatusTransition(isEquipped));
     }
+
+    private IEnumerator PlayWeaponStatusTransition(bool toActive)
+    {
+        outerCircle.sprite = toActive ? activeTransitionSprite : inactiveTransitionSprite;
+        yield return new WaitForSeconds(0.15f); 
+        outerCircle.sprite = toActive ? activeStaticSprite : inactiveStaticSprite;
+    }
+
 
     public void OnPointerEnter(PointerEventData eventData)
     {
@@ -67,6 +86,19 @@ public class UIWeaponIndicator : MonoBehaviour, IPointerEnterHandler, IPointerEx
     public void OnPointerExit(PointerEventData eventData)
     {
         descriptionPanel.SetActive(false);
+    }
+    
+    
+    private void ShowGunDescriptionTemporarily()
+    {
+        descriptionPanel.SetActive(true);
+
+        if (hideCoroutine != null)
+        {
+            StopCoroutine(hideCoroutine);
+        }
+
+        hideCoroutine = StartCoroutine(HideDescriptionAfterDelay(2f));
     }
 
     private IEnumerator HideDescriptionAfterDelay(float delay)

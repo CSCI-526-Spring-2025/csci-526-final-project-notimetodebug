@@ -18,7 +18,7 @@ public class UIPause : MonoBehaviour
         if (spawnedPauseUI != null) return;
 
         spawnedPauseUI = Instantiate(pauseUIPrefab);
-        Button resumeButton = spawnedPauseUI.transform.Find("PausePanel/ButtonContainer/ResumeButton").GetComponent<Button>();
+        Button resumeButton = spawnedPauseUI.transform.Find("PausePanel/ResumeButton").GetComponent<Button>();
         Button againButton = spawnedPauseUI.transform.Find("PausePanel/ButtonContainer/AgainButton").GetComponent<Button>();
         Button menuButton = spawnedPauseUI.transform.Find("PausePanel/ButtonContainer/MenuButton").GetComponent<Button>();
 

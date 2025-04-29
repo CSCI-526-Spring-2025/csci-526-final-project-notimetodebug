@@ -12,6 +12,9 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private GameObject uiLevelFailPrefab;
     private UILevelFail failUI;
 
+    [SerializeField] private GameObject scoreParticlePrefab;
+    public RectTransform uiScoreTarget; 
+
     // Score variables
     private int currentScore = 0;
     private int enemyKillScore = 0;
@@ -135,8 +138,14 @@ public class LevelManager : MonoBehaviour
 
         maxScoreByLevel[CurrentLevel] = maxPossibleScore;
 
-        OnScoreUpdated?.Invoke();
-    }
+        UIScore uiScore = FindObjectOfType<UIScore>();
+        if (uiScore != null)
+        {
+            uiScore.InitializeScoreUI();
+        }
+
+            OnScoreUpdated?.Invoke();
+        }
 
     private void UpdateWeaponIndicatorUI(Player player)
     {
@@ -173,24 +182,47 @@ public class LevelManager : MonoBehaviour
         isEndLevel = true;
     }
 
-    public void AddEnemyKillScore(int score)
+    public void AddEnemyKillScore(int score, Vector3 worldPosition)
     {
         if (isEndLevel) return; 
         enemyKillScore += score;
         currentScore = GetCurrentScore();
-        Debug.Log("Killed an enemy, increasing enemyKillScore by " + score + ", current enemyKillScore: " + enemyKillScore);
-        
+        SpawnScoreParticle(worldPosition);
         OnScoreUpdated?.Invoke();
     }
 
-    public void AddCollectibleScore(int score)
+    public void AddCollectibleScore(int score, Vector3 worldPosition)
     {
         if (isEndLevel) return;
         collectibleScore += score;
-        currentScore = GetCurrentScore();
-        Debug.Log("Collected a star, increasing collectibleScore by " + score + ", current collectibleScore: " + collectibleScore);
+        currentScore = GetCurrentScore(); 
+        SpawnScoreParticle(worldPosition);
         OnScoreUpdated?.Invoke();
     }
+    
+    public void SpawnScoreParticle(Vector3 worldPosition)
+    {
+        if (scoreParticlePrefab == null || uiScoreTarget == null)
+        {
+            Debug.LogError("missing prefab or target");
+            return;
+        }
+
+        GameObject particle = Instantiate(scoreParticlePrefab, worldPosition, Quaternion.identity);
+        LevelManager.Instance.DynamicallyAddGameObject(particle);
+            
+        var flyScript = particle.GetComponent<UIParticleFly>();
+        if (flyScript != null)
+        {
+            flyScript.uiTarget = uiScoreTarget;  
+        }
+
+        var ps = particle.GetComponent<ParticleSystem>();
+        if (ps != null) ps.Play();
+    }
+
+
+
 
     private IEnumerator SetPlayerToLevelStart()
     {
@@ -302,9 +334,12 @@ public class LevelManager : MonoBehaviour
         LoadLevel();
     }
 
-
-
-
-
-
+    public void DynamicallyAddGameObject(GameObject obj)
+    {
+        if (CurrentLevelObj is null)
+        {
+            return;
+        }
+        obj.transform.SetParent(CurrentLevelObj.transform);
+    }
 }
